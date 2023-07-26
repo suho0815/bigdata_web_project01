@@ -1,2 +1,5 @@
 export * from './Div'
 export * from './Icon'
+export * from './Modal'
+export * from './Title'
+export * from './Select'

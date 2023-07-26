@@ -9,7 +9,7 @@ export type ModalProps = ReactDivProps & {
 
 export const Modal: FC<ModalProps> = ({open, className: _className, ...props}) => {
   const className = ['modal', open ? 'modal-open' : '', _className].join(' ')
-  return <div className={className} {...props}></div>
+  return <Div className={className} {...props}></Div>
 }
 
 export type ModalContentProps = ReactDivProps & {
@@ -28,14 +28,14 @@ export const ModalContent: FC<ModalContentProps> = ({
   const showCloseIcon = onCloseIconClicked ? true : false
   if (!showCloseIcon)
     return (
-      <div {...props} className={className}>
+      <Div {...props} className={className}>
         {children}
-      </div>
+      </Div>
     )
 
   const closeIconClassName = _closeIconClassName
     ? _closeIconClassName
-    : 'btn btn-primary btn-sm btn-outline'
+    : 'btn btn-success btn-sm btn-outline text-white'
 
   return (
     <div {...props} className={className}>
@@ -51,5 +51,5 @@ export type ModalActionProps = ReactDivProps & {}
 
 export const ModalAction: FC<ModalActionProps> = ({className: _className, ...props}) => {
   const className = ['modal-action', _className].join(' ')
-  return <div {...props} className={className}></div>
+  return <Div {...props} className={className}></Div>
 }
