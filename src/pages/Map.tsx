@@ -78,6 +78,6 @@ const Map = () => {
     // }
   }, [])
 
-  return <Div id="map" className="w-3/4 border rounded" height="100%"></Div>
+  return <Div id="map" className="w-3/4 border rounded grow" height="100%"></Div>
 }
 export default Map

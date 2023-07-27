@@ -62,32 +62,38 @@ const Filter = () => {
       <div className="w-1/3 max-w-sm min-w-max">
         <Title>
           {/* <Link to={`/?sido=${''}&gungu=${''}&dong=${''}`}>Title</Link> */}
-          <Link to="/">Title</Link>
+          <Link to="/">
+            <Icon
+              name="pets"
+              className="border-8 rounded-full"
+              style={{fontSize: '70px'}}
+            />
+          </Link>
         </Title>
       </div>
 
       <div className="w-1/3 min-w-max">
-        <div className="flex w-full p-2 bg-gray-200 rounded-xl">
+        <div className="flex w-full p-2 bg-gray-100 rounded-xl">
           <input
             type="text"
-            className="w-11/12 p-2 bg-gray-200 rounded-xl"
+            className="w-11/12 p-2 bg-gray-100 rounded-xl"
             placeholder=" 검색"
           />
           <Icon
             name="search"
-            className="w-1/12 p-2 ml-4 bg-gray-200 btn rounded-xl"></Icon>
+            className="w-1/12 p-2 ml-4 bg-gray-100 btn rounded-xl"></Icon>
         </div>
       </div>
 
       <div className="relative flex w-1/3 justify-evenly min-w-max">
-        <button className="text-white btn btn-info" onClick={detailSearchOnClick}>
+        <button className="text-lg btn btn-ghost" onClick={detailSearchOnClick}>
           상세 검색
         </button>
         <div className="flex">
-          <button className="btn ">
+          <button className="text-lg btn btn-ghost">
             <Link to="/login">로그인</Link>
           </button>
-          <button className="ml-6 btn">
+          <button className="ml-6 text-lg btn btn-ghost">
             <Link to="/join">회원가입</Link>
           </button>
         </div>
