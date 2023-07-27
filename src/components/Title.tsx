@@ -27,7 +27,7 @@ export const Subtitle: FC<SubtitleProps> = ({
   ...props
 }) => {
   const style = {_style, width, height}
-  const className = ['font-bold', 'text-2xl', 'text-center'].join(' ')
+  const className = ['font-bold', 'text-2xl', 'text-center', _className].join(' ')
 
   return <p {...props} className={className} style={style}></p>
 }

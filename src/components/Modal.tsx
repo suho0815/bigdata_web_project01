@@ -35,7 +35,7 @@ export const ModalContent: FC<ModalContentProps> = ({
 
   const closeIconClassName = _closeIconClassName
     ? _closeIconClassName
-    : 'btn btn-success btn-sm btn-outline text-white'
+    : 'btn btn-info btn-sm btn-outline text-white'
 
   return (
     <div {...props} className={className}>
