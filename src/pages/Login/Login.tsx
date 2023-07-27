@@ -7,10 +7,10 @@ type LoginProps = {
 
 export const Login: FC<LoginProps> = () => {
   return (
-    <div className="flex flex-col items-center w-full h-full m-auto bg-gray-100">
-      <Subtitle className="p-4 mb-2 border-b-2">로그인</Subtitle>
-      <div className="flex flex-col w-2/5 max-w-md p-8 bg-white rounded shadow-md h-2/5 min-w-max">
-        <div className="mb-4">
+    <div className="flex flex-col items-center w-full h-full m-auto bg-gray-100 grow">
+      <div className="flex flex-col w-2/5 max-w-xl p-8 mt-16 bg-white rounded shadow-md h-1/2 min-w-max">
+        <Subtitle className="p-4 mb-2 border-b-2">로그인</Subtitle>
+        <div className="mt-4 mb-4">
           <label className="block mb-2 text-sm font-bold" htmlFor="username">
             Username
           </label>

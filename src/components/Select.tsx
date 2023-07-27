@@ -1,10 +1,5 @@
-import type {
-  FC,
-  DetailedHTMLProps,
-  HTMLAttributes,
-  PropsWithChildren,
-  ReactElement
-} from 'react'
+import type {FC, PropsWithChildren, ReactElement} from 'react'
+import {useState} from 'react'
 import {DivProps} from './Div'
 
 export type InputSelect = DivProps & {
@@ -12,6 +7,8 @@ export type InputSelect = DivProps & {
   labelClass?: string
   selectChildren?: ReactElement
   labelChildren?: string
+  id?: string
+  onChange?: () => {}
 }
 
 export type SelectProps = PropsWithChildren<InputSelect> & {
@@ -25,7 +22,9 @@ export const Select: FC<SelectProps> = ({
   labelClass,
   selectChildren,
   labelChildren,
-  style: _style
+  style: _style,
+  id,
+  onChange: _onChange
 }) => {
   const className = ['flex', 'flex-col', _className].join(' ')
   const labelclass = ['ml-2', 'font-bold', labelClass].join(' ')
@@ -36,7 +35,7 @@ export const Select: FC<SelectProps> = ({
       <label htmlFor={name} className={labelclass}>
         {labelChildren}
       </label>
-      <select name={name} id="" className={selectclass}>
+      <select name={name} id={id} className={selectclass}>
         <option value="">선택</option>
         {selectChildren}
       </select>

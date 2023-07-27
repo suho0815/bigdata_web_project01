@@ -7,6 +7,7 @@ export type ListItem = DivProps & {
   title: string
   telephone?: string
   location?: string
+  heart?: number
 }
 
 const HospitalListItem: FC<ListItem> = ({
