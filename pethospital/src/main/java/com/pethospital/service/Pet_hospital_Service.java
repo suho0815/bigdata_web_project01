@@ -26,15 +26,28 @@ public class Pet_hospital_Service {
         return pet_hospital_Repository.findDistinctDetailcityByProvinceAndCity(province, city);
     }
 
-    public List<Pet_hospital> getpethospitalByProvince(String province) {
-        return pet_hospital_Repository.findByProvince(province);
-    }
-
-    public List<Pet_hospital> getpethospitalByProvinceAndCity(String province, String city) {
-        return pet_hospital_Repository.findByProvinceAndCity(province, city);
-    }
-
+    /// 
     public List<Pet_hospital> getpethospitalByProvinceAndCityAndDetailCity(String province, String city, String detail_city) {
-        return pet_hospital_Repository.findByProvinceAndCityAndDetailcity(province, city, detail_city);
+        if (province == null){
+            return pet_hospital_Repository.findAll();
+        }else {
+            if (city == null){
+                return pet_hospital_Repository.findByProvince(province);
+            }else{
+                if(detail_city == null) {
+                    return pet_hospital_Repository.findByProvinceAndCity(province, city);
+                }
+                return pet_hospital_Repository.findByProvinceAndCityAndDetailcity(province, city, detail_city);
+            }
+        }
     }
+
+    // public List<Pet_hospital> getpethospitalByProvince(String province) {
+    //     return pet_hospital_Repository.findByProvince(province);
+    // }
+
+    // public List<Pet_hospital> getpethospitalByProvinceAndCity(String province, String city) {
+    //     return pet_hospital_Repository.findByProvinceAndCity(province, city);
+    // }
+
 }
