@@ -1,14 +1,21 @@
-import type {FC, PropsWithChildren, ReactElement} from 'react'
+import type {
+  FC,
+  PropsWithChildren,
+  ReactElement,
+  ChangeEventHandler,
+  FormEventHandler
+} from 'react'
 import {useState} from 'react'
 import {DivProps} from './Div'
 
 export type InputSelect = DivProps & {
   selectClass?: string
   labelClass?: string
-  selectChildren?: ReactElement
+  selectChildren?: ReactElement[]
   labelChildren?: string
   id?: string
-  onChange?: () => {}
+  selectRef?: React.MutableRefObject<HTMLSelectElement | null>
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>
 }
 
 export type SelectProps = PropsWithChildren<InputSelect> & {
@@ -24,6 +31,7 @@ export const Select: FC<SelectProps> = ({
   labelChildren,
   style: _style,
   id,
+  selectRef,
   onChange: _onChange
 }) => {
   const className = ['flex', 'flex-col', _className].join(' ')
@@ -35,7 +43,12 @@ export const Select: FC<SelectProps> = ({
       <label htmlFor={name} className={labelclass}>
         {labelChildren}
       </label>
-      <select name={name} id={id} className={selectclass}>
+      <select
+        name={name}
+        id={id}
+        className={selectclass}
+        ref={selectRef}
+        onChange={_onChange}>
         <option value="">선택</option>
         {selectChildren}
       </select>

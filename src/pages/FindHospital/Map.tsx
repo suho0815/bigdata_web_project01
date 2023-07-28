@@ -1,6 +1,7 @@
 import type {FC} from 'react'
+import type {DivProps} from '../../components'
 import {useEffect} from 'react'
-import {Div} from '../components'
+import {Div} from '../../components'
 
 declare global {
   interface Window {
@@ -8,7 +9,9 @@ declare global {
   }
 }
 
-const Map = () => {
+export type MapProps = DivProps & {}
+
+export const Map: FC<MapProps> = className => {
   useEffect(() => {
     let container = document.getElementById('map') //지도를 담을 영역의 DOM 레퍼런스
     let options = {
@@ -77,7 +80,7 @@ const Map = () => {
     //   map.setCenter(position)
     // }
   }, [])
-
-  return <Div id="map" className="w-3/4 border rounded grow" height="100%"></Div>
+  const classname = ['w-3/4', 'border', 'rounded', 'grow', className].join(' ')
+  return <Div id="map" className={classname} height="100%"></Div>
 }
 export default Map

@@ -1,8 +1,11 @@
 import {FC} from 'react'
+import {Icon} from '../../../components'
 //@ts-ignore
 import pupp from '../../../images/pupp.mp4'
 
 const Section1: React.FC = () => {
+  const onSearchbtnClicked = () => {}
+
   return (
     <div className="flex items-center justify-center w-screen h-screen">
       <video
@@ -11,14 +14,24 @@ const Section1: React.FC = () => {
         loop
         muted>
         <source src={pupp} type="video/mp4" />
-        {/* Add other video formats here for cross-browser support */}
       </video>
-      <div className="relative z-10 p-4 bg-white bg-opacity-50 rounded-lg">
-        <h1 className="text-4xl font-bold">Your Video Background Content</h1>
-        <p className="mt-2 text-lg">
-          This is your video background component with React, TypeScript, and Tailwind
-          CSS.
-        </p>
+      <div className="relative z-10 p-6 bg-white bg-opacity-50 rounded-lg">
+        <h1 className="text-3xl font-bold">당신을 위한 동물 병원을 찾아보세요!</h1>
+
+        <div className="flex p-2 mt-8 overflow-x-hidden bg-white bg-opacity-50 rounded-lg">
+          <form action="http://10.125.121.183:8080/hospital" className="flex w-full">
+            <input
+              type="text"
+              className="w-11/12 p-2 bg-white bg-opacity-0 rounded-lg"
+              placeholder=" 검색"
+            />
+            <button
+              className="w-1/12 p-2 ml-4 bg-white bg-opacity-50 rounded-lg btn"
+              type="submit">
+              <Icon name="search" className=""></Icon>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   )

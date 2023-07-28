@@ -1,6 +1,6 @@
 import type {FC} from 'react'
-import type {DivProps} from '../../components'
-import {Itemtitle, Itemsummary, Icon} from '../../components'
+import type {DivProps} from '../../../components'
+import {Itemtitle, Itemsummary, Icon} from '../../../components'
 
 export type ListItem = DivProps & {
   imgsrc?: string

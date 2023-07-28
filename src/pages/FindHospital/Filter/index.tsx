@@ -1,19 +1,37 @@
-import type {ChangeEventHandler, FC} from 'react'
+import type {ChangeEventHandler, FC, ChangeEvent} from 'react'
+import type {ReactElement} from 'react'
 import {useRef, useState, useCallback} from 'react'
-import {Icon, Div, Modal, ModalContent, ModalAction} from '../../components'
-import {Title, Subtitle, Select} from '../../components'
+import {Icon, Div, Modal, ModalContent, ModalAction} from '../../../components'
+import {Title, Subtitle, Select} from '../../../components'
 import {Link} from 'react-router-dom'
 
 const Filter = () => {
   const [open, setOpen] = useState<boolean>(false)
+  const [sido, setSido] = useState<ReactElement[]>()
+  const [gungu, setGungu] = useState<ReactElement[]>()
+
+  const sidoref = useRef<HTMLSelectElement>(null)
+
   const detailSearchOnClick = useCallback(() => {
     setOpen(true)
-    fetch('http://localhost:8080/province')
+
+    fetch('http://10.125.121.183:8080/api/province')
       .then(response => {
-        response.json()
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
       })
       .then(data => {
         console.log('Data:', data)
+        setSido(
+          data['province'].map((sidodata: string, index: number) => (
+            <option value={sidodata} key={index}>
+              {sidodata}
+            </option>
+          ))
+        )
+        console.log(sido)
       })
       .catch(error => console.log('Error:', error.message))
   }, [])
@@ -22,10 +40,31 @@ const Filter = () => {
     setOpen(false)
   }, [])
 
-  const provinceChange = () => {}
+  const provinceChange = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value
+
+      if (sidoref.current !== null) console.log('sidoref:', sidoref.current.value)
+
+      fetch(`http://10.125.121.183:8080/api/province/${selectedValue}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
+          return response.json()
+        })
+        .then(data => {
+          console.log('Data:', data)
+        })
+      // return selectedValue
+    },
+    [sido]
+  )
+
+  const gunguChange = () => {}
 
   return (
-    <Div className="flex items-center justify-around w-full border" height="10%">
+    <Div className="flex items-center justify-center w-full p-4 border" height="10%">
       <Modal open={open}>
         <ModalContent className="" onCloseIconClicked={detailSearchClosed}>
           <Subtitle className="">상세 검색</Subtitle>
@@ -34,19 +73,21 @@ const Filter = () => {
               <Select
                 labelChildren="광역시도"
                 name="province"
-                selectChildren={<option value="부산">부산광역시</option>}
+                selectChildren={sido}
+                selectRef={sidoref}
               />
               <Select
                 labelChildren="시군구"
                 name="gungu"
                 className="ml-8"
-                selectChildren={<option value="서구">서구</option>}
+                // onChange={provinceChange}
+                // selectChildren={<option value="서구">서구</option>}
               />
               <Select
                 labelChildren="읍면동"
                 name="dong"
                 className="ml-8"
-                selectChildren={<option value="무슨동">무슨동</option>}
+                // selectChildren={<option value="무슨동">무슨동</option>}
               />
             </div>
             <ModalAction className="mt-12">
@@ -58,20 +99,6 @@ const Filter = () => {
           </div>
         </ModalContent>
       </Modal>
-
-      <div className="w-1/3 max-w-sm min-w-max">
-        <Title>
-          {/* <Link to={`/?sido=${''}&gungu=${''}&dong=${''}`}>Title</Link> */}
-          <Link to="/">
-            <Icon
-              name="pets"
-              className="border-8 rounded-full"
-              style={{fontSize: '70px'}}
-            />
-          </Link>
-        </Title>
-      </div>
-
       <div className="w-1/3 min-w-max">
         <div className="flex w-full p-2 bg-gray-100 rounded-xl">
           <input
@@ -89,14 +116,6 @@ const Filter = () => {
         <button className="text-lg btn btn-ghost" onClick={detailSearchOnClick}>
           상세 검색
         </button>
-        <div className="flex">
-          <button className="text-lg btn btn-ghost">
-            <Link to="/login">로그인</Link>
-          </button>
-          <button className="ml-6 text-lg btn btn-ghost">
-            <Link to="/join">회원가입</Link>
-          </button>
-        </div>
       </div>
     </Div>
   )
