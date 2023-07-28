@@ -25,8 +25,7 @@ public class Pet_hospital_Service {
     public List<String> getDistinctDetailCitiesByProvinceAndCity(String province, String city) {
         return pet_hospital_Repository.findDistinctDetailcityByProvinceAndCity(province, city);
     }
-
-    /// 
+ 
     public List<Pet_hospital> getpethospitalByProvinceAndCityAndDetailCity(String province, String city, String detail_city) {
         if (province == null){
             return pet_hospital_Repository.findAll();
@@ -39,6 +38,14 @@ public class Pet_hospital_Service {
                 }
                 return pet_hospital_Repository.findByProvinceAndCityAndDetailcity(province, city, detail_city);
             }
+        }
+    }
+
+    public List<Pet_hospital> getpethospitalByName(String name) {
+        if (name == null) {
+            return null;
+        }else {
+            return pet_hospital_Repository.findByHospital_name(name);
         }
     }
 
