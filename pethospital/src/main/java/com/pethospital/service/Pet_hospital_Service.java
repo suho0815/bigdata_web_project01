@@ -14,18 +14,22 @@ public class Pet_hospital_Service {
     @Autowired
     private Pet_hospital_Repository pet_hospital_Repository;
 
+    // 광역시도
     public List<String> getDistinctProvinces() {
         return pet_hospital_Repository.findDistinctProvince();
     }
 
+    // 시군구
     public List<String> getDistinctCitiesByProvince(String province) {
         return pet_hospital_Repository.findDistinctCityByProvince(province);
     }
 
+    // 읍면동
     public List<String> getDistinctDetailCitiesByProvinceAndCity(String province, String city) {
         return pet_hospital_Repository.findDistinctDetailcityByProvinceAndCity(province, city);
     }
  
+    // 상세검색
     public List<Pet_hospital> getpethospitalByProvinceAndCityAndDetailCity(String province, String city, String detail_city) {
         if (province == null){
             return pet_hospital_Repository.findAll();
@@ -41,6 +45,7 @@ public class Pet_hospital_Service {
         }
     }
 
+    // 검색
     public List<Pet_hospital> getpethospitalByName(String name) {
         if (name == null) {
             return null;
