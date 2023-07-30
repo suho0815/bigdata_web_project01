@@ -50,7 +50,7 @@ public class Pet_hospital_Service {
         if (name == null) {
             return null;
         }else {
-            return pet_hospital_Repository.findByHospital_name(name);
+            return pet_hospital_Repository.findByHospitalName(name);
         }
     }
 
