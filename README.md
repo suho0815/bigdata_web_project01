@@ -1,5 +1,10 @@
 # bigdata_web_project01
 
+## 개발환경
+* IDE = VSCode
+* JAVA = jdk 17.0.3
+* StringBoot = 3.0.2
+
 ## 프로젝트 설명 - https://www.notion.so/d22b745abe3a4f8daecef6357da12d8b (백엔드 개발 과정)
 0. 백엔드 - 하성진, 프론트엔드 - 이수호
 1. 공공데이터 포털이용 >> 행정안전부_동물병원.csv
@@ -81,6 +86,34 @@
     - 했던 작업이 날라가는 경험을 처음함
     - "git stash apply" 가장 최근 작업을 불러와서 복구했음.
 - 도메인 필드 수정해야함....
+
+## 2023/07/30
+- jdk 설정
+    - 노트북에서 작업을 하는데.... java 버전 설정이 이상하게 되어있음
+    - 수정 전 : jdk 1.8.x and jre 1.8.x
+    - 수정 후 : jdk 17.0.3
+    - jre와 jdk의 차이점을 명확히 알지 못해서 생긴 오류였다. (본인잘못)
+    - 차이를 구분한 후에 개발환경 셋팅을 해주니 오류가 해결되었다.
+- JavaBean 명명규칙 설정
+    - 규치에 따라 레퍼지토리 클래스 메서드 이름 변경
+    - 'findByHospital_name' >> 'findByHospitalName' : '-' 하이폰은 인식이 안된다....
+    - 엔티티 클래스 property 변경도 동시에 변경.. @Column사용해서 테이블 컬럼은 그대로 사용.
+- 컨트롤러 클래스 오류
+    - 파라미터를 선택적으로 입력 받기 위해서 @RequestParam으로 설정 했다.
+    - 정상적으로 작동 되지 않고 404에러가 생겼다. 3~4시간을 고치려고 했지만 잘 안된다
+    - 코드는 문제가 없어 보이는데... 개발환경에 문제일 수도 있다.
+    - 내일은 vscode에서 실행하지 말고 이클립스로 환경을 변경해보자.
+- 테이블 추가
+    - 게시글 테이블
+    - 댓글 테이블
+    - 멤버 테이블
+- member 클래스 생성(Controller, Service, Repository)
+    - Controller 
+        - 프론트 데이터 Post 받기
+    - Service
+        - Controller로부터 받은 데이터 Repository 전송
+    - Repositroy
+        - 받은 데이터 데이터베이스 저장.
 
 
 
