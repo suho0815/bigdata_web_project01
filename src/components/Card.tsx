@@ -13,8 +13,8 @@ export type CardProps = DivProps & {
 export const Card: FC<CardProps> = ({imgsrc, hospitalName, locate}) => {
   return (
     <Div className="m-2 border shadow-lg rounded-xl" width="20rem">
-      <Div className="relative h-40 border rounded-t-xl">
-        <img src={imgsrc} alt="" className="w-40 h-40 m-auto" />
+      <Div className="relative m-auto border h-52 rounded-t-xl" width="20rem">
+        <img src={imgsrc} alt="" className="object-cover w-full h-full" />
       </Div>
       <Div className="flex flex-col p-2">
         <Div height="4rem">
