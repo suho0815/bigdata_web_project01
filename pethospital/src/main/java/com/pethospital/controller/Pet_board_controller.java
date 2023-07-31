@@ -1,6 +1,6 @@
 package com.pethospital.controller;
 
 
-public class board_controller{
+public class Pet_board_controller{
 
 }

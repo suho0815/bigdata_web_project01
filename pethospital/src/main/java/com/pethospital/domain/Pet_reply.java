@@ -27,10 +27,10 @@ public class Pet_reply {
     private Long commentId;
     
     @Column(name="board_id")
-    private String boardId;
+    private int boardId;
 
-    @Column(name="author_user_id")
-    private String authorUserId;
+    @Column(name="user_id", nullable = false, unique = true)
+    private String userId;
     
     private String nickname;
     private String contents;

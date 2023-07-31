@@ -24,10 +24,11 @@ public class Pet_board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="board_id")
-    private Long boardId;
+    private int boardId;
 
-    @Column(name="writer_user_id")
-    private String writerUserId;
+    @Column(name="user_id")
+    private String userId;
+    
     private String nickname;
     private String title;
     private String content;
