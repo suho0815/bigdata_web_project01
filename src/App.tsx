@@ -1,8 +1,8 @@
 import Map from './pages/FindHospital/Map'
 import Filter from './pages/FindHospital/Filter'
 import Nav from './pages/Main/Nav'
-import Section1 from './pages/Main/Section1'
-import Section2 from './pages/Main/Section2'
+import SearchSection from './pages/Main/SearchSection'
+import HospitalSection from './pages/Main/HospitalSection'
 import HospitalList from './pages/FindHospital/HospitalList'
 import {Div} from './components'
 import {Login, Join} from './pages/Login'
@@ -11,7 +11,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 function App() {
   return (
     <main>
-      <div className="w-screen h-screen">
+      <div className="w-full h-screen">
         <BrowserRouter>
           <Nav />
           <Routes>
@@ -19,17 +19,15 @@ function App() {
               path="/"
               element={
                 <section>
-                  <Section1 />
-                  <Section2 />
+                  <SearchSection />
+                  <HospitalSection />
                 </section>
               }
             />
             <Route
               path="/find"
               element={
-                <Div
-                  className="relative flex flex-col items-center justify-center w-full top-28"
-                  height="100%">
+                <Div className="relative flex flex-col items-center justify-center w-full pt-28 md:pt-16">
                   <Filter />
                   <Map className="mb-8" />
                   <HospitalList />

@@ -12,7 +12,7 @@ export const Title: FC<TitleProps> = ({
   ...props
 }) => {
   const style = {_style, width, height}
-  const className = ['font-bold', 'text-5xl', 'text-center'].join(' ')
+  const className = ['font-bold', 'text-5xl', 'text-center', _className].join(' ')
   return <p {...props} className={className} style={style}></p>
 }
 

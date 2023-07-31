@@ -21,10 +21,10 @@ const HospitalListItem: FC<ListItem> = ({
   const className = ['flex', 'border', 'h-40', 'hover:bg-gray-100', _className].join(' ')
   return (
     <div className={className}>
-      <div className="w-2/5">
-        <img src={src} alt="" className="w-full m-1 h-5/6 rounded-3xl" />
+      <div className="items-center justify-center w-2/5">
+        <img src={src} alt="" className="h-full m-0 align-middle w-52 rounded-3xl" />
       </div>
-      <div className="flex flex-col w-3/5 ml-4">
+      <div className="flex flex-col w-full ml-4">
         <Itemtitle>{title}</Itemtitle>
         <Itemsummary>{telephone}</Itemsummary>
         <Itemsummary>{location}</Itemsummary>

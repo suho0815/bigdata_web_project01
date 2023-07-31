@@ -64,7 +64,7 @@ const Filter = () => {
   const gunguChange = () => {}
 
   return (
-    <Div className="flex items-center justify-center w-full p-4 border" height="10%">
+    <Div className="flex flex-col items-center justify-center w-full p-4 border">
       <Modal open={open}>
         <ModalContent className="" onCloseIconClicked={detailSearchClosed}>
           <Subtitle className="">상세 검색</Subtitle>
@@ -99,11 +99,12 @@ const Filter = () => {
           </div>
         </ModalContent>
       </Modal>
-      <div className="w-1/3 min-w-max">
-        <div className="flex w-full p-2 bg-gray-100 rounded-xl">
+      <Subtitle className="mb-8">동물 병원 찾기</Subtitle>
+      <div className="flex justify-center w-full mb-4">
+        <div className="flex w-1/2 p-2 bg-gray-100 rounded-xl">
           <input
             type="text"
-            className="w-11/12 p-2 bg-gray-100 rounded-xl"
+            className="w-11/12 p-2 bg-gray-100 rounded-xl "
             placeholder=" 검색"
           />
           <Icon
@@ -112,8 +113,10 @@ const Filter = () => {
         </div>
       </div>
 
-      <div className="relative flex w-1/3 justify-evenly min-w-max">
-        <button className="text-lg btn btn-ghost" onClick={detailSearchOnClick}>
+      <div className="relative flex justify-end w-full min-w-max ">
+        <button
+          className="text-lg text-white btn bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
+          onClick={detailSearchOnClick}>
           상세 검색
         </button>
       </div>

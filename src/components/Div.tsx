@@ -20,6 +20,7 @@ export type DivProps = ReactDivProps & PropsWithChildren<WidthHeight>
 
 export const Div: FC<DivProps> = ({
   style: _style,
+  className,
   width,
   height,
   src,
@@ -39,5 +40,5 @@ export const Div: FC<DivProps> = ({
     top,
     bottom
   }
-  return <div {...props} style={style}></div>
+  return <div {...props} className={className} style={style}></div>
 }

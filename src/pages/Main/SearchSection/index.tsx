@@ -3,11 +3,11 @@ import {Icon} from '../../../components'
 //@ts-ignore
 import pupp from '../../../images/pupp.mp4'
 
-const Section1: React.FC = () => {
+const SearchSection: React.FC = () => {
   const onSearchbtnClicked = () => {}
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen">
+    <div className="flex items-center justify-center w-full h-screen">
       <video
         className="absolute top-0 left-0 object-cover w-full h-full"
         autoPlay
@@ -37,4 +37,4 @@ const Section1: React.FC = () => {
   )
 }
 
-export default Section1
+export default SearchSection

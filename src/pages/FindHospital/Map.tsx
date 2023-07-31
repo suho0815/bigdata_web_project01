@@ -80,7 +80,16 @@ export const Map: FC<MapProps> = className => {
     //   map.setCenter(position)
     // }
   }, [])
-  const classname = ['w-3/4', 'border', 'rounded', 'grow', className].join(' ')
-  return <Div id="map" className={classname} height="100%"></Div>
+  const classname = [
+    'w-4/5',
+    'mt-8',
+    'mb-8',
+    'border',
+    'rounded',
+    'grow',
+    'border-8',
+    className
+  ].join(' ')
+  return <Div id="map" className={classname} height="50rem"></Div>
 }
 export default Map
