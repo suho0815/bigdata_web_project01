@@ -25,7 +25,7 @@ function App() {
               }
             />
             <Route
-              path="/find"
+              path="/api/searchhospital"
               element={
                 <Div className="relative flex flex-col items-center justify-center w-full pt-28 md:pt-16">
                   <Filter />
@@ -35,7 +35,7 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
-            <Route path="/join" element={<Join />} />
+            <Route path="/register" element={<Join />} />
           </Routes>
         </BrowserRouter>
       </div>

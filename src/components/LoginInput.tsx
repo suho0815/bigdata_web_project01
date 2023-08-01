@@ -1,4 +1,14 @@
-import type {FC, DetailedHTMLProps, HTMLAttributes, PropsWithChildren} from 'react'
+import type {
+  FC,
+  DetailedHTMLProps,
+  HTMLAttributes,
+  PropsWithChildren,
+  ChangeEventHandler,
+  FormEventHandler,
+  ChangeEvent,
+  MouseEventHandler,
+  MutableRefObject
+} from 'react'
 
 export type LoginbtnProps = DetailedHTMLProps<
   HTMLAttributes<HTMLButtonElement>,
@@ -6,9 +16,16 @@ export type LoginbtnProps = DetailedHTMLProps<
 > & {
   // PropsWithChildren<HTMLButtonElement> &
   name?: string
+  url?: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const Loginbtn: FC<LoginbtnProps> = ({className: _className, name, children}) => {
+export const Loginbtn: FC<LoginbtnProps> = ({
+  className: _className,
+  name,
+  children,
+  onClick
+}) => {
   const className = [
     'w-full',
     'px-4',
@@ -22,7 +39,7 @@ export const Loginbtn: FC<LoginbtnProps> = ({className: _className, name, childr
     _className
   ].join(' ')
   return (
-    <button className={className} type="button">
+    <button className={className} type="button" onClick={onClick}>
       {name}
       {children}
     </button>
@@ -30,19 +47,23 @@ export const Loginbtn: FC<LoginbtnProps> = ({className: _className, name, childr
 }
 
 export type LoginInputProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
+  HTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
 > & {
   type?: string
   id?: string
   placeholder?: string
+  Inputref?: MutableRefObject<HTMLInputElement | null>
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const LoginInput: FC<LoginInputProps> = ({
   className: _className,
   type,
   id,
-  placeholder
+  placeholder,
+  Inputref,
+  onChange
 }) => {
   const className = [
     'w-full',
@@ -54,5 +75,14 @@ export const LoginInput: FC<LoginInputProps> = ({
     'appearance-none',
     _className
   ].join(' ')
-  return <input type={type} className={className} id={id} placeholder={placeholder} />
+  return (
+    <input
+      type={type}
+      className={className}
+      id={id}
+      onChange={onChange}
+      ref={Inputref}
+      placeholder={placeholder}
+    />
+  )
 }

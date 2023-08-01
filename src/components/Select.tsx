@@ -11,11 +11,11 @@ import {DivProps} from './Div'
 export type InputSelect = DivProps & {
   selectClass?: string
   labelClass?: string
-  selectChildren?: ReactElement[]
+  selectChildren?: ReactElement[] | null
   labelChildren?: string
   id?: string
   selectRef?: React.MutableRefObject<HTMLSelectElement | null>
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>
+  onChange?: React.ChangeEventHandler<HTMLSelectElement | null>
 }
 
 export type SelectProps = PropsWithChildren<InputSelect> & {
@@ -36,7 +36,7 @@ export const Select: FC<SelectProps> = ({
 }) => {
   const className = ['flex', 'flex-col', _className].join(' ')
   const labelclass = ['ml-2', 'font-bold', labelClass].join(' ')
-  const selectclass = ['input', 'input-xs', 'input-info', selectClass].join(' ')
+  const selectclass = ['input', 'input-md', 'input-info', selectClass].join(' ')
 
   return (
     <div className={className}>
@@ -49,7 +49,9 @@ export const Select: FC<SelectProps> = ({
         className={selectclass}
         ref={selectRef}
         onChange={_onChange}>
-        <option value="">선택</option>
+        <option value="" className="text-ml">
+          선택
+        </option>
         {selectChildren}
       </select>
     </div>

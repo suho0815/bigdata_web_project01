@@ -51,7 +51,7 @@ const Nav = () => {
                 <Link to="/login">로그인</Link>
               </li>
               <li className="mr-8">
-                <Link to="/join">회원가입</Link>
+                <Link to="/register">회원가입</Link>
               </li>
             </ul>
           </Div>
@@ -60,7 +60,7 @@ const Nav = () => {
             <Div className="absolute w-full h-16 top-11 lg:hidden">
               <ul className="flex items-center justify-center w-full h-full text-xl font-bold text-white">
                 <li className="p-4 mr-8">
-                  <Link to="/find">동물병원찾기</Link>
+                  <Link to="/api/searchhospital">동물병원찾기</Link>
                 </li>
                 <li className="p-4 mr-8">
                   <Link to="/">리뷰</Link>
@@ -106,7 +106,7 @@ const Nav = () => {
                   </Link>
                 </li>
                 <li className="">
-                  <Link to="/join" onClick={closeModal}>
+                  <Link to="/register" onClick={closeModal}>
                     <Itemsummary>회원가입</Itemsummary>
                   </Link>
                 </li>
@@ -115,7 +115,7 @@ const Nav = () => {
             <div className="flex flex-col">
               <ul>
                 <li className="flex justify-center mt-4">
-                  <Link to="/find" onClick={closeModal}>
+                  <Link to="/api/searchhospital" onClick={closeModal}>
                     <Itemtitle>동물병원찾기</Itemtitle>
                   </Link>
                 </li>

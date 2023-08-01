@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import type {ReactDivProps} from './Div'
+import type {ReactDivProps, WidthHeight} from './Div'
 import {Div} from './Div'
 import {Icon} from './Icon'
 
@@ -12,23 +12,26 @@ export const Modal: FC<ModalProps> = ({open, className: _className, ...props}) =
   return <Div className={className} {...props}></Div>
 }
 
-export type ModalContentProps = ReactDivProps & {
-  onCloseIconClicked?: () => void
-  closeIconClassName?: string
-}
+export type ModalContentProps = ReactDivProps &
+  WidthHeight & {
+    onCloseIconClicked?: () => void
+    closeIconClassName?: string
+  }
 
 export const ModalContent: FC<ModalContentProps> = ({
   onCloseIconClicked,
   closeIconClassName: _closeIconClassName,
   className: _className,
   children,
+  width,
+  height,
   ...props
 }) => {
   const className = ['modal-box', _className].join(' ')
   const showCloseIcon = onCloseIconClicked ? true : false
   if (!showCloseIcon)
     return (
-      <Div {...props} className={className}>
+      <Div {...props} className={className} width={width} height={height}>
         {children}
       </Div>
     )
