@@ -63,10 +63,10 @@ const Nav = () => {
                   <Link to="/api/searchhospital">동물병원찾기</Link>
                 </li>
                 <li className="p-4 mr-8">
-                  <Link to="/">리뷰</Link>
+                  <Link to="/board/free">자랑하기</Link>
                 </li>
                 <li className="p-4 mr-8">
-                  <Link to="/">꿀팁</Link>
+                  <Link to="/board/honey">꿀팁</Link>
                 </li>
               </ul>
             </Div>
@@ -120,12 +120,12 @@ const Nav = () => {
                   </Link>
                 </li>
                 <li className="flex justify-center mt-4">
-                  <Link to="/" onClick={closeModal}>
-                    <Itemtitle>리뷰</Itemtitle>
+                  <Link to="/board/free" onClick={closeModal}>
+                    <Itemtitle>자랑하기</Itemtitle>
                   </Link>
                 </li>
                 <li className="flex justify-center mt-4">
-                  <Link to="/" onClick={closeModal}>
+                  <Link to="/board/honey" onClick={closeModal}>
                     <Itemtitle>꿀팁</Itemtitle>
                   </Link>
                 </li>

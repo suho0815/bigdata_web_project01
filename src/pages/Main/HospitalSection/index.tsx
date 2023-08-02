@@ -77,8 +77,8 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
               onMouseUp={onDragEnd}
               onMouseLeave={onDragEnd}>
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />
-              <Card imgsrc={choco1} hospitalName="병원" locate="주소" />
-              <Card imgsrc={choco2} hospitalName="병원" locate="주소" />
+              <Card imgsrc={choco1} hospitalName="큐티초코병원" locate="주소" />
+              <Card imgsrc={choco2} hospitalName="이초코병원" locate="주소" />
               <Card imgsrc={choco3} hospitalName="병원" locate="주소" />
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />

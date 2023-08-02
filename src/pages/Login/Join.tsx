@@ -47,7 +47,7 @@ export const Join: FC<JoinProps> = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full m-auto bg-gray-100 grow pt-28 lg:pt-16">
-      <div className="flex flex-col w-3/5 max-w-xl p-8 mt-16 bg-white rounded shadow-md h-2/3 min-w-max">
+      <div className="flex flex-col w-3/5 h-full max-w-xl p-8 mt-16 mb-8 bg-white rounded shadow-md min-w-max">
         <Subtitle className="p-4 mb-2 border-b-2">회원가입</Subtitle>
         <Itemtitle className="text-left">*필수</Itemtitle>
         <Div>

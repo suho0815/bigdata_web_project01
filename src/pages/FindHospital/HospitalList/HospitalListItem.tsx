@@ -22,7 +22,11 @@ const HospitalListItem: FC<ListItem> = ({
   return (
     <div className={className}>
       <div className="items-center justify-center w-2/5">
-        <img src={src} alt="" className="h-full m-0 align-middle w-52 rounded-3xl" />
+        <img
+          src={src}
+          alt=""
+          className="object-cover h-full m-0 align-middle w-44 rounded-3xl"
+        />
       </div>
       <div className="flex flex-col w-full ml-4">
         <Itemtitle>{title}</Itemtitle>

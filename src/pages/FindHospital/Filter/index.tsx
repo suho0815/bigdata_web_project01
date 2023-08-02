@@ -163,7 +163,7 @@ const Filter = () => {
   }, [])
 
   return (
-    <Div className="flex flex-col items-center justify-center w-full p-4 border">
+    <Div className="flex flex-col items-center justify-center w-full p-4 border bg-lightmint">
       <Modal open={open}>
         <ModalContent className="max-w-3xl" onCloseIconClicked={detailSearchClosed}>
           <Subtitle className="mt-4">상세 검색</Subtitle>
@@ -206,25 +206,25 @@ const Filter = () => {
           </div>
         </ModalContent>
       </Modal>
-      <Subtitle className="mb-8">동물 병원 찾기</Subtitle>
+      <Subtitle className="mt-8 mb-8">동물 병원 찾기</Subtitle>
       <div className="flex justify-center w-full mb-4">
-        <div className="flex w-1/2 p-2 bg-gray-100 rounded-xl">
+        <div className="flex w-1/2 p-2 bg-white border-8 border-mint rounded-xl">
           <input
             type="text"
-            className="w-11/12 p-2 bg-gray-100 rounded-xl "
+            className="w-11/12 p-2 bg-white rounded-xl "
             placeholder=" 검색"
             ref={keywordref}
           />
           <Icon
             name="search"
-            className="w-1/12 p-2 ml-4 bg-gray-100 btn rounded-xl"
+            className="w-1/12 p-2 ml-4 bg-white btn rounded-xl"
             onClick={keywordSearchClick}></Icon>
         </div>
       </div>
 
       <div className="relative flex justify-end w-full min-w-max ">
         <button
-          className="text-lg text-white btn bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
+          className="text-lg text-white btn bg-gradient-to-r from-green-200 to-blue-500 hover:from-pink-500 hover:to-yellow-500"
           onClick={detailSearchOnClick}>
           상세 검색
         </button>

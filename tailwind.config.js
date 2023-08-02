@@ -5,8 +5,8 @@ module.exports = {
     extend: {
       colors: {
         thickmint: '#7ab5b5',
-        mint: '#32A69F',
-        lightmint: '#c9ffe5'
+        mint: '#5CD1E5',
+        lightmint: '#E6FFFF'
       },
       screens: {
         xl: {max: '1279px'},
