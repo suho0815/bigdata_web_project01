@@ -11,6 +11,13 @@ const Filter = () => {
   const [sido, setSido] = useState<ReactElement[] | null>()
   const [gungu, setGungu] = useState<ReactElement[] | null>()
   const [dong, setDong] = useState<ReactElement[] | null>()
+  const [listData, setListData] = useState({
+    name: '',
+    mobilePhone: '',
+    email: '',
+    address: '',
+    imgurl: ''
+  })
 
   const sidoref = useRef<HTMLSelectElement>(null)
   const gunguref = useRef<HTMLSelectElement>(null)
@@ -20,7 +27,7 @@ const Filter = () => {
   const detailSearchOnClick = useCallback(() => {
     setOpen(true)
 
-    fetch('http://10.125.121.183:8080/api/province')
+    fetch('http://10.125.121.183:8080/province')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -49,7 +56,7 @@ const Filter = () => {
     (event: any) => {
       const selectedValue = event.target.value
 
-      fetch(`http://10.125.121.183:8080/api/province/${selectedValue}`)
+      fetch(`http://10.125.121.183:8080/province/${selectedValue}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -88,7 +95,7 @@ const Filter = () => {
       if (selectedValue !== null) {
         console.log('gungudata: ', selectedValue)
       }
-      fetch(`http://10.125.121.183:8080/api/province/${gunguselected}/${selectedValue}`)
+      fetch(`http://10.125.121.183:8080/province/${gunguselected}/${selectedValue}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -120,9 +127,11 @@ const Filter = () => {
     if (gunguref.current !== null) selectedGungu = gunguref.current.value
     let selectedDong = ''
     if (dongref.current !== null) selectedDong = dongref.current.value
-
+    // /${selectedGungu}/${selectedDong}
     fetch(
-      `http://10.125.121.183:8080/api/hospital/${selectedSido}/${selectedGungu}/${selectedDong}`
+      `http://10.125.121.183:8080/hospital/${selectedSido}
+      ${selectedGungu !== '' ? '/' + selectedGungu : ''}
+      ${selectedDong !== '' ? '/' + selectedDong : ''}`
     )
       .then(response => {
         if (!response.ok) {
@@ -140,7 +149,7 @@ const Filter = () => {
     let keyword = ''
     if (keywordref.current !== null) keyword = keywordref.current.value
 
-    fetch(`http://10.125.121.183:8080/api/hospital/${keyword}`)
+    fetch(`http://10.125.121.183:8080/searchhospital/${keyword}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -208,7 +217,8 @@ const Filter = () => {
           />
           <Icon
             name="search"
-            className="w-1/12 p-2 ml-4 bg-gray-100 btn rounded-xl"></Icon>
+            className="w-1/12 p-2 ml-4 bg-gray-100 btn rounded-xl"
+            onClick={keywordSearchClick}></Icon>
         </div>
       </div>
 

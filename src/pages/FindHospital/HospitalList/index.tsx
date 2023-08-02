@@ -12,7 +12,6 @@ const HospitalList = () => {
 
   return (
     <div className="flex flex-col w-3/4 h-full ">
-      <div></div>
       <HospitalListItem
         title="동물병원"
         telephone="010-1234-5678"

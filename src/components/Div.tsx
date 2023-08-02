@@ -14,6 +14,7 @@ export type ReactDivProps = DetailedHTMLProps<
   HTMLDivElement
 > & {
   src?: string
+  divref?: React.MutableRefObject<HTMLDivElement | null>
 }
 
 export type DivProps = ReactDivProps & PropsWithChildren<WidthHeight>
@@ -28,6 +29,7 @@ export const Div: FC<DivProps> = ({
   right,
   top,
   bottom,
+  divref,
   ...props
 }) => {
   const style = {
@@ -40,5 +42,5 @@ export const Div: FC<DivProps> = ({
     top,
     bottom
   }
-  return <div {...props} className={className} style={style}></div>
+  return <div {...props} ref={divref} className={className} style={style}></div>
 }
