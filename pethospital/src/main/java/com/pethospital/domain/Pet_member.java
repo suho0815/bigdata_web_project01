@@ -43,7 +43,6 @@ public class Pet_member {
     @Column(nullable = false)
     private String email;		// 이메일
     
-    @Column(nullable = false)
     private String address;		// 주소
     
     @Column(name = "mobile_phone")

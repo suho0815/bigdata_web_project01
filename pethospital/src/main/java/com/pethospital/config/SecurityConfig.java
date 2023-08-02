@@ -35,11 +35,13 @@ public class SecurityConfig {
 		http.csrf(csrf->csrf.disable()); // CSRF 보호 비활성화 (JS에서 호출 가능)
 		http.cors(cors->cors.disable()); // CORS 보호 비활성화 (React에서 호출 가능):RestAPI로 호출할 때
 
-		// member, manager, admin 접근 권한 설정
+		// 모두, member, admin 접근 권한 설정
 		http.authorizeHttpRequests(security->{
-	        security.anyRequest().permitAll(); // 어떠한 요청도 다 받아준다.
+			//.requestMatchers("/api/**").permitAll()  	// 비회원 접근 가능
+			//.requestMatchers("/api/login").permitAll()		// 비회원 접근 가능
+			security.requestMatchers("/board").authenticated() // 회원만 접근 가능
+					.anyRequest().permitAll();
 		});
-		
 		http.formLogin(frmLogin->frmLogin.disable()); 
 		// Form을 이용한 로그인을 사용하지 않겠다는 설정 즉 .html파일을 작성하지 않아도 된다		
 		http.sessionManagement(ssmg->ssmg.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // STATELESS : 지속하지 않는다.

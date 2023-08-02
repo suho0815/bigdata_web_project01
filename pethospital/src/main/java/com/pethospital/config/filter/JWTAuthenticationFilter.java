@@ -25,28 +25,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // : 디버그, 오류, 정보 등에 관한 메시지를 설정할 수 있다. 특정 오류에 대한 해답을 오류 메시지로 기록할 수 있다.(잘 쓰면 정말 유용)
 @RequiredArgsConstructor // : 클래스 내에 모든 필드에 대한 생성자를 자동으로 생성해준다.
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
-		
+	
 	private final AuthenticationManager authenticationManager;
 	// 위 생성자는 자동생성이다. 클래스에 @RequiredArgsConstructor 주석이 대신 만들어준다.
-	
-	@Override // 로그인을 시도하는 메소드
+	 
+	@Override 
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse resp) throws AuthenticationException {
+		// req : Pet_member 객체 받고
+		// resp : 생성된 토큰 반환
+		
 		ObjectMapper om = new ObjectMapper(); // JSON 데이터를 역질렬화 즉 데이터구조를 바꿔준다.
+		
 		try {
 			Pet_member petMember = om.readValue(req.getInputStream(), Pet_member.class); 
 			// req.getInputStream() : JSON형태를 읽는다.
 			// Pet_member.class : 읽은 데이터를 Pet_member개체로 역직렬화한다.(역직렬화 : JSON데이터의 구조를 변환시킨다. 왜? 그래야 자바에서 알아먹는다.)
+			
 			Authentication authToken = new UsernamePasswordAuthenticationToken(petMember.getUserId(), petMember.getPassword()); 
-			// get으로 username과 password를 저장한 사용자 인증 토큰 생성(변수이름은 마음대로)
+			// get으로 userId와 password를 저장한 사용자 인증 토큰 생성(변수이름은 마음대로)
+
 			Authentication auth = authenticationManager.authenticate(authToken);
 			// 위에서 만들어진 토큰이 유효한가?
+			
 			log.info("attemptAuthentication :[" + petMember.getUserId() + "]"); 
-			// 무슨 목적을 가진 코드인가? >> 
 			return auth;
 		} catch (Exception e) {
 			log.info("Not Authenticated : " + e.getMessage());
+			return null;
 		}
-		return null;
 	}
 	
 	@Override // 로그인에 성공하면 이쪽으로 온다. 
