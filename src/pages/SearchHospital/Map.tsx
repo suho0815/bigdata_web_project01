@@ -9,9 +9,9 @@ declare global {
   }
 }
 
-export type MapProps = DivProps & {}
+export type MapProps = DivProps & {sharedHospital: any} & {}
 
-export const Map: FC<MapProps> = className => {
+export const Map: FC<MapProps> = ({className, sharedHospital}) => {
   useEffect(() => {
     let container = document.getElementById('map') //지도를 담을 영역의 DOM 레퍼런스
     let options = {

@@ -3,7 +3,7 @@ import HospitalListItem from './HospitalListItem'
 import {useState} from 'react'
 import type {ListItem} from './HospitalListItem'
 
-const HospitalList = () => {
+const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
   // let listitem: item[] = []
   // for (let i = 0; i < 100; i++) {
   //   const item = {title: '동물병원', telephone: '010-1234-5678'}

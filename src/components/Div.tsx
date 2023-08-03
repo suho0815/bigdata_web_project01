@@ -1,4 +1,10 @@
-import type {FC, DetailedHTMLProps, HTMLAttributes, PropsWithChildren} from 'react'
+import type {
+  FC,
+  DetailedHTMLProps,
+  MouseEventHandler,
+  HTMLAttributes,
+  PropsWithChildren
+} from 'react'
 
 export type WidthHeight = {
   width?: string
@@ -15,6 +21,7 @@ export type ReactDivProps = DetailedHTMLProps<
 > & {
   src?: string
   divref?: React.MutableRefObject<HTMLDivElement | null>
+  onClick?: MouseEventHandler<HTMLDivElement> | undefined
 }
 
 export type DivProps = ReactDivProps & PropsWithChildren<WidthHeight>
@@ -30,6 +37,7 @@ export const Div: FC<DivProps> = ({
   top,
   bottom,
   divref,
+  onClick,
   ...props
 }) => {
   const style = {
@@ -42,5 +50,12 @@ export const Div: FC<DivProps> = ({
     top,
     bottom
   }
-  return <div {...props} ref={divref} className={className} style={style}></div>
+  return (
+    <div
+      {...props}
+      ref={divref}
+      onClick={onClick}
+      className={className}
+      style={style}></div>
+  )
 }

@@ -1,17 +1,23 @@
-import Map from './pages/FindHospital/Map'
-import Filter from './pages/FindHospital/Filter'
+import Map from './pages/SearchHospital/Map'
+import Filter from './pages/SearchHospital/Filter'
 import Nav from './pages/Main/Nav'
 import SearchSection from './pages/Main/SearchSection'
 import HospitalSection from './pages/Main/HospitalSection'
-import HospitalList from './pages/FindHospital/HospitalList'
+import HospitalList from './pages/SearchHospital/HospitalList'
 import {Div} from './components'
 import {Login, Join} from './pages/Login'
-import Honey from './pages/Borad/Honey'
-import Free from './pages/Borad/Free'
 import Board from './pages/Borad'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
+import {useState} from 'react'
+
 function App() {
+  const [sharedHospital, setSharedHospital] = useState(null)
+
+  const handleDataChange = (data: any) => {
+    setSharedHospital(data)
+  }
+
   return (
     <main>
       <div className="w-full h-screen">
@@ -31,9 +37,9 @@ function App() {
               path="/api/searchhospital"
               element={
                 <Div className="relative flex flex-col items-center justify-center w-full pt-28 lg:pt-16">
-                  <Filter />
-                  <Map className="mb-8" />
-                  <HospitalList />
+                  <Filter onDataChange={handleDataChange} />
+                  <Map className="mb-8" sharedHospital={sharedHospital} />
+                  <HospitalList sharedHospital={sharedHospital} />
                 </Div>
               }
             />

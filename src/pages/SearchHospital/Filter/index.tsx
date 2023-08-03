@@ -6,18 +6,23 @@ import {Title, Subtitle, Select} from '../../../components'
 import HospitalListItem from '../HospitalList/HospitalListItem'
 import {Link} from 'react-router-dom'
 
-const Filter = () => {
+const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const [open, setOpen] = useState<boolean>(false)
   const [sido, setSido] = useState<ReactElement[] | null>()
   const [gungu, setGungu] = useState<ReactElement[] | null>()
   const [dong, setDong] = useState<ReactElement[] | null>()
-  const [listData, setListData] = useState({
-    name: '',
-    mobilePhone: '',
-    email: '',
-    address: '',
-    imgurl: ''
-  })
+  const [listData, setListData] = useState<
+    {
+      city: ''
+      detailcity: ''
+      hospitalName: ''
+      latitude: ''
+      longitude: ''
+      phone_number: ''
+      province: ''
+      street_address: ''
+    }[]
+  >([])
 
   const sidoref = useRef<HTMLSelectElement>(null)
   const gunguref = useRef<HTMLSelectElement>(null)
@@ -129,9 +134,9 @@ const Filter = () => {
     if (dongref.current !== null) selectedDong = dongref.current.value
     // /${selectedGungu}/${selectedDong}
     fetch(
-      `http://10.125.121.183:8080/hospital/${selectedSido}
-      ${selectedGungu !== '' ? '/' + selectedGungu : ''}
-      ${selectedDong !== '' ? '/' + selectedDong : ''}`
+      `http://10.125.121.183:8080/hospital/${selectedSido}${
+        selectedGungu !== '' ? '/' + selectedGungu : ''
+      }${selectedDong !== '' ? '/' + selectedDong : ''}`
     )
       .then(response => {
         if (!response.ok) {
@@ -141,6 +146,15 @@ const Filter = () => {
       })
       .then(data => {
         console.log('Data : ', data)
+        setListData(
+          data['pethospital'].map((hospitalData: {}, index: number) => {
+            console.log('hospitalData : ', hospitalData)
+
+            // const phone_number = hospitalData['phone_number']
+            // const address = hospitalData['address']
+          })
+        )
+        console.log(listData)
       })
       .catch(err => err.message)
   }, [])
@@ -174,6 +188,7 @@ const Filter = () => {
                 name="province"
                 selectChildren={sido}
                 selectRef={sidoref}
+                defaultOption="선택"
                 onChange={provinceChange}
               />
               <Select
@@ -182,12 +197,14 @@ const Filter = () => {
                 className="ml-8"
                 onChange={gunguChange}
                 selectRef={gunguref}
+                defaultOption="선택"
                 selectChildren={gungu}
               />
               <Select
                 labelChildren="읍면동"
                 name="dong"
                 className="ml-8"
+                defaultOption="선택"
                 selectChildren={dong}
                 selectRef={dongref}
               />

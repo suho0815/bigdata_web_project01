@@ -16,6 +16,7 @@ export type InputSelect = DivProps & {
   id?: string
   selectRef?: React.MutableRefObject<HTMLSelectElement | null>
   onChange?: React.ChangeEventHandler<HTMLSelectElement | null>
+  defaultOption?: string
 }
 
 export type SelectProps = PropsWithChildren<InputSelect> & {
@@ -31,6 +32,7 @@ export const Select: FC<SelectProps> = ({
   labelChildren,
   style: _style,
   id,
+  defaultOption,
   selectRef,
   onChange: _onChange
 }) => {
@@ -50,7 +52,7 @@ export const Select: FC<SelectProps> = ({
         ref={selectRef}
         onChange={_onChange}>
         <option value="" className="text-ml">
-          선택
+          {defaultOption}
         </option>
         {selectChildren}
       </select>

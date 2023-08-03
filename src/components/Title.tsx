@@ -43,7 +43,7 @@ export const Itemtitle: FC<ItemtitleProps> = ({
   ...props
 }) => {
   const style = {_style, width, height}
-  const className = ['font-bold', 'text-lg', 'text-center'].join(' ')
+  const className = ['font-bold', 'text-lg', 'text-center', _className].join(' ')
   return <p {...props} className={className} style={style}></p>
 }
 
@@ -58,6 +58,6 @@ export const Itemsummary: FC<ItemsummaryProps> = ({
   ...props
 }) => {
   const style = {_style, width, height}
-  const className = ['text-sm', 'text-center'].join(' ')
+  const className = ['text-sm', 'text-center', _className].join(' ')
   return <p {...props} className={className} style={style}></p>
 }

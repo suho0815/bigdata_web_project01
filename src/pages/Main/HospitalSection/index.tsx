@@ -8,12 +8,25 @@ import choco3 from '../../../images/choco3.jpg'
 
 const HospitalSection: React.FC = //forwardRef((props, ref)
   () => {
-    const forward = document.getElementById('forward')
-
     const scrollRef = useRef<HTMLDivElement>(null)
     // useImperativeHandle(ref, () => scrollRef.current)
     const [isDrag, setIsDrag] = useState(false)
     const [startX, setStartX] = useState<number | undefined>(0)
+
+    const onScrollBtnClick = (nextType: 'prev' | 'next') => {
+      if (!scrollRef.current) return
+      if (nextType === 'prev') {
+        scrollRef.current.scrollTo({
+          left: scrollRef.current.scrollLeft - 335, //scrollRef.current.offsetWidth,
+          behavior: 'smooth'
+        })
+      } else {
+        scrollRef.current.scrollTo({
+          left: scrollRef.current.scrollLeft + 335, //scrollRef.current.offsetWidth,
+          behavior: 'smooth'
+        })
+      }
+    }
 
     const onDragStart = (e: MouseEvent) => {
       e.preventDefault()
@@ -50,7 +63,6 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
         } else if (scrollWidth <= clientWidth + scrollLeft) {
           setStartX(e.pageX + scrollLeft)
         }
-        console.log(scrollRef.current.scrollLeft)
       }
     }
 
@@ -64,7 +76,9 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
 
         <Div className="relative z-10 p-4 bg-white bg-opacity-50 rounded-lg">
           <div className="flex items-center">
-            <div className="lg:hidden">
+            <div
+              className="h-full btn lg:hidden"
+              onClick={() => onScrollBtnClick('prev')}>
               <Icon name="arrow_back_ios" style={{fontSize: '60px'}}></Icon>
             </div>
             <Div
@@ -83,7 +97,9 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />
             </Div>
-            <div className="lg:hidden">
+            <div
+              className="h-full btn lg:hidden"
+              onClick={() => onScrollBtnClick('next')}>
               <Icon
                 name="arrow_forward_ios"
                 id="forward"
