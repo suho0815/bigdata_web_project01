@@ -29,10 +29,8 @@ public class Pet_honey_reply {
     @Column(name="honey_board_id", nullable = false)
     private int honeyBoardId;
 
-    @Column(name="user_id", nullable = false, unique = true)
+    @Column(name="user_id", unique = true)
     private String userId;
-    
-    @Column(nullable = false)
     private String nickname;
     
     @Column(nullable = false)

@@ -40,21 +40,21 @@ public class Pet_hospital_Service {
     }
 
 
-     // 상세검색 >> 광역도시 : 병원
-     public List<Pet_hospital> getpethospitalByProvince(String province) {
-         return pet_hospital_Repository.findByProvince(province);
-     }
+    // 상세검색 >> 광역도시 : 병원
+    public List<Pet_hospital> getpethospitalByProvince(String province) {
+        return pet_hospital_Repository.findByProvince(province);
+    }
 
-     // 상세검색 >> 광역도시 >> 시군구 :병원
-     public List<Pet_hospital> getpethospitalByProvinceAndCity(String province, String city) {
-         return pet_hospital_Repository.findByProvinceAndCity(province, city);
-     }
-     
-     // 상세검색 >> 광역도시 >> 시군구 >> 읍면동 : 병원
-     public List<Pet_hospital> getpethospitalByProvinceAndCityAndDetailCity(String province, String city, String detailcity) {
-         return pet_hospital_Repository.findByProvinceAndCityAndDetailcity(province, city, detailcity);
-     }
-     
+    // 상세검색 >> 광역도시 >> 시군구 :병원
+    public List<Pet_hospital> getpethospitalByProvinceAndCity(String province, String city) {
+        return pet_hospital_Repository.findByProvinceAndCity(province, city);
+    }
+
+    // 상세검색 >> 광역도시 >> 시군구 >> 읍면동 : 병원
+    public List<Pet_hospital> getpethospitalByProvinceAndCityAndDetailCity(String province, String city, String detailcity) {
+        return pet_hospital_Repository.findByProvinceAndCityAndDetailcity(province, city, detailcity);
+    }
+
      
      
 //   // 상세검색

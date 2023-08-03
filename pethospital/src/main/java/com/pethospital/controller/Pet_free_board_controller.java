@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,11 @@ public class Pet_free_board_controller{
 	// 자유 게시판
 	// 게시글 등록
 	@PostMapping("/free")
-	public ResponseEntity<String> createFree(@RequestBody Pet_free_board petFreeBoard){
-		petFreeBoardService.createFreeService(petFreeBoard);
+	public ResponseEntity<String> createFree(@RequestBody Pet_free_board petFreeBoard, Authentication authentication){
+		// 멤버권한을 가진자만 게시글을 작성할 수 있다.
+		String userId = authentication.getName();
+
+		petFreeBoardService.createFreeService(petFreeBoard, userId);
 		return ResponseEntity.ok("글이 등록 되었습니다.");
 	}
 	

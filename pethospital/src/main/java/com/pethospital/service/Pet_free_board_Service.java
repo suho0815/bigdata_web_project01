@@ -6,18 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pethospital.domain.Pet_free_board;
+import com.pethospital.domain.Pet_member;
 import com.pethospital.repository.Pet_free_board_Repository;
+import com.pethospital.repository.Pet_member_Repository;
 
 @Service
 public class Pet_free_board_Service {
 
 	@Autowired
 	Pet_free_board_Repository petFreeBoardRepository;
+
+	@Autowired
+	Pet_member_Repository petMemberRepository;
 	
 	// 게시글 등록
-	public void createFreeService(Pet_free_board petFreeBoard) {
-		// 멤버권한을 가진자만 게시글을 작성할 수 있다.
+	public void createFreeService(Pet_free_board petFreeBoard, String userId) {
 		// 게시글을 작성할 때 멤버정보(닉네임, 아이디)를 게시판 테이블에 저장한다.
+		Pet_member petMember = petMemberRepository.findByUserId(userId);
+		
+		// 로그인 유저 정보 게시글 ID, NickName 저장
+		petFreeBoard.setUserId(petMember.getUserId());
+		petFreeBoard.setNickname(petMember.getNickname());
+
 		petFreeBoardRepository.save(petFreeBoard);
 	}
 	

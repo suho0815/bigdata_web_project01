@@ -29,10 +29,8 @@ public class Pet_free_board {
     @Column(name="free_board_id")
     private int freeBoardId;
 
-    @Column(nullable = false, name="user_id")
+    @Column(name="user_id")
     private String userId;
-    
-    @Column(nullable = false)
     private String nickname; 	// 게시글 닉네임
     
     @Column(nullable = false)

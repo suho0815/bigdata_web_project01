@@ -27,10 +27,8 @@ public class Pet_honey_board {
     @Column(name="honey_board_id")
     private int honeyBoardId;
 
-    @Column(nullable = false, name="user_id")
+    @Column(name="user_id")
     private String userId;
-    
-    @Column(nullable = false)
     private String nickname; 	// 게시글 닉네임
     
     @Column(nullable = false)
@@ -39,10 +37,8 @@ public class Pet_honey_board {
     @Column(nullable = false)
     private String content; 	// 게시글 내용
     
-    
     // 선택
     private String imagefile; 	// 이미지파일 (여러개)
-    
     
     private Timestamp regdate;
     private Timestamp updatedate;
