@@ -10,11 +10,13 @@ import com.pethospital.repository.Pet_member_Repository;
 
 @Service
 public class Pet_member_Service {
-   @Autowired
+
+    @Autowired
     private Pet_member_Repository pet_member_repository;
     
     @Autowired
 	BCryptPasswordEncoder secret;
+    
         
     // 회원 정보 저장
     public void registerPetMember(Pet_member_dto petMemberDto) {
@@ -36,6 +38,7 @@ public class Pet_member_Service {
     	
       	pet_member_repository.save(petMember);
     }
+    
     // jwt를 이용하기 때문에 service에서 구현할 필요 없다.
     
 //    // 회원 정보 확인(로그인)
@@ -49,7 +52,4 @@ public class Pet_member_Service {
 //    		else return -1; // 비밀번호 틀림
 //    	}else return 0;
 //    }
-
-
-
 }

@@ -28,7 +28,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		this.petMemberRepository = petMemberRepository;
 	}
 	
-	// JWT 토큰을 사용해서 사용자 인증과 권한 부여하는 필터
+	// JWT 토큰을 사용해서 사용자 인증과 권한 부여하는 필터 >> 클라이언트에서 토큰을 보내줘야함.
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		
@@ -51,16 +51,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 																		.getClaim("userId")
 																		.asString();
 		
-		// 5. 추출한 "username" 정보를 사용하여 사용자를 데이터베이스에서 조회합니다.
+		// 5. 추출한 "userId" 정보를 사용하여 사용자를 데이터베이스에서 조회.
 		Pet_member opt = petMemberRepository.findByUserId(userId);
 		
-		// 6. 조회된 사용자가 없는 경우, 다음 필터로 전달한다.  >> Optional : 컨테이너가 비어있을 경우때문에 사용.
+		// 6. 조회된 사용자가 없는 경우, 다음 필터로 전달한다.  >> Optional : 컨테이너가 비어있을 경우 때문에 사용.
 		if(opt == null) { // 존재하지 않는 아이디를 넣어서 디버깅을 해보자 >> 어떻게 넘어오냐? 
 			chain.doFilter(req, resp);
 			return;
 		}
 		
-		// 7. 조회된 사용자 정보를 사용하여 Spring Security의 User 객체를 생성합니다.
+		// 7. 조회된 사용자 정보를 사용하여 Spring Security의 User 객체를 생성.
 		//Pet_member findmember = opt.get();
 		
 

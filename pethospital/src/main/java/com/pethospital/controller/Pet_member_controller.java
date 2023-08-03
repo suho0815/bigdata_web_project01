@@ -14,8 +14,8 @@ public class Pet_member_controller {
 
     @Autowired
     private Pet_member_Service pet_member_service;
-
- // 회원가입
+    
+    // 회원가입
     @PostMapping("/register")
     public ResponseEntity<String> registerMember(@RequestBody Pet_member_dto petMemberDto) {
         pet_member_service.registerPetMember(petMemberDto); // 프론트에서 보낸 member 정보를 서비스로 보낸다.
@@ -23,8 +23,7 @@ public class Pet_member_controller {
         return ResponseEntity.ok("회원가입을 축하드립니다.");
     }
     
-
-    //    // 로그인
+//    // 로그인
 //    @PostMapping("/login")
 //    public Authentication loginMember(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 //        // attemptAuthentication 메서드 호출로 인증 시도 및 결과를 받아옴
@@ -58,4 +57,5 @@ public class Pet_member_controller {
 //		 return ResponseEntity.ok().headers(header).build();
     
     // 잘 안된다아아ㅏ아
+    
 }

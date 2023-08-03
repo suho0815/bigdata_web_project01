@@ -19,20 +19,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Pet_reply {
+public class Pet_free_reply {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
     private Long commentId;
     
-    @Column(name="board_id")
-    private int boardId;
+    @Column(name="free_board_id", nullable = false)
+    private int freeBoardId;
 
     @Column(name="user_id", nullable = false, unique = true)
     private String userId;
     
+    @Column(nullable = false)
     private String nickname;
+    
+    @Column(nullable = false)
     private String contents;
     
     @Column(name="registration_date")

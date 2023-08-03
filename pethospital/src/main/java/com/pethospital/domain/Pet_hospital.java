@@ -26,8 +26,9 @@ public class Pet_hospital{
     private String phone_number;
     private String street_address;
     
-    @Column(name = "hospital_name")
+    @Column(name="hospital_name")
     private String hospitalName;
+    
     private long longitude;
     private long latitude;
     private String province;   // 도/시
