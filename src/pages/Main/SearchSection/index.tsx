@@ -16,7 +16,7 @@ const SearchSection: React.FC = () => {
   return (
     <div className="flex items-center justify-center w-full h-screen">
       <video
-        className="absolute top-0 left-0 object-cover w-full h-full"
+        className="absolute top-0 left-0 object-cover w-full h-screen"
         autoPlay
         loop
         muted>

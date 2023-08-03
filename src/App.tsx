@@ -7,9 +7,11 @@ import HospitalList from './pages/SearchHospital/HospitalList'
 import {Div} from './components'
 import {Login, Join} from './pages/Login'
 import Board from './pages/Borad'
+import Footer from './pages/Main/Footer'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import {useState} from 'react'
+import CommunitySection from './pages/Main/CommunitySection'
 
 function App() {
   const [sharedHospital, setSharedHospital] = useState(null)
@@ -19,17 +21,18 @@ function App() {
   }
 
   return (
-    <main>
-      <div className="w-full h-screen">
+    <main className="relative w-full min-h-full">
+      <div className="w-full h-full">
         <BrowserRouter>
           <Nav />
           <Routes>
             <Route
               path="/"
               element={
-                <section>
+                <section className="w-full h-full">
                   <SearchSection />
                   <HospitalSection />
+                  <CommunitySection />
                 </section>
               }
             />
@@ -49,6 +52,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      <Footer />
     </main>
   )
 }

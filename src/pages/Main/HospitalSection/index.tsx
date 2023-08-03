@@ -1,6 +1,7 @@
 import type {MouseEvent} from 'react'
 import {FC, useState, useRef, forwardRef, useImperativeHandle} from 'react'
 import {Icon, Div, Card, Title} from '../../../components'
+import HospitalList from './HospitalList'
 import dog from '../../../images/cute-dog.png'
 import choco1 from '../../../images/choco1.jpg'
 import choco2 from '../../../images/choco2.jpg'
@@ -67,7 +68,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
     }
 
     return (
-      <div className="flex flex-col items-center justify-center w-full h-screen p-4">
+      <div className="flex flex-col items-center justify-center w-full h-full p-4">
         <Div className="flex items-center mt-20 mb-10">
           <img src={dog} alt="" className="object-cover w-20" />
           <Title className="ml-8 mr-8">인기 병원</Title>
@@ -105,6 +106,30 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
                 id="forward"
                 style={{fontSize: '60px'}}></Icon>
             </div>
+          </div>
+        </Div>
+        <Div className="flex mt-8 md:flex-col">
+          <div className="mr-8 md:mr-0 md:mb-8">
+            <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-green-200 to-blue-500">
+              새로운 글
+            </Div>
+            <HospitalList
+            // listtitle={} address={}
+            />
+            <button className="w-full border border-blue-500 btn hover:border-blue-500">
+              더보기 +
+            </button>
+          </div>
+          <div>
+            <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-pink-500 to-yellow-500">
+              새로운 후기
+            </Div>
+            <HospitalList
+            // listtitle={} address={}
+            />
+            <button className="w-full border border-blue-500 btn hover:border-blue-500">
+              더보기 +
+            </button>
           </div>
         </Div>
       </div>

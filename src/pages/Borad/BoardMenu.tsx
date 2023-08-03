@@ -25,7 +25,7 @@ export const BoardMenu: FC<BoardMenuProps> = () => {
   return (
     <Div className="flex flex-col items-center justify-center w-full border pt-28 bg-lightmint lg:pt-16">
       <Subtitle className="mb-8 mt-11">커뮤니티</Subtitle>
-      <ul className="relative flex items-center h-20 text-xl font-bold text-center bg-white border-b-2 shadow text-mint border-mint w-96 top-10">
+      <ul className="relative flex items-center h-20 text-xl font-bold text-center bg-white border-b-2 shadow top-7 text-mint border-mint w-96">
         <Link
           to="/board/free"
           className={`flex items-center justify-center w-full h-full ${
