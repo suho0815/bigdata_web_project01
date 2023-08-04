@@ -18,7 +18,7 @@ const HospitalList: FC<HospitalList> = ({
   let children = []
   for (let i = 1; i <= 5; i++) {
     children.push(
-      <ul className="flex mb-4 text-xl">
+      <ul className="flex mb-4 text-xl" key={i}>
         <li className="mr-2 text-mint">{i}</li>
         {listtitle && listtitle[i] !== undefined && (
           <li className="mr-2">{listtitle[i]}</li>

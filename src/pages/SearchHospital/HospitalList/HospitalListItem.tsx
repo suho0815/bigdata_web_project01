@@ -4,7 +4,7 @@ import {Itemtitle, Itemsummary, Icon} from '../../../components'
 
 export type ListItem = DivProps & {
   imgsrc?: string
-  title: string
+  title?: string
   telephone?: string
   location?: string
   heart?: number

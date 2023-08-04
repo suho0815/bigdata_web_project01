@@ -11,18 +11,6 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const [sido, setSido] = useState<ReactElement[] | null>()
   const [gungu, setGungu] = useState<ReactElement[] | null>()
   const [dong, setDong] = useState<ReactElement[] | null>()
-  const [listData, setListData] = useState<
-    {
-      city: ''
-      detailcity: ''
-      hospitalName: ''
-      latitude: ''
-      longitude: ''
-      phone_number: ''
-      province: ''
-      street_address: ''
-    }[]
-  >([])
 
   const sidoref = useRef<HTMLSelectElement>(null)
   const gunguref = useRef<HTMLSelectElement>(null)
@@ -145,16 +133,8 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
         return response.json()
       })
       .then(data => {
-        console.log('Data : ', data)
-        setListData(
-          data['pethospital'].map((hospitalData: {}, index: number) => {
-            console.log('hospitalData : ', hospitalData)
-
-            // const phone_number = hospitalData['phone_number']
-            // const address = hospitalData['address']
-          })
-        )
-        console.log(listData)
+        onDataChange(data)
+        setOpen(false)
       })
       .catch(err => err.message)
   }, [])
@@ -171,7 +151,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
         return response.json()
       })
       .then(data => {
-        console.log('Data : ', data)
+        onDataChange(data)
       })
       .catch(err => err.message)
   }, [])
