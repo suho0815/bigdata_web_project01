@@ -65,5 +65,6 @@ public class SecurityConfig {
 		http.addFilter(new JWTAuthenticationFilter(authConfig.getAuthenticationManager()));
 		http.addFilter(new JWTAuthorizationFilter(authConfig.getAuthenticationManager(), petMemberRepository));
 		return http.build();
+		
 	}
 }
