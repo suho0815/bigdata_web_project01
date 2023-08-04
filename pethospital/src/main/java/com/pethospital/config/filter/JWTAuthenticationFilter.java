@@ -27,16 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	
 	private final AuthenticationManager authenticationManager;
-	// 위 생성자는 자동생성이다. 클래스에 @RequiredArgsConstructor 주석이 대신 만들어준다.
-	
-	//private final SecurityUserDetailsService securityUserDetailsService;
-	
 
-//	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-//        this.authenticationManager = authenticationManager;
-//		this.securityUserDetailsService = new SecurityUserDetailsService();
-//    }
-
+	// 1번 => 토큰이 없는 경우는 여기로 
 	@Override 
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse resp) throws AuthenticationException {
 		// req : Pet_member 객체 받고
@@ -47,11 +39,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			Pet_member petMember = om.readValue(req.getInputStream(), Pet_member.class);
 			// req.getInputStream() : JSON형태를 읽는다.
 			// Pet_member.class : 읽은 데이터를 Pet_member개체로 역직렬화한다.(역직렬화 : JSON데이터의 구조를 변환시킨다. 왜? 그래야 자바에서 알아먹는다.)
-			
-			
-			
-			//String password = securityUserDetailsService.loadUserByUsername(petMember.getUserId()).getPassword();
-			// Post로 로그인 데이터 중 password를 직접 가지고 오지 못해서 데이터베이스 직접 접근해서 password를 가져온다.
 			
 			log.info("아이디 확인 : " + petMember.getUserId());
 			//log.info("비밀번호 확인 : " + password);
@@ -65,14 +52,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			log.info("222토큰 확인 : " + auth);
 			
 			log.info("attemptAuthentication :[" + petMember.getUserId() + "]"); 
-			return auth;	
+			return auth; // 클라이언트로 생성된 토큰을 반환한다.
 		} catch (Exception e) {
 			log.info("Not Authenticated : " + e.getMessage());
 			return null;
 		}
 	}
 	
-	@Override // 로그인에 성공하면 이쪽으로 온다. 
+	// 2번 => 위 코드에서 토큰 만들고 여기로
+	@Override 
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse resp, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 		
 		User user = (User)authResult.getPrincipal();
@@ -85,8 +73,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 							.sign(Algorithm.HMAC256("edu.pnu.jwtkey")); // 암호화
 		// 응답 Header에 "Authorization"이라는 키를 추가해서 JWT를 설정
 		// Bearer : JWT토큰임을 나타내는 용어; Basic : "Basic "+Base64(username:password)
-		resp.addHeader("Authorization", "Bearer " + jwtToken);
-		chain.doFilter(req, resp);
 		
+		log.info("jwtToken : " + jwtToken);
+		
+		resp.addHeader("Authorization", "Bearer " + jwtToken);
+		
+		log.info("resp : " + resp.getHeaderNames());
+		chain.doFilter(req, resp);
 	}
 }

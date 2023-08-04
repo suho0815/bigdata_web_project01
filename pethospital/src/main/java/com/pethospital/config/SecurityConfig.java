@@ -40,9 +40,8 @@ public class SecurityConfig {
 
 		// 모두, member, admin 접근 권한 설정
 		http.authorizeHttpRequests(security->{
-	        		//.requestMatchers("/api/**").permitAll()  	// 비회원 접근 가능
-	        		//.requestMatchers("/api/login").permitAll()		// 비회원 접근 가능
-			security.requestMatchers("/board/**").hasRole("MEMBER") // 회원만 접근 가능
+			security.requestMatchers("/like").authenticated() // 회원만 좋아요 가능. 
+					.requestMatchers("/free/**").authenticated() // 자랑(자유) 게시판 회원만 접근 가능
 	        		.anyRequest().permitAll();
 		});
 		
@@ -59,12 +58,9 @@ public class SecurityConfig {
 		//// 필터 1
 		// http.addFilter(new JWTAuthenticationFilter()); 
 		
-		//JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authConfig.getAuthenticationManager(), securityUserDetailsService);
-		
 		//// 필터 2
-		http.addFilter(new JWTAuthenticationFilter(authConfig.getAuthenticationManager()));
-		http.addFilter(new JWTAuthorizationFilter(authConfig.getAuthenticationManager(), petMemberRepository));
+		http.addFilter(new JWTAuthenticationFilter(authConfig.getAuthenticationManager())); // 1. 로그인 시도 > 토큰 생성 및 반환
+		http.addFilter(new JWTAuthorizationFilter(authConfig.getAuthenticationManager(), petMemberRepository)); // 2. 토큰으로 로그인 시도 확인 및 인증 및 권한 부여
 		return http.build();
-		
 	}
 }

@@ -44,7 +44,7 @@ public class Pet_free_board_Service {
 			// 1-1 제목 게시글 불러오고
 			Pet_free_board likeFreeBoard = petFreeBoardRepository.findByTitle(title);
 			// 1-2 게시글 조회수 수정(증가)
-			likeFreeBoard.setLikes(likeFreeBoard.getLikes() + 1); 		
+			likeFreeBoard.setViews(likeFreeBoard.getViews() + 1); 		
 			// 1-3 조회수 증가후 다시 저장
 			petFreeBoardRepository.save(likeFreeBoard);
 			
@@ -53,21 +53,8 @@ public class Pet_free_board_Service {
 		}else {
 			return null;
 		}
-		
-		/**
-		 * 조회수와 좋아요...
-		 * 조회수는 게시글을 조회할 때 마다 즉 해당 코드가 실행될 때 마다 1씩 증가시켜준다
-		 * 좋아요.는 게시글이 클릭될 때 마다 1씩 증가한다. 
-		 * 
-		 * 즉 좋아요와 조회수는 분리해서 로직을 구현해야한다.
-		 * 
-		 * 조회수
-		 * 1. 1증가 시킨다
-		 * 2. save로 저장한다
-		 * 3. 불러온다.
-		 */	
 	}
-	
+		
 	// 게시글 수정
 	public Pet_free_board updateFreeBoard(int freeBoardId, Pet_free_board post) {
 		Pet_free_board modifyFreeBoard = petFreeBoardRepository.findByFreeBoardId(freeBoardId); // 번호로 게시글 찾고

@@ -1,6 +1,6 @@
 package com.pethospital.domain;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,6 +43,5 @@ public class Pet_honey_board {
     private Timestamp regdate;
     private Timestamp updatedate;
     private Timestamp deletedate;
-    private int likes; 			// 좋아요
     private int views; 			// 조회수
 }

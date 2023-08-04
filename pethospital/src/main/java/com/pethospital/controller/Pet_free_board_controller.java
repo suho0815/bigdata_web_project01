@@ -28,7 +28,6 @@ public class Pet_free_board_controller{
 	public ResponseEntity<String> createFree(@RequestBody Pet_free_board petFreeBoard, Authentication authentication){
 		// 멤버권한을 가진자만 게시글을 작성할 수 있다.
 		String userId = authentication.getName();
-
 		petFreeBoardService.createFreeService(petFreeBoard, userId);
 		return ResponseEntity.ok("글이 등록 되었습니다.");
 	}
@@ -44,7 +43,7 @@ public class Pet_free_board_controller{
 	public Pet_free_board readFree(@PathVariable String title){
 		return petFreeBoardService.selectFreeBoard(title);
 	}
-	
+		
 	// 게시글 수정
 	@PutMapping("free/{freeboardId}")
 	public Pet_free_board updateFree(@PathVariable int freeBoardId, @RequestBody Pet_free_board post) {
@@ -57,6 +56,5 @@ public class Pet_free_board_controller{
 		petFreeBoardService.deleteFreeBoard(freeBoardId);
 		return ResponseEntity.ok("게시글이 삭제 되었습니다.");
 	}
-		
-	
+			
 }

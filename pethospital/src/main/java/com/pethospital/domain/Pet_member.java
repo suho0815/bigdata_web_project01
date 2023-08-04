@@ -48,7 +48,7 @@ public class Pet_member {
     
     @Column(name = "mobile_phone")
     private String mobilePhone;	// 휴대폰 번호
-    
+        
     private String address;		// 주소
     
     private String role;		// 권한

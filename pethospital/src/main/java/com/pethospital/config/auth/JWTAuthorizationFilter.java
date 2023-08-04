@@ -23,6 +23,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	
 	private Pet_member_Repository petMemberRepository;
 	
+	
+	// 토큰이 있는 상태에서 로그인할 때
 	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, Pet_member_Repository petMemberRepository) {
 		super(authenticationManager);
 		this.petMemberRepository = petMemberRepository;
@@ -32,18 +34,20 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		
+		
 		// 1. Request Header에서 "Authorization" 헤드를 가져온다.
 		String srcToken = req.getHeader("Authorization");
+		
 		
 		// 2. 헤더에 "Bearer" 접두사가 없거나 토큰이 null인 경우, 다음 필터로 전달
 		if(srcToken == null || !srcToken.startsWith("Bearer ")) {
 			chain.doFilter(req, resp);
 			return;
 		}
-		
+				
 		// 3. 헤더에서 "Bearer" 접두사제거후 JWT 토큰 추출.
 		String jwtToken = srcToken.replace("Bearer ", "");
-		
+				
 		// 4. JWT 토큰을 검증하고, 해당 토큰에 포함된 "username" 클레임(정보)를 가져온다.
 		// (여기서는 edu.pnu.jwtkey를 사용하여 토큰을 검증한다.)
 		String userId = JWT.require(Algorithm.HMAC256("edu.pnu.jwtkey")).build()
@@ -67,6 +71,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		// 8. 생성된 User 객체로 Authentication 객체를 생성
 		User user = new User(opt.getUserId(), opt.getPassword(), opt.getAuthorities());
 		
+		System.out.println("user : " + user);
+		
 		// 아이디, 비밀번호, 권한 들고와서 User 저장.
 		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 		
@@ -75,6 +81,5 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		
 		// 10. 다음 필터 전환
 		chain.doFilter(req, resp);
-		
 	}
 }
