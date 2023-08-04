@@ -75,5 +75,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		
 		// 10. 다음 필터 전환
 		chain.doFilter(req, resp);
+		
 	}
 }
