@@ -87,5 +87,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// Bearer : JWT토큰임을 나타내는 용어; Basic : "Basic "+Base64(username:password)
 		resp.addHeader("Authorization", "Bearer " + jwtToken);
 		chain.doFilter(req, resp);
+		
 	}
 }
