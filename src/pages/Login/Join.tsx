@@ -46,8 +46,8 @@ export const Join: FC<JoinProps> = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full h-full m-auto bg-gray-100 grow pt-28 lg:pt-16">
-      <div className="flex flex-col w-3/5 h-full max-w-xl p-8 mt-16 mb-8 bg-white rounded shadow-md min-w-max">
+    <div className="flex flex-col items-center w-full h-screen m-auto bg-gray-100 grow pt-28 lg:pt-16 md:h-full">
+      <div className="flex flex-col w-3/5 max-w-xl p-8 mt-16 mb-8 bg-white rounded shadow-md h-4/5 md:w-full md:h-full">
         <Subtitle className="p-4 mb-2 border-b-2">회원가입</Subtitle>
         <Itemtitle className="text-left">*필수</Itemtitle>
         <Div>
@@ -107,7 +107,7 @@ export const Join: FC<JoinProps> = () => {
             />
           </Div>
         </Div>
-        <div className="flex flex-col items-center justify-between">
+        <div className="flex flex-col pt-12">
           <Loginbtn name="가입하기" onClick={onSubmitClick}></Loginbtn>
         </div>
       </div>

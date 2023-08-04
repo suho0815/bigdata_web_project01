@@ -107,7 +107,7 @@ export const Login: FC<LoginProps> = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-screen m-auto bg-gray-100 grow pt-28 lg:pt-16">
-      <div className="flex flex-col w-3/5 max-w-xl p-8 mt-16 bg-white rounded shadow-md h-1/2 min-w-max">
+      <div className="flex flex-col w-3/5 max-w-xl p-8 mt-16 bg-white rounded shadow-md h-1/2 min-w-max md:w-full md:h-3/4">
         <Subtitle className="p-4 mb-2 border-b-2">로그인</Subtitle>
         <div className="mt-4 mb-4">
           <LoginInput
