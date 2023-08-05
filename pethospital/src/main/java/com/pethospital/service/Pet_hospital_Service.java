@@ -2,8 +2,6 @@ package com.pethospital.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,7 @@ import com.pethospital.repository.Pet_hospital_Repository;
 @Service
 public class Pet_hospital_Service {
 	
-    private static final Logger logger = LoggerFactory.getLogger(Pet_hospital_Service.class);
+    //private static final Logger logger = LoggerFactory.getLogger(Pet_hospital_Service.class);
 
     @Autowired
     private Pet_hospital_Repository pet_hospital_Repository;

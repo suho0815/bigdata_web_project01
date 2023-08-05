@@ -21,7 +21,7 @@ public interface Pet_free_board_Repository extends JpaRepository<Pet_free_board,
 	// 게시글 삭제
 	void deleteByFreeBoardId(int freeBoardId);
 	
-	// 게시글 번호로 게시글 찾기(수정, 삭제 공통)
+	// 게시글 번호로 게시글 찾기(수정, 삭제, 좋아요)
 	Pet_free_board findByFreeBoardId(int freeBoardId);
 	
 }
