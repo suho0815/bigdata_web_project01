@@ -3,6 +3,7 @@ package com.pethospital.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pethospital.domain.Pet_board_like;
 import com.pethospital.domain.Pet_free_board;
@@ -28,6 +29,7 @@ public class Pet_board_like_Service {
 	@Autowired
 	Pet_honey_board_Repository petHoneyBoardRepository; // 꿀팁게시판
 
+	@Transactional
 	public ResponseEntity<String> boardLikeOnOff(String userId, String boardName, int boardId){
 		
 		Pet_member petMember = petMemberRepository.findByUserId(userId);

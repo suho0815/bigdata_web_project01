@@ -20,11 +20,9 @@
 ## 2023/07/25
 - 주제 정하기(Data.go.kr)
     - 동물병원 영업시간 웹 서비스
-
 - 기능 설계
     - 로그인 및 리뷰 게시판 구현
     - 이미지 업로드
-
 - 데이터 전처리
     - 원본 데이터 수정 및 마무리 
  
@@ -173,7 +171,6 @@
 ## 2023/08/03
 - 게시판 구현
     - 초기에 정한 계획이 달라져서 DB에 테이블을 추가하고 back 부분 코드를 일부 수정했다.
-
     - 게시글 등록하기
         - 로그인 유저만 게시글 등록 가능.
         - jwt 권한을 이용해서 유저아이디 존재여부 확인.
@@ -187,25 +184,21 @@
 ## 2023/08/04
 - 게시판 구현
     - 좋아요 기능 작성
-
 - 게시판 테스트(게시글 작성)
     - 415에러 발생 : 도메인클래스 import문 수정(import java.sql.Timestamp;)
     - 500에러 발생 : 
         - Authorization이 null로 나온다... 로그인 요청후에 생성된 토큰을
-        - 포스트맨 headers에 설정을 했는데 여전히 오류가 생긴다.
-        - 툴 사용 미숙함으로 인한 오류.... 해결
-    - 테스트완료
+        - 포스트맨 headers > Authorization > 토큰 설정(완료) 
 - 게시판 좋아요 기능 구현
     - 다대다 방식 사용
-    - 좋아요를 누르기 앞서 권한을 체크한다. 로그인을 한 유저만 좋아요를 누르는 건 당연
-    - (아직 진행중)
 
-## 2023/08/05
+## 2023/08/05 ~ 06
 - 게시판 구현
     - 좋아요 구현 완료
         - 회원당 게시글마다 한번만 하트를 누르도록 설정. (On / Off)
-        - controller클래스 Post로 요청을 받고
-        - service에서 조건문을 이용해 "좋아요"테이블의 레이블을 생성 및 삭제 요청
+        - Post로 요청을 받고 service에서 조건문을 이용해 "좋아요" 테이블의 레이블을 생성 및 삭제 요청
     - 포스트맨 테스트
-        - 500에러 발생 :
-            - (작성하자...)
+        - 500에러 발생 : "message": "Required parameter 'boardName' is not present."
+            - RequestParam과 ReqeustBody의 사용법을 제대로 숙지한 후에 실행(해결)
+        - 500에러 발생 :  "message": "No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call"
+            - contorller와 service 클래스 @Transactional 추가(해결)
