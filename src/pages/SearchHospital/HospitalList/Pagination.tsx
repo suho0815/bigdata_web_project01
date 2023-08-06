@@ -25,59 +25,37 @@ const Pagination: FC<PaginationProps> = ({
   const [minPage, setMinPage] = useState<number>(1)
   const [maxPage, setMaxPage] = useState<number>(10)
 
-  // const a =
-  //   numPages > maxPage
-  //     ? Array(numPages)
-  //         .fill(undefined)
-  //         .map((_, i) => i)
-  //     : Array(numPages)
-  //         .fill(undefined)
-  //         .map((_, i) => i)
-
-  const [pagearr, setPagearr] = useState<number[]>(
-    numPages > maxPage
-      ? Array(maxPage + 1)
-          .fill(undefined)
-          .map((_, i) => i)
-      : Array(numPages)
-          .fill(undefined)
-          .map((_, i) => i)
-  )
-
-  console.log(numPages)
-  console.log(maxPage)
-  console.log(minPage)
-  console.log(pagearr)
-  let pagear: any[] = []
+  // console.log('minPage: ', minPage)
+  // console.log('maxPage: ', maxPage)
+  // console.log('page: ', page)
   useEffect(() => {
-    const lessThanMax = page + 5 > maxPage && page >= 5
-    console.log('lessThanMax : ', lessThanMax)
-    lessThanMax ? setMaxPage(page + 5) : setMaxPage(numPages >= 10 ? maxPage : 10)
-    const moreThanMin = page - 5 > minPage
-    moreThanMin ? setMinPage(page - 5) : setMinPage(minPage)
-    let temparr: number[] = []
-    console.log(numPages)
-    if (numPages > 0) {
-      for (let i = minPage; i <= maxPage; i++) {
-        temparr.push(i)
+    if (numPages < 10) {
+      setMinPage(1)
+      setMaxPage(numPages)
+    } else {
+      const halfMax = Math.floor(maxPage / 2)
+
+      if (page <= halfMax) {
+        setMinPage(1)
+        setMaxPage(10)
+      } else if (page > halfMax && page + halfMax <= numPages) {
+        setMinPage(page - 5)
+        setMaxPage(page + 5)
+      } else {
+        setMinPage(numPages - 9)
+        setMaxPage(numPages)
       }
     }
-    setPagearr(temparr)
-    console.log(pagearr)
-    pagear = pagearr.map((_, i) => (
-      <button
-        className={page === i + 1 ? currClassName : className}
-        key={i + 1}
-        onClick={() => {
-          setPage(i + 1)
-        }}
-        aria-current={page === i + 1 ? 'page' : undefined}>
-        {i + 1}
-      </button>
-    ))
+  }, [page, numPages])
 
-    // setPagearr(pagearr.slice(minPage, maxPage + 1))
-  }, [page])
+  useEffect(() => {
+    setPage(1)
+  }, [numPages])
+
+  const pageNumbersToShow =
+    numPages !== 0
+      ? Array.from({length: maxPage - minPage + 1}, (_, i) => i + minPage)
+      : []
 
   return (
     <nav className="flex justify-center mt-8 ">
@@ -87,7 +65,19 @@ const Pagination: FC<PaginationProps> = ({
         disabled={page === 1}>
         &lt;
       </button>
-      {pagear}
+
+      {pageNumbersToShow.map(pageNumber => (
+        <button
+          className={page === pageNumber ? currClassName : className}
+          key={pageNumber}
+          onClick={() => {
+            setPage(pageNumber)
+          }}
+          aria-current={page === pageNumber ? 'page' : undefined}>
+          {pageNumber}
+        </button>
+      ))}
+
       <button
         className={className}
         onClick={() => setPage(page + 1)}

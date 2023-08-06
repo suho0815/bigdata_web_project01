@@ -1,7 +1,9 @@
-import type {FC} from 'react'
+import React, {FC} from 'react'
+import {DivProps, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
+import {Div} from '../../../components'
 
-const FreeDetailPage = () => {
-  return <div></div>
+const FreeDetailPage: FC<DivProps> = () => {
+  return <Div></Div>
 }
 
 export default FreeDetailPage

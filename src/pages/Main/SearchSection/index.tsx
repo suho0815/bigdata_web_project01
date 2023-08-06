@@ -23,7 +23,7 @@ const SearchSection: React.FC = () => {
         <source src={pupp} type="video/mp4" />
       </video>
       <div className="relative z-10 p-6 bg-white bg-opacity-50 rounded-lg">
-        <h1 className="text-3xl font-bold">당신을 위한 동물 병원을 찾아보세요!</h1>
+        <h1 className="text-3xl font-bold">반려동물을 위한 동물 병원을 찾아보세요!</h1>
 
         <div className="flex p-2 mt-8 overflow-x-hidden bg-white bg-opacity-50 rounded-lg">
           <form

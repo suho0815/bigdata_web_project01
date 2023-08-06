@@ -12,8 +12,8 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import {useState} from 'react'
 import CommunitySection from './pages/Main/CommunitySection'
-import WriteFree from './pages/Borad/Free/WriteFree'
-import WriteHoney from './pages/Borad/Honey/WriteHoney'
+import WriteFree from './pages/Borad/WriteBoard'
+// import WriteHoney from './pages/Borad/Honey/WriteHoney'
 
 function App() {
   const [sharedHospital, setSharedHospital] = useState(null)
@@ -51,8 +51,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Join />} />
             <Route path="/board/:board1" element={<Board />} />
-            <Route path="/board/free/write" element={<WriteFree />} />
-            <Route path="/board/honey/write" element={<WriteHoney />} />
+            <Route path="/board/:itmes/write" element={<WriteFree />} />
+            {/* <Route path="/board/honey/write" element={<WriteHoney />} /> */}
           </Routes>
         </BrowserRouter>
       </div>

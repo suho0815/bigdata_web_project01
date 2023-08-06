@@ -1,11 +1,19 @@
-import {FC} from 'react'
+import {FC, useState, useEffect} from 'react'
 import {Div} from '../../../components'
 import {BoardMenu} from '../BoardMenu'
+import Pagination from '../../SearchHospital/HospitalList/Pagination'
 import {FreeBoardItem} from './FreeBoardItem'
 import FreeFilter from './FreeFilter'
 
 const Free = () => {
   // 2열로 모바일 1열
+  const [limit, setLimit] = useState<number>(10)
+  const [page, setPage] = useState<number>(1)
+  const offset = (page - 1) * limit
+  let total = 0
+
+  useEffect(() => {}, [])
+
   return (
     <section className="flex flex-col items-center w-full h-full p-10 mt-8 ">
       <FreeFilter />
@@ -13,6 +21,7 @@ const Free = () => {
         <FreeBoardItem />
         <FreeBoardItem />
       </div>
+      <Div>{/* <Pagination/> */}</Div>
     </section>
   )
 }
