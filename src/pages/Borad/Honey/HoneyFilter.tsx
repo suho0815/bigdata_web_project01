@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 export type HoneyFilterProps = DivProps & {}
 
 const HoneyFilter: FC<HoneyFilterProps> = () => {
+  const url = ``
+
   return (
     <Div className="flex flex-col w-full h-56">
       <Div className="flex justify-end w-full">

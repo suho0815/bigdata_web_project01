@@ -21,9 +21,9 @@ export const Icon: FC<IconProps> = ({
   onClick,
   ...props
 }) => {
-  const className = ['material-icons', _className].join(' ')
+  const myclassName = ['material-icons', _className].join(' ')
   return (
-    <span className={className} style={_style} {...props} onClick={onClick}>
+    <span className={myclassName} style={_style} {...props} onClick={onClick}>
       {name}
     </span>
   )

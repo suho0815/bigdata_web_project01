@@ -18,6 +18,8 @@ const WriteBoard: FC<WriteBoardProps> = () => {
   const Params = useParams()['itmes']
   console.log(Params)
   const [imgFile, setImgFile] = useState<string>('')
+  const titleRef = useRef<HTMLInputElement | null>(null)
+  const contentRef = useRef<HTMLInputElement | null>(null)
   const imgRef = useRef<HTMLInputElement | null>(null)
 
   const saveImgFile = () => {

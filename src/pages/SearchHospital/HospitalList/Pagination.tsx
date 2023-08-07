@@ -23,24 +23,25 @@ const Pagination: FC<PaginationProps> = ({
 
   const currClassName = [className + 'bg-gray-400'].join(' ')
   const [minPage, setMinPage] = useState<number>(1)
-  const [maxPage, setMaxPage] = useState<number>(10)
+  const [maxPage, setMaxPage] = useState<number>(Math.min(numPages, 10))
 
   // console.log('minPage: ', minPage)
   // console.log('maxPage: ', maxPage)
   // console.log('page: ', page)
+
   useEffect(() => {
-    if (numPages < 10) {
+    if (numPages <= 10) {
       setMinPage(1)
       setMaxPage(numPages)
     } else {
-      const halfMax = Math.floor(maxPage / 2)
+      const halfMax = Math.floor(10 / 2)
 
       if (page <= halfMax) {
         setMinPage(1)
         setMaxPage(10)
       } else if (page > halfMax && page + halfMax <= numPages) {
-        setMinPage(page - 5)
-        setMaxPage(page + 5)
+        setMinPage(page - halfMax)
+        setMaxPage(page + halfMax)
       } else {
         setMinPage(numPages - 9)
         setMaxPage(numPages)
@@ -48,14 +49,10 @@ const Pagination: FC<PaginationProps> = ({
     }
   }, [page, numPages])
 
-  useEffect(() => {
-    setPage(1)
-  }, [numPages])
-
   const pageNumbersToShow =
     numPages !== 0
       ? Array.from({length: maxPage - minPage + 1}, (_, i) => i + minPage)
-      : []
+      : Array(10).map((_, i) => i)
 
   return (
     <nav className="flex justify-center mt-8 ">
