@@ -7,7 +7,8 @@ import HospitalListItem from '../HospitalList/HospitalListItem'
 import {Link} from 'react-router-dom'
 
 const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
-  const serverUrl: string = 'http://10.125.121.183:8080'
+  const serverUrl: string = 'http://localhost:8080'
+  // const serverUrl: string = 'http://10.125.121.183:8080'
 
   const [open, setOpen] = useState<boolean>(false)
   const [sido, setSido] = useState<ReactElement[] | null>()

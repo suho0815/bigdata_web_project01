@@ -13,24 +13,37 @@ type LoginProps = {
 export const Login: FC<LoginProps> = () => {
   const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
 
-  const serverUrl = `http://10.125.121.183:8080`
+  // const serverUrl = `http://10.125.121.183:8080`
+  const serverUrl = `http://localhost:8080`
 
   const userIdRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const [user, setUser] = useState({userId: '', password: ''})
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const userId = userIdRef.current?.value ?? ''
     const password = passwordRef.current?.value ?? ''
     try {
-      fetch(`${serverUrl}/login`, {
+      const response = await fetch(`${serverUrl}/login`, {
         method: 'POST',
         body: JSON.stringify({
           userId: userId, // 아이디 정보 전송
           password: password // 비밀번호 정보 전송
-        })
-      }).then(response => response.json())
-    } catch {
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include' // CORS 정책을 위해 자격 증명 (쿠키)를 허용
+      })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
+      }
+
+      const data = await response.headers.get('Authorization')
+      console.log(data)
+    } catch (error: any) {
+      console.error('Error occurred:', error.message)
       alert('로그인이 실패했습니다. 정보가 올바른지 다시 확인해주세요')
     }
   }
@@ -46,10 +59,10 @@ export const Login: FC<LoginProps> = () => {
         {
           userId: userId, // 아이디 정보 전송
           password: password // 비밀번호 정보 전송
-        },
-        {
-          withCredentials: true // CORS를 사용하여 자격 증명 허용
         }
+        // {
+        //   withCredentials: true // CORS를 사용하여 자격 증명 허용
+        // }
       )
       // response에서 Authorization 헤더 가져오기
       // const jwtToken = response.headers.authorization
@@ -144,7 +157,7 @@ export const Login: FC<LoginProps> = () => {
           <p className="text-xs italic text-red">Please choose a password.</p>
         </div>
         <div className="flex flex-col items-center justify-between">
-          <Loginbtn name="Sign in" onClick={handleedSubmit}></Loginbtn>
+          <Loginbtn name="Sign in" onClick={handleSubmit}></Loginbtn>
           <Loginbtn name="구글 로그인"></Loginbtn>
           <div className="flex justify-around w-full ">
             <Link

@@ -2,6 +2,7 @@
   "name": "bigdata_web_project01",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@fontsource/material-icons": "^4.5.4",
     "@reduxjs/toolkit": "^1.9.5",
