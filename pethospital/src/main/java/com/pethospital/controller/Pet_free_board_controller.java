@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pethospital.domain.Pet_free_board;
 import com.pethospital.service.Pet_free_board_Service;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 public class Pet_free_board_controller{
 	
 	@Autowired
 	Pet_free_board_Service petFreeBoardService;
 	
-	// 자유 게시판
-	// 게시글 등록
+	// 자유 게시판 - 회원
+	// 게시글 등록 
 	@PostMapping("/free")
 	public ResponseEntity<String> createFree(@RequestBody Pet_free_board petFreeBoard, Authentication authentication){
 		// 멤버권한을 가진자만 게시글을 작성할 수 있다.
@@ -45,16 +47,18 @@ public class Pet_free_board_controller{
 	}
 		
 	// 게시글 수정
-	@PutMapping("free/{freeboardId}")
-	public Pet_free_board updateFree(@PathVariable int freeBoardId, @RequestBody Pet_free_board post) {
-		return petFreeBoardService.updateFreeBoard(freeBoardId, post);
+	@PutMapping("free/{freeBoardId}")
+	public Object updateFree(@PathVariable int freeBoardId, @RequestBody Pet_free_board post, Authentication authentication) {
+		String userId = authentication.getName();
+		return petFreeBoardService.updateFreeBoard(freeBoardId, post, userId);
 	}
 	
 	// 게시글 삭제
-	@DeleteMapping("free/{freeboardId}")
-	public ResponseEntity<String> deleteFree(@PathVariable int freeBoardId) {
-		petFreeBoardService.deleteFreeBoard(freeBoardId);
-		return ResponseEntity.ok("게시글이 삭제 되었습니다.");
+	@Transactional
+	@DeleteMapping("free/{freeBoardId}")
+	public ResponseEntity<String> deleteFree(@PathVariable int freeBoardId, Authentication authentication) {
+		String userId = authentication.getName();	
+		return petFreeBoardService.deleteFreeBoard(freeBoardId, userId);
 	}
 			
 }

@@ -56,7 +56,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		} catch (Exception e) {
 			log.info("Not Authenticated : " + e.getMessage());
 			return null;
-		}
+		}	
 	}
 	
 	// 2번 => 위 코드에서 토큰 만들고 여기로
@@ -69,16 +69,25 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// JWT 생성
 		String jwtToken = JWT.create()
 							.withClaim("userId", user.getUsername()) // 토큰에 저장되는 정보(선택사항)
-							.withExpiresAt(new Date(System.currentTimeMillis()+1000*60*10)) // 토큰 유지시간
+							.withExpiresAt(new Date(System.currentTimeMillis()+1000*600*10)) // 토큰 유지시간
 							.sign(Algorithm.HMAC256("edu.pnu.jwtkey")); // 암호화
 		// 응답 Header에 "Authorization"이라는 키를 추가해서 JWT를 설정
 		// Bearer : JWT토큰임을 나타내는 용어; Basic : "Basic "+Base64(username:password)
 		
 		log.info("jwtToken : " + jwtToken);
 		
+		// 클라이언트로 전송할 메시지 설정
+	    String message = "good";
+		
 		resp.addHeader("Authorization", "Bearer " + jwtToken);
 		
+		// 클라이언트로 메시지를 보내기 위해 응답 코드와 메시지 설정
+	    resp.setStatus(HttpServletResponse.SC_OK); // 200 OK
+	    resp.getWriter().write(message);
+	    resp.getWriter().flush();
+	    resp.getWriter().close();
+		
 		log.info("resp : " + resp.getHeaderNames());
-		chain.doFilter(req, resp);
+		//chain.doFilter(req, resp);
 	}
 }

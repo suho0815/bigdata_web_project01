@@ -3,12 +3,15 @@ package com.pethospital.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.pethospital.domain.Pet_free_board;
 import com.pethospital.domain.Pet_member;
 import com.pethospital.repository.Pet_free_board_Repository;
 import com.pethospital.repository.Pet_member_Repository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class Pet_free_board_Service {
@@ -56,24 +59,39 @@ public class Pet_free_board_Service {
 	}
 		
 	// 게시글 수정
-	public Pet_free_board updateFreeBoard(int freeBoardId, Pet_free_board post) {
-		Pet_free_board modifyFreeBoard = petFreeBoardRepository.findByFreeBoardId(freeBoardId); // 번호로 게시글 찾고
+	public Object updateFreeBoard(int freeBoardId, Pet_free_board post, String userId) {
+		Pet_member petMember = petMemberRepository.findByUserId(userId);
+
 		
-		if(modifyFreeBoard != null) {
-			modifyFreeBoard.setTitle(post.getTitle());
-			modifyFreeBoard.setContent(post.getContent());
-			modifyFreeBoard.setImagefile(post.getImagefile());
-			
-			return petFreeBoardRepository.save(modifyFreeBoard);
+		if(petMember == null) {
+			return "회원이 아닙니다.";
 		}else {
-			return null;
+			Pet_free_board modifyFreeBoard = petFreeBoardRepository.findByFreeBoardId(freeBoardId); // 번호로 게시글 찾고
+			
+			if(modifyFreeBoard != null) {
+				modifyFreeBoard.setTitle(post.getTitle());
+				modifyFreeBoard.setContent(post.getContent());
+				modifyFreeBoard.setImagefile(post.getImagefile());
+				
+				return petFreeBoardRepository.save(modifyFreeBoard);
+			}else {
+				return null;
+			}
 		}
 	}
 	
 	// 게시글 삭제
-	public void deleteFreeBoard(int freeBoardId) {
-		if(petFreeBoardRepository.findByFreeBoardId(freeBoardId) != null) {
-			petFreeBoardRepository.deleteByFreeBoardId(freeBoardId);
+	@Transactional
+	public ResponseEntity<String> deleteFreeBoard(int freeBoardId, String userId) {
+		Pet_member petMember = petMemberRepository.findByUserId(userId);
+
+		if(petMember == null) {
+			return ResponseEntity.ok("회원이 아닙니다.");
+		}else {
+			if(petFreeBoardRepository.findByFreeBoardId(freeBoardId) != null) {
+				petFreeBoardRepository.deleteByFreeBoardId(freeBoardId);
+			}
 		}
+		return ResponseEntity.ok("게시글이 삭제 되었습니다.");
 	}
 }

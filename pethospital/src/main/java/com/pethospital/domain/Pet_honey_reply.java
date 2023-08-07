@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +26,11 @@ public class Pet_honey_reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
-    private Long commentId;
+    private int commentId;
     
-    @Column(name="honey_board_id", nullable = false)
-    private int honeyBoardId;
+    @ManyToOne
+    @JoinColumn(name="honey_board_id", nullable = false)
+    private Pet_honey_board honeyBoardId;
 
     @Column(name="user_id", unique = true)
     private String userId;

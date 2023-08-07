@@ -202,3 +202,10 @@
             - RequestParam과 ReqeustBody의 사용법을 제대로 숙지한 후에 실행(해결)
         - 500에러 발생 :  "message": "No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call"
             - contorller와 service 클래스 @Transactional 추가(해결)
+
+## 2023/08/07
+- 게시판 댓글 구현
+    - 댓글 작성
+        - @JoinColumn 설정이 핵심.
+    - 댓글 수정
+    - 댓글 삭제 

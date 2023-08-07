@@ -42,6 +42,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(security->{
 			security.requestMatchers("/like").authenticated() // 회원만 좋아요 가능. 
 					.requestMatchers("/free/**").authenticated() // 자랑(자유) 게시판 회원만 접근 가능
+					.requestMatchers("/freeReply/**").authenticated() // 자유(자랑)게시판 회원들만 접근
 	        		.anyRequest().permitAll();
 		});
 		
