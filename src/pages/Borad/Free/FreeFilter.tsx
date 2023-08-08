@@ -2,9 +2,11 @@ import {FC} from 'react'
 import {Link} from 'react-router-dom'
 import {DivProps, Div, Itemtitle, Select} from '../../../components'
 
-export type FreeFilterProps = DivProps & {}
+export type FreeFilterProps = DivProps & {
+  total?: number
+}
 
-const FreeFilter: FC<FreeFilterProps> = () => {
+const FreeFilter: FC<FreeFilterProps> = ({total}) => {
   return (
     <Div className="flex flex-col w-full h-56">
       <Div className="flex justify-end w-full">
@@ -15,7 +17,7 @@ const FreeFilter: FC<FreeFilterProps> = () => {
         </Link>
       </Div>
       <Div className="flex justify-between mt-8">
-        <Itemtitle className="text-xl text-gray-500">총 ?개</Itemtitle>
+        <Itemtitle className="text-xl text-gray-500">총 {total}개</Itemtitle>
         <Div>
           <Select className="input-sm" defaultOption="정렬" />
         </Div>

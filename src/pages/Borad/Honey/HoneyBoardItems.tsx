@@ -2,9 +2,23 @@ import type {FC} from 'react'
 import {Div, DivProps, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
 import choco1 from '../../../images/choco1.jpg'
 
-export type HoneyBoardProps = DivProps & {}
+export type HoneyBoardProps = DivProps & {
+  title?: string
+  writer?: string
+  date?: string
+  heart?: number
+  views?: number
+  replycnt?: number
+}
 
-export const HoneyBoardItem: FC<HoneyBoardProps> = () => {
+export const HoneyBoardItem: FC<HoneyBoardProps> = ({
+  title,
+  writer,
+  date,
+  heart,
+  views,
+  replycnt
+}) => {
   return (
     <Div className="flex w-full h-64 py-4 bg-gray-100 border-y md:flex-col md:h-96">
       <Div className="h-56 w-96 md:w-full">

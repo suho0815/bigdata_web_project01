@@ -1,4 +1,5 @@
-import {FC, useState, useEffect} from 'react'
+import type {FC, ReactElement} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {Div} from '../../../components'
 import {BoardMenu} from '../BoardMenu'
 import Pagination from '../../SearchHospital/HospitalList/Pagination'
@@ -14,8 +15,9 @@ const Free = () => {
 
   const [limit, setLimit] = useState<number>(10)
   const [page, setPage] = useState<number>(1)
-  const offset = (page - 1) * limit
-  let total = 0
+  const offset: number = (page - 1) * limit
+  const [total, setTotal] = useState<number | undefined>(0)
+  const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
 
   useEffect(() => {
     const tokenCookie = getCookie('accessJwtToken:')
@@ -37,7 +39,19 @@ const Free = () => {
             throw new Error('Network response was not ok')
           }
         })
-        .then(data => console.log(data))
+        .then(data => {
+          const mapItems = data.map((datalist: any, index: number) => (
+            <div key={index} className="flex w-1/2 md:w-full">
+              <FreeBoardItem
+                title={datalist['title']}
+                writer={datalist['nickname']}
+                date={datalist['regdate']}
+              />
+            </div>
+          ))
+          setTotal(mapItems.length)
+          setRenderedItems(mapItems)
+        })
         .catch(err => err.message)
     } else {
       Navigate('/')
@@ -47,10 +61,9 @@ const Free = () => {
 
   return (
     <section className="flex flex-col items-center w-full h-full p-10 mt-8 ">
-      <FreeFilter />
-      <div className="flex justify-center w-full border-y-2 border-mint md:flex-col">
-        <FreeBoardItem />
-        <FreeBoardItem />
+      <FreeFilter total={total} />
+      <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
+        {renderedItems}
       </div>
       <Div>{/* <Pagination/> */}</Div>
     </section>

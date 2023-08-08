@@ -2,11 +2,11 @@ import {FC} from 'react'
 import {DivProps, Div, Itemtitle, Select} from '../../../components'
 import {Link} from 'react-router-dom'
 
-export type HoneyFilterProps = DivProps & {}
+export type HoneyFilterProps = DivProps & {
+  total?: number
+}
 
-const HoneyFilter: FC<HoneyFilterProps> = () => {
-  const url = ``
-
+const HoneyFilter: FC<HoneyFilterProps> = ({total}) => {
   return (
     <Div className="flex flex-col w-full h-56">
       <Div className="flex justify-end w-full">
@@ -17,7 +17,7 @@ const HoneyFilter: FC<HoneyFilterProps> = () => {
         </Link>
       </Div>
       <Div className="flex justify-between mt-8">
-        <Itemtitle className="text-xl text-gray-500">총 ?개</Itemtitle>
+        <Itemtitle className="text-xl text-gray-500">총 {total}개</Itemtitle>
         <Div>
           <Select className="input-sm" defaultOption="정렬" />
         </Div>
