@@ -71,7 +71,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
       <div className="flex flex-col items-center justify-center w-full h-full p-4">
         <Div className="flex items-center mt-20 mb-10">
           <img src={dog} alt="" className="object-cover w-20" />
-          <Title className="ml-8 mr-8">인기 병원</Title>
+          <Title className="ml-8 mr-8">인기 게시글</Title>
           <img src={dog} alt="" className="object-cover w-20" />
         </Div>
 

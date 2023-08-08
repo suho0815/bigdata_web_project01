@@ -12,9 +12,10 @@ import CommunitySection from './pages/Main/CommunitySection'
 import WriteFree from './pages/Borad/WriteBoard'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {CookiesProvider} from 'react-cookie'
 import {Provider as ReduxProvider} from 'react-redux'
+import {RecoilRoot} from 'recoil'
 
 function App() {
   const [sharedHospital, setSharedHospital] = useState(null)
@@ -26,41 +27,43 @@ function App() {
   return (
     <main className="relative w-full min-h-full">
       {/* <ReduxProvider> */}
-      <CookiesProvider>
-        <div className="w-full h-full">
-          <BrowserRouter>
-            <Nav />
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <section className="w-full h-full">
-                    <SearchSection />
-                    <HospitalSection />
-                    <CommunitySection />
-                  </section>
-                }
-              />
-              <Route
-                path="/api/searchhospital"
-                element={
-                  <Div className="relative flex flex-col items-center justify-center w-full pt-28 lg:pt-16">
-                    <Filter onDataChange={handleDataChange} />
-                    <Map className="mb-8" sharedHospital={sharedHospital} />
-                    <HospitalList sharedHospital={sharedHospital} />
-                  </Div>
-                }
-              />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Join />} />
-              <Route path="/board/:board1" element={<Board />} />
-              <Route path="/board/:itmes/write" element={<WriteFree />} />
-              {/* <Route path="/board/honey/write" element={<WriteHoney />} /> */}
-            </Routes>
-          </BrowserRouter>
-        </div>
-        <Footer />
-      </CookiesProvider>
+      <RecoilRoot>
+        <CookiesProvider>
+          <div className="w-full h-full">
+            <BrowserRouter>
+              <Nav />
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <section className="w-full h-full">
+                      <SearchSection />
+                      <HospitalSection />
+                      <CommunitySection />
+                    </section>
+                  }
+                />
+                <Route
+                  path="/api/searchhospital"
+                  element={
+                    <Div className="relative flex flex-col items-center justify-center w-full pt-28 lg:pt-16">
+                      <Filter onDataChange={handleDataChange} />
+                      <Map className="mb-8" sharedHospital={sharedHospital} />
+                      <HospitalList sharedHospital={sharedHospital} />
+                    </Div>
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Join />} />
+                <Route path="/board/:board1" element={<Board />} />
+                <Route path="/board/:itmes/write" element={<WriteFree />} />
+                {/* <Route path="/board/honey/write" element={<WriteHoney />} /> */}
+              </Routes>
+            </BrowserRouter>
+          </div>
+          <Footer />
+        </CookiesProvider>
+      </RecoilRoot>
       {/* </ReduxProvider> */}
     </main>
   )

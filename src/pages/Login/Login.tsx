@@ -4,141 +4,62 @@ import {Title, Subtitle, Loginbtn, Icon, LoginInput} from '../../components'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import {Cookies} from 'react-cookie'
-import {setCookie, getCookie} from './Cookie'
+import {setCookie, getCookie} from '../../util/Cookie'
+import {useNavigate} from 'react-router-dom'
+import {useSetRecoilState, useRecoilValue} from 'recoil'
+import {isloginToken} from '../../store/RecoilAtom'
+import {getUserInfoFromToken} from '../../util/Cookie'
 
 type LoginProps = {
   title?: string
 }
 
 export const Login: FC<LoginProps> = () => {
+  // 기타 상수
   const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
-
   // const serverUrl = `http://10.125.121.183:8080`
   const serverUrl = `http://localhost:8080`
 
+  // 사용자 입력 상태
   const userIdRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-  const [user, setUser] = useState({userId: '', password: ''})
 
-  const handleSubmit = async () => {
-    const userId = userIdRef.current?.value ?? ''
-    const password = passwordRef.current?.value ?? ''
-    try {
-      const response = await fetch(`${serverUrl}/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          userId: userId, // 아이디 정보 전송
-          password: password // 비밀번호 정보 전송
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include' // CORS 정책을 위해 자격 증명 (쿠키)를 허용
-      })
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
-      }
-
-      const data = await response.headers.get('Authorization')
-      console.log(data)
-    } catch (error: any) {
-      console.error('Error occurred:', error.message)
-      alert('로그인이 실패했습니다. 정보가 올바른지 다시 확인해주세요')
-    }
-  }
+  const navigate = useNavigate()
+  //recoil 사용 선언부
+  const setIslogin = useSetRecoilState(isloginToken)
+  const islogin = useRecoilValue(isloginToken)
 
   const handleedSubmit = async () => {
     const userId = userIdRef.current?.value ?? ''
     const password = passwordRef.current?.value ?? ''
     try {
-      console.log(userId)
-      console.log(password)
       const response = await axios.post(
         `${serverUrl}/login`,
         {
           userId: userId, // 아이디 정보 전송
           password: password // 비밀번호 정보 전송
+        },
+        {
+          withCredentials: true // CORS를 사용하여 자격 증명 허용
         }
-        // {
-        //   withCredentials: true // CORS를 사용하여 자격 증명 허용
-        // }
       )
       // response에서 Authorization 헤더 가져오기
-      // const jwtToken = response.headers.authorization
-      // setCookie('accessJwtToken', jwtToken) // 쿠키에 토큰 저장
-      console.log(response)
+
+      const jwtToken = response.headers.authorization
+      if (jwtToken !== undefined && islogin === false) {
+        setCookie('accessJwtToken: ', jwtToken) // 쿠키에 토큰 저장
+        alert('로그인 성공')
+        const userInfo = getUserInfoFromToken()
+        setIslogin(true)
+        navigate('/')
+      } else {
+        alert('로그인이 실패했습니다. 정보가 올바른지 다시 확인해주세요')
+      }
     } catch (error) {
       console.error('Login failed:', error)
-      alert('로그인이 실패했습니다. 정보가 올바른지 다시 확인해주세요')
+      alert('오류')
     }
   }
-
-  // const onLogin = (userId: string, password: string) => {
-  //   const data = {
-  //     userId,
-  //     password
-  //   }
-
-  //   console.log('userId : ', userId)
-  //   console.log('userPassword : ', password)
-  //   let response = null
-  //   try {
-  //     response = axios
-  //       .post(`${serverUrl}/login`, data)
-  //       .then(resp => onLoginSuccess(resp))
-  //       .catch(error => {
-  //         // ... 에러 처리
-  //         // alert('에러')
-  //         console.log('Error in login:', error)
-  //         // onLoginSuccess(error.accessToken)
-  //         if (error.response) {
-  //           const {status, data} = error.response
-  //           console.log('Error status:', status)
-  //           console.log('Error data:', data)
-
-  //           if (data && data.accessToken) {
-  //             console.log('Access token in error response:', data.accessToken)
-  //           }
-  //         }
-  //       })
-  //   } catch (error: any) {
-  //     response = error.response
-  //     console.log('404 Error')
-  //   } finally {
-  //     if (response.status === 200) {
-  //       onLoginSuccess(response)
-  //     }
-  //   }
-  // }
-
-  // const onSilentRefresh = (data: any) => {
-  //   axios
-  //     .post(`${serverUrl}/login`, data)
-  //     .then(response => onLoginSuccess(response))
-  //     .catch(error => {
-  //       console.log(error)
-  //       // ... 로그인 실패 처리
-  //       alert('아이디, 비밀번호가 틀렸음')
-  //     })
-  // }
-
-  // const onLoginSuccess = (response: any) => {
-  //   const {status, data} = response.data
-  //   console.log(status)
-  //   if (status === 'success' && data.accessToken) {
-  //     const {accessToken} = data
-  //     console.log('accessToken : ', accessToken)
-  //     // accessToken 설정
-  //     axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-
-  //     // accessToken 만료하기 1분 전에 로그인 연장
-  //     setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000)
-  //   } else {
-  //     // 서버 응답에 오류가 있을 경우 에러 처리
-  //     console.log('Error in server response')
-  //   }
-  // }
 
   return (
     <div className="flex flex-col items-center w-full h-screen m-auto bg-gray-100 grow pt-28 lg:pt-16">
@@ -157,7 +78,7 @@ export const Login: FC<LoginProps> = () => {
           <p className="text-xs italic text-red">Please choose a password.</p>
         </div>
         <div className="flex flex-col items-center justify-between">
-          <Loginbtn name="Sign in" onClick={handleSubmit}></Loginbtn>
+          <Loginbtn name="Sign in" onClick={handleedSubmit}></Loginbtn>
           <Loginbtn name="구글 로그인"></Loginbtn>
           <div className="flex justify-around w-full ">
             <Link

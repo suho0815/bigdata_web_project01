@@ -6,7 +6,7 @@ export type FreeBoardProps = DivProps & {}
 
 export const FreeBoardItem: FC<FreeBoardProps> = () => {
   return (
-    <Div className="m-8 border shadow-lg md:my-8 md:m-0 rounded-xl h-80 w-80 md:w-full">
+    <Div className="m-8 border shadow-lg md:my-8 md:m-0 rounded-xl h-80 w-80 md:w-full md:h-full">
       <Div className="relative m-auto border rounded-t-xl">
         <img src={choco3} alt="" className="object-cover w-full h-full rounded-t-xl " />
       </Div>

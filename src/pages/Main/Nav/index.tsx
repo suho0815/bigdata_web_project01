@@ -1,11 +1,16 @@
 import type {ChangeEventHandler, FC} from 'react'
-import {useRef, useState, useCallback} from 'react'
+import {useRef, useEffect, useState, useCallback} from 'react'
 import {Icon, Div, Modal, ModalContent, ModalAction} from '../../../components'
 import {Title, Subtitle, Select, Itemsummary, Itemtitle} from '../../../components'
 import {Link} from 'react-router-dom'
 import navdog from '../../../images/nav-dog.png'
 
-const Nav = () => {
+import {useNavigate} from 'react-router-dom'
+import {useSetRecoilState, useRecoilValue} from 'recoil'
+import {isloginToken} from '../../../store/RecoilAtom'
+import {getCookie, removeCookie} from '../../../util'
+
+const Nav: FC = () => {
   const [open, setOpen] = useState<boolean>(false)
 
   // window.addEventListener('scroll', function () {
@@ -18,7 +23,30 @@ const Nav = () => {
   //   console.log(newVal)
   // })
 
+  const Navigate = useNavigate()
+  //recoil 사용 선언부
+  const setIslogin = useSetRecoilState(isloginToken)
+  const islogin = useRecoilValue(isloginToken)
+
   const provinceChange = () => {}
+
+  useEffect(() => {
+    const tokenCookie = getCookie('accessJwtToken:') // 쿠키에서 토큰 가져오기
+    if (tokenCookie !== undefined) {
+      const token = tokenCookie.trim()
+      setIslogin(true) // 토큰 유효성에 따라 로그인 상태 업데이트
+    } else {
+      setIslogin(false) // 토큰 없음, 사용자는 로그인되지 않음
+    }
+  }, [])
+
+  const logoutClick = useCallback((e: React.MouseEvent) => {
+    setOpen(false)
+    setIslogin(false)
+    alert('로그아웃 되었습니다.')
+    removeCookie('accessJwtToken:')
+    Navigate('/')
+  }, [])
 
   const menuClick = useCallback((e: React.MouseEvent) => {
     setOpen(true)
@@ -48,7 +76,11 @@ const Nav = () => {
           <Div className="absolute right-0 top-2 lg:hidden">
             <ul className="flex">
               <li className="mr-4">
-                <Link to="/login">로그인</Link>
+                <Link
+                  to={islogin ? '/' : '/login'}
+                  onClick={islogin ? logoutClick : () => {}}>
+                  {islogin ? '로그아웃' : '로그인'}
+                </Link>
               </li>
               <li className="mr-8">
                 <Link to="/register">회원가입</Link>
@@ -102,8 +134,10 @@ const Nav = () => {
           <div>
             <ul className="flex justify-center">
               <li className="mr-4">
-                <Link to="/login" onClick={closeModal}>
-                  <Itemsummary>로그인</Itemsummary>
+                <Link
+                  to={islogin ? '/' : '/login'}
+                  onClick={islogin ? logoutClick : closeModal}>
+                  <Itemsummary>{islogin ? '로그아웃' : '로그인'}</Itemsummary>
                 </Link>
               </li>
               <li className="">

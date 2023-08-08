@@ -4,21 +4,23 @@ import {Subtitle} from '../../components'
 import {Link} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
+import {useSetRecoilState, useRecoilValue} from 'recoil'
+import {isFree} from '../../store/RecoilAtom'
 
 export type BoardMenuProps = DivProps & {}
 
 export const BoardMenu: FC<BoardMenuProps> = () => {
-  const [freeOpen, setFreeOpen] = useState<boolean>(false)
-  const [honeyOpen, setHoneyOpen] = useState<boolean>(false)
   const board1 = useParams().board1
+
+  //recoil 사용 선언부
+  const setIsFree = useSetRecoilState(isFree)
+  const isfree = useRecoilValue(isFree)
 
   useEffect(() => {
     if (board1 === 'free') {
-      setFreeOpen(true)
-      setHoneyOpen(false)
+      setIsFree(true)
     } else if (board1 === 'honey') {
-      setFreeOpen(false)
-      setHoneyOpen(true)
+      setIsFree(false)
     }
   }, [board1])
 
@@ -29,14 +31,14 @@ export const BoardMenu: FC<BoardMenuProps> = () => {
         <Link
           to="/board/free"
           className={`flex items-center justify-center w-full h-full ${
-            freeOpen ? 'bg-mint text-white' : ''
+            isfree ? 'bg-mint text-white' : ''
           }`}>
           <li>반려동물 자랑하기</li>
         </Link>
         <Link
           to="/board/honey"
           className={`flex items-center justify-center w-full h-full ${
-            honeyOpen ? 'bg-mint text-white' : ''
+            isfree ? '' : 'bg-mint text-white'
           }`}>
           <li>꿀팁</li>
         </Link>

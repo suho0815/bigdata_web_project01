@@ -19,6 +19,7 @@ const HospitalListItem: FC<ListItem> = ({
 }) => {
   const src = imgsrc ? imgsrc : ''
   const className = ['flex', 'border', 'h-40', 'hover:bg-gray-100', _className].join(' ')
+  // 클릭 시 네이버지도 링크 넘기기
   return (
     <div className={className}>
       <div className="items-center justify-center w-2/5">
