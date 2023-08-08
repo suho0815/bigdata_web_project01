@@ -24,10 +24,6 @@ public class SecurityConfig {
 	@Autowired
 	private AuthenticationConfiguration authConfig;
 	
-//	@Autowired
-//	private SecurityUserDetailsService securityUserDetailsService;	
-	// 제이슨에서 PassWord를 못가져오기 때문에 해당 서비스클래스에서 PassWord를 가져와야 한다. 
-	
 	@Bean // 리턴값을 IOC컨테이너에 올린다. 즉 외부 클래스에서 사용이 가능하다.
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -41,8 +37,8 @@ public class SecurityConfig {
 		// 모두, member, admin 접근 권한 설정
 		http.authorizeHttpRequests(security->{
 			security.requestMatchers("/like").authenticated() // 회원만 좋아요 가능. 
-					.requestMatchers("/free/**").authenticated() // 자랑(자유) 게시판 회원만 접근 가능
-					.requestMatchers("/freeReply/**").authenticated() // 자유(자랑)게시판 회원들만 접근
+					.requestMatchers("/free/**").authenticated() // 자랑(자유) 게시판 회원만 접근
+					.requestMatchers("/freeReply/**").authenticated() // 자유(자랑) 게시판 댓글 회원만 접근
 	        		.anyRequest().permitAll();
 		});
 		

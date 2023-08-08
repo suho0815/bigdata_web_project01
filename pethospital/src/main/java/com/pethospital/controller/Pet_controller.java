@@ -15,6 +15,9 @@ public class Pet_controller {
     
     @Autowired
     private Pet_hospital_Service pet_hospital_sevice;
+    
+//    @Autowired
+//    private CrawlingData crawlingData;
 
     // '광역도시' 목록반환
     //@CrossOrigin(origins = "http://localhost:3000")
@@ -48,7 +51,6 @@ public class Pet_controller {
         response.put("hospital_name", pet_hospital_sevice.getpethospitalByName(name)); // 검색을 통한 동물병원 
         return response;
     }
-
     
      // 상세검색
      // '광역도시'에 속한 동물병원 반환
@@ -78,50 +80,15 @@ public class Pet_controller {
          return response;
      }
      
+     // 동물병원 더보기 >> 네이버 지도 url 반환.
+     @GetMapping("naver/{hospital}")
+     public String naver(@PathVariable String hospital) {
+    	 return "https://map.naver.com/v5/search/" + hospital;
+     }
      
-//   // 각 지역에 맞는 동물병원 반환 > 상세검색
-//   @GetMapping("/hospital")
-//   public Map<String, Object> getHospitalOfProvinces(String province, String sigungu, String dong){
-//       Map<String, Object> response = new HashMap<>();
-//       response.put("pethospital", pet_hospital_sevice.getpethospitalByProvinceAndCityAndDetailCity(province, sigungu, dong)); // 도시에 따른 병원목록 
-//       return response;
-//   }
-
-   // 각 지역에 맞는 동물병원 반환 > 상세검색
-//   @GetMapping("/hospital")
-//   public Map<String, Object> getHospitalOfProvinces(@RequestParam(required = false) String province, 
-//   												  @RequestParam(required = false) String sigungu, 
-//   												  @RequestParam(required = false) String dong){
-//       Map<String, Object> response = new HashMap<>();
-//       response.put("pethospital", pet_hospital_sevice.getpethospitalByProvinceAndCityAndDetailCity(province, sigungu, dong)); // 도시에 따른 병원목록
-//       return response;
-//   }
-     
-     
-     
-     
-     
-     
-     
-
-    // // '광역도시' 에 속한 '시군구' 반환
-    // @GetMapping("/sido={province}&gungu")
-    // public Map<String, Object> getCities(@PathVariable String province) {
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("gungu", pet_hospital_sevice.getDistinctCitiesByProvince(province)); // 시/구/군
-    //     return response;
-    // }
-
- 
-
-    // // '광역도시' 에 속한 '시군구'에 속한 '동읍면' 반환
-    // @GetMapping("/sido={province}&gungu={city}&dong")
-    // public Map<String, Object> getDetailCities(@PathVariable String province, @PathVariable String city) {
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("dong", pet_hospital_sevice.getDistinctDetailCitiesByProvinceAndCity(province, city)); // 동/읍/면
-    //     return response;
-    // }
-
-    
-
+//     // 동물병원 네이버 지도 검색 
+//     @PostMapping("Crawling/{hospital}")
+//     public void CrawlingData(String hospital) {
+//    	 
+//     }
 }

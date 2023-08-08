@@ -54,8 +54,5 @@ public class Pet_member_controller {
 //		 header.add("Authorization", "Bearer " + jwtToken);
 //		    
 //		 // JWT 토큰을 응답으로 반환
-//		 return ResponseEntity.ok().headers(header).build();
-    
-    // 잘 안된다아아ㅏ아
-    
+//		 return ResponseEntity.ok().headers(header).build();    
 }
