@@ -23,18 +23,18 @@ DROP TABLE IF EXISTS `pet_board_like`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pet_board_like` (
-  `likeId` int NOT NULL AUTO_INCREMENT,
+  `likeid` int NOT NULL AUTO_INCREMENT,
   `id` int DEFAULT NULL,
   `free_board_id` int DEFAULT NULL,
   `honey_board_id` int DEFAULT NULL,
-  PRIMARY KEY (`likeId`),
+  PRIMARY KEY (`likeid`),
   KEY `id` (`id`),
   KEY `free_board_id` (`free_board_id`),
   KEY `honey_board_id` (`honey_board_id`),
   CONSTRAINT `pet_board_like_ibfk_1` FOREIGN KEY (`id`) REFERENCES `pet_member` (`id`),
   CONSTRAINT `pet_board_like_ibfk_2` FOREIGN KEY (`free_board_id`) REFERENCES `pet_free_board` (`free_board_id`),
   CONSTRAINT `pet_board_like_ibfk_3` FOREIGN KEY (`honey_board_id`) REFERENCES `pet_honey_board` (`honey_board_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `pet_board_like` (
 
 LOCK TABLES `pet_board_like` WRITE;
 /*!40000 ALTER TABLE `pet_board_like` DISABLE KEYS */;
+INSERT INTO `pet_board_like` VALUES (2,51,3,NULL),(3,52,3,NULL);
 /*!40000 ALTER TABLE `pet_board_like` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +69,7 @@ CREATE TABLE `pet_free_board` (
   PRIMARY KEY (`free_board_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `pet_free_board_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `pet_member` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +78,7 @@ CREATE TABLE `pet_free_board` (
 
 LOCK TABLES `pet_free_board` WRITE;
 /*!40000 ALTER TABLE `pet_free_board` DISABLE KEYS */;
-INSERT INTO `pet_free_board` VALUES (1,'ekswl','1234','나는 단지','단지는 미니핀',NULL,NULL,NULL,NULL,0,0);
+INSERT INTO `pet_free_board` VALUES (1,'ekswl','1234','나는 단지','단지는 미니핀',NULL,NULL,NULL,NULL,0,0),(3,'ekswl','1234','하단','꿀단지 \n',NULL,NULL,NULL,'미니언즈.jpg',0,2);
 /*!40000 ALTER TABLE `pet_free_board` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +90,7 @@ DROP TABLE IF EXISTS `pet_free_reply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pet_free_reply` (
-  `comment_id` bigint NOT NULL AUTO_INCREMENT,
+  `comment_id` int NOT NULL AUTO_INCREMENT,
   `free_board_id` int NOT NULL,
   `user_id` varchar(255) DEFAULT NULL,
   `nickname` varchar(255) DEFAULT NULL,
@@ -100,7 +101,7 @@ CREATE TABLE `pet_free_reply` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `pet_free_reply_ibfk_1` FOREIGN KEY (`free_board_id`) REFERENCES `pet_free_board` (`free_board_id`) ON DELETE CASCADE,
   CONSTRAINT `pet_free_reply_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `pet_member` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +110,7 @@ CREATE TABLE `pet_free_reply` (
 
 LOCK TABLES `pet_free_reply` WRITE;
 /*!40000 ALTER TABLE `pet_free_reply` DISABLE KEYS */;
+INSERT INTO `pet_free_reply` VALUES (6,1,'ekswl','1234','미니핀',NULL);
 /*!40000 ALTER TABLE `pet_free_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,10 +132,11 @@ CREATE TABLE `pet_honey_board` (
   `deletedate` datetime(6) DEFAULT NULL,
   `imagefile` varchar(255) DEFAULT NULL,
   `views` int DEFAULT '0',
+  `likes` int NOT NULL,
   PRIMARY KEY (`honey_board_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `pet_honey_board_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `pet_member` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -142,6 +145,7 @@ CREATE TABLE `pet_honey_board` (
 
 LOCK TABLES `pet_honey_board` WRITE;
 /*!40000 ALTER TABLE `pet_honey_board` DISABLE KEYS */;
+INSERT INTO `pet_honey_board` VALUES (2,'ekswl','1234','안녕하시요','미니핀은 귀여워',NULL,NULL,NULL,NULL,0,0),(3,'ekswl','1234','안녕하시요','미니핀은 정말 귀여워',NULL,NULL,NULL,NULL,0,0);
 /*!40000 ALTER TABLE `pet_honey_board` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +157,7 @@ DROP TABLE IF EXISTS `pet_honey_reply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pet_honey_reply` (
-  `comment_id` bigint NOT NULL AUTO_INCREMENT,
+  `comment_id` int NOT NULL AUTO_INCREMENT,
   `honey_board_id` int NOT NULL,
   `user_id` varchar(255) DEFAULT NULL,
   `nickname` varchar(255) DEFAULT NULL,
@@ -227,7 +231,7 @@ CREATE TABLE `pet_member` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nickname` (`nickname`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +240,7 @@ CREATE TABLE `pet_member` (
 
 LOCK TABLES `pet_member` WRITE;
 /*!40000 ALTER TABLE `pet_member` DISABLE KEYS */;
-INSERT INTO `pet_member` VALUES (1,'admin','abcd','a','1234','aaaa','010-111','121212',NULL),(4,'정승길','ㅁㅁㅁ','ㅎㅎㅎ','1234','aaaa','010-111','121212',NULL),(5,'이수호','수호천사','수호짱','1234','aaaa','010-111','121212',NULL),(6,'','','','','','','',NULL),(17,'asdasd','asdaswqe','asdasd','asdasxzcxzd','asdqwe@naver.com','asdqweasd','awqeqdsgag',NULL),(42,'asda','dzxcz','caweq','asdwq','qasdzxc','dqwawe','',NULL),(43,'hkhjgjll','gigbjgj','vggvlkjg','vhjvjgvj','vhjvhjl','vjhvjhvjh','','member'),(45,'hkhjgjllt','gigbjgjt','vggvlkjgt','vhjvjgvj','vhjvhjlt','vjhvjhvjht','','MEMBER'),(46,'홍길동','nick','user','$2a$10$kKNKbszsKGnCD3YbcUvfVuH6DpjrnWM7C8al27awzrY8gc31a9r2O\n','a@b.com',NULL,'부산','ROLE_MEMBER'),(47,'단지','강아지','단지','1234','','010000000','','ROLE_MEMBER'),(48,'qweasd','fzgdsghf','hsfdgfdsg','earasfgd','','agsaeawtr','','ROLE_MEMBER'),(49,'hsfdhfdg','hfgdhgfdh','fdghfdghdf','$2a$10$ZTs/QjrRmUiUSDiSwGbLfOAZYtNFTaOIIbF205k6sGg.NqaHXgwt6','','hgfdhdfgh','','ROLE_MEMBER'),(50,'asdasd','asdas','dasdgsdgf','$2a$10$UJ97X0MYZq8d/NDzM3utI.ApwSeAW1zDlvBWpiJtrt60uPtpcznW6','','gsdfgsdfg','','ROLE_MEMBER'),(51,'단지','1234','ekswl','$2a$10$Fb/jyeoRo4wX1uU.O6dbTexMWtHeBmC8dqAlYWH3IOIPObFV4IP6W','aa@aa1.com',NULL,NULL,'ROLE_MEMBER');
+INSERT INTO `pet_member` VALUES (1,'admin','abcd','a','1234','aaaa','010-111','121212',NULL),(4,'정승길','ㅁㅁㅁ','ㅎㅎㅎ','1234','aaaa','010-111','121212',NULL),(5,'이수호','수호천사','수호짱','1234','aaaa','010-111','121212',NULL),(6,'','','','','','','',NULL),(17,'asdasd','asdaswqe','asdasd','asdasxzcxzd','asdqwe@naver.com','asdqweasd','awqeqdsgag',NULL),(42,'asda','dzxcz','caweq','asdwq','qasdzxc','dqwawe','',NULL),(43,'hkhjgjll','gigbjgj','vggvlkjg','vhjvjgvj','vhjvhjl','vjhvjhvjh','','member'),(45,'hkhjgjllt','gigbjgjt','vggvlkjgt','vhjvjgvj','vhjvhjlt','vjhvjhvjht','','MEMBER'),(46,'홍길동','nick','user','$2a$10$kKNKbszsKGnCD3YbcUvfVuH6DpjrnWM7C8al27awzrY8gc31a9r2O\n','a@b.com',NULL,'부산','ROLE_MEMBER'),(47,'단지','강아지','단지','1234','','010000000','','ROLE_MEMBER'),(48,'qweasd','fzgdsghf','hsfdgfdsg','earasfgd','','agsaeawtr','','ROLE_MEMBER'),(49,'hsfdhfdg','hfgdhgfdh','fdghfdghdf','$2a$10$ZTs/QjrRmUiUSDiSwGbLfOAZYtNFTaOIIbF205k6sGg.NqaHXgwt6','','hgfdhdfgh','','ROLE_MEMBER'),(50,'asdasd','asdas','dasdgsdgf','$2a$10$UJ97X0MYZq8d/NDzM3utI.ApwSeAW1zDlvBWpiJtrt60uPtpcznW6','','gsdfgsdfg','','ROLE_MEMBER'),(51,'단지','1234','ekswl','$2a$10$Fb/jyeoRo4wX1uU.O6dbTexMWtHeBmC8dqAlYWH3IOIPObFV4IP6W','aa@aa1.com',NULL,NULL,'ROLE_MEMBER'),(52,'하하하하하','최용진','gktjdwls','$2a$10$PogY5GT1s8so0DLvPcpbqe9XiPGLj4DzaeJ4rQVTVPhFIwfKgK0pe','ddd@Ddd',NULL,NULL,'ROLE_MEMBER');
 /*!40000 ALTER TABLE `pet_member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -249,4 +253,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-04 17:58:30
+-- Dump completed on 2023-08-08 17:58:43
