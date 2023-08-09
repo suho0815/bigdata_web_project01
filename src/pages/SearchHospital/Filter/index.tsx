@@ -4,7 +4,7 @@ import {useRef, useState, useCallback, useEffect} from 'react'
 import {Icon, Div, Modal, ModalContent, ModalAction} from '../../../components'
 import {Title, Subtitle, Select} from '../../../components'
 import HospitalListItem from '../HospitalList/HospitalListItem'
-import {Link} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 
 const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const serverUrl: string = 'http://localhost:8080'
@@ -19,6 +19,9 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const gunguref = useRef<HTMLSelectElement>(null)
   const dongref = useRef<HTMLSelectElement>(null)
   const keywordref = useRef<HTMLInputElement>(null)
+
+  const Navigate = useNavigate()
+  const state = useLocation().state
 
   const detailSearchOnClick = useCallback(() => {
     setOpen(true)
@@ -137,6 +140,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
       })
       .then(data => {
         onDataChange(data)
+        Navigate('/api/searchhospital', {state: null})
         setOpen(false)
       })
       .catch(err => err.message)

@@ -24,31 +24,31 @@ export const Map: FC<MapProps> = ({className, sharedHospital}) => {
     let zoomControl = new window.kakao.maps.ZoomControl()
     map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT)
 
-    // 마커가 표시될 위치입니다
-    let markerPosition = new window.kakao.maps.LatLng(36.477078, 128.026691)
+    // // 마커가 표시될 위치입니다
+    // let markerPosition = new window.kakao.maps.LatLng(36.477078, 128.026691)
 
-    // 마커를 생성합니다
-    let marker = new window.kakao.maps.Marker({
-      position: markerPosition
-    })
+    // // 마커를 생성합니다
+    // let marker = new window.kakao.maps.Marker({
+    //   position: markerPosition
+    // })
 
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map)
+    // // 마커가 지도 위에 표시되도록 설정합니다
+    // marker.setMap(map)
 
-    let iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      iwRemoveable = true // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    // let iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    //   iwRemoveable = true // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-    // 인포윈도우를 생성합니다
-    let infowindow = new window.kakao.maps.InfoWindow({
-      content: iwContent,
-      removable: iwRemoveable
-    })
+    // // 인포윈도우를 생성합니다
+    // let infowindow = new window.kakao.maps.InfoWindow({
+    //   content: iwContent,
+    //   removable: iwRemoveable
+    // })
 
-    // 마커에 클릭이벤트를 등록합니다
-    window.kakao.maps.event.addListener(marker, 'click', function () {
-      // 마커 위에 인포윈도우를 표시합니다
-      infowindow.open(map, marker)
-    })
+    // // 마커에 클릭이벤트를 등록합니다
+    // window.kakao.maps.event.addListener(marker, 'click', function () {
+    //   // 마커 위에 인포윈도우를 표시합니다
+    //   infowindow.open(map, marker)
+    // })
 
     // for (let i = 0; i < dummy.data.length; i++) {
     //   displayMarker(dummy.data[i], i)

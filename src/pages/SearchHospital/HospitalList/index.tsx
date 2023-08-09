@@ -2,6 +2,7 @@ import type {FC, ReactElement} from 'react'
 import HospitalListItem from './HospitalListItem'
 import {useState, useEffect} from 'react'
 import type {ListItem} from './HospitalListItem'
+import {useLocation, useNavigate} from 'react-router-dom'
 import Pagination from './Pagination'
 
 const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
@@ -10,9 +11,26 @@ const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
   const offset = (page - 1) * limit
   let total = 0
 
+  const state = useLocation().state
+
   let listitems: ReactElement[] = []
 
-  if (sharedHospital && sharedHospital['pethospital']) {
+  if (state !== null) {
+    sharedHospital = []
+    const pethospital = state['hospital_name']
+    total = pethospital.length
+    pethospital.map((list: [], index: number) => {
+      listitems.push(
+        <HospitalListItem
+          key={index}
+          title={pethospital[index]['hospitalName']}
+          telephone={pethospital[index]['phone_number']}
+          location={pethospital[index]['street_address']}
+          imgsrc=""
+        />
+      )
+    })
+  } else if (sharedHospital && sharedHospital['pethospital']) {
     const pethospital = sharedHospital['pethospital']
     total = sharedHospital['pethospital'].length
     pethospital.map((list: [], index: number) => {

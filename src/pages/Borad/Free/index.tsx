@@ -13,7 +13,7 @@ const Free = () => {
   // const serverUrl: string = 'http://10.125.121.183:8080'
   const Navigate = useNavigate()
 
-  const [limit, setLimit] = useState<number>(10)
+  const [limit, setLimit] = useState<number>(20)
   const [page, setPage] = useState<number>(1)
   const offset: number = (page - 1) * limit
   const [total, setTotal] = useState<number | undefined>(0)
@@ -41,7 +41,7 @@ const Free = () => {
         })
         .then(data => {
           const mapItems = data.map((datalist: any, index: number) => (
-            <div key={index} className="flex w-1/2 md:w-full">
+            <div key={index} className="flex w-1/2 justify-evenly md:w-full">
               <FreeBoardItem
                 title={datalist['title']}
                 writer={datalist['nickname']}

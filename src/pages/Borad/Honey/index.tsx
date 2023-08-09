@@ -32,9 +32,11 @@ const Honey = () => {
           const mapItems = data.map((datalist: any, index: number) => (
             <HoneyBoardItem
               key={index}
-              // title={datalist['title']}
-              // writer={datalist['nickname']}
-              // date={datalist['regdate']}
+              title={datalist['title']}
+              writer={datalist['nickname']}
+              date={datalist['regdate']}
+              views={datalist['views']}
+              // heart={}
             />
           ))
           setTotal(mapItems.length)
@@ -49,10 +51,7 @@ const Honey = () => {
   return (
     <section className="flex flex-col items-center w-full h-full p-10 mt-8 ">
       <HoneyFilter total={total} />
-      <div className="w-full border-y-2 border-mint">
-        <HoneyBoardItem />
-        <HoneyBoardItem />
-      </div>
+      <div className="w-full border-y-2 border-mint">{renderedItems}</div>
       <Div>{/* <Pagination /> */}</Div>
     </section>
   )

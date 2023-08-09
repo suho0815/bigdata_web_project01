@@ -1,15 +1,28 @@
 import {FC, useState} from 'react'
 import {Icon} from '../../../components'
+import {useNavigate} from 'react-router-dom'
 //@ts-ignore
 import pupp from '../../../images/pupp.mp4'
 
 const SearchSection: React.FC = () => {
+  // const serverUrl = 'http://10.125.121.183:8080'
+  const serverUrl = 'http://localhost:8080'
+
   const [searchKeyword, setSearchKeyword] = useState<string>('')
-  const onSearchbtnClicked = () => {}
+  const Navigate = useNavigate()
+
+  const onSearchbtnClicked = () => {
+    fetch(`${serverUrl}/searchhospital/${searchKeyword}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        Navigate('/api/searchhospital', {state: data})
+      })
+      .catch(error => error.message)
+  }
 
   const handleInputChange = (event: any) => {
     const value = event.target.value
-    console.log(value)
     setSearchKeyword(value)
   }
 
@@ -26,9 +39,7 @@ const SearchSection: React.FC = () => {
         <h1 className="text-3xl font-bold">반려동물을 위한 동물 병원을 찾아보세요!</h1>
 
         <div className="flex p-2 mt-8 overflow-x-hidden bg-white bg-opacity-50 rounded-lg">
-          <form
-            action={`http://10.125.121.183:8080/api/searchhospital/${searchKeyword}`}
-            className="flex w-full">
+          <div className="flex w-full">
             <input
               type="text"
               className="w-11/12 p-2 bg-white bg-opacity-0 rounded-lg"
@@ -37,10 +48,11 @@ const SearchSection: React.FC = () => {
             />
             <button
               className="w-1/12 p-2 ml-4 bg-white bg-opacity-50 rounded-lg btn"
-              type="submit">
+              type="submit"
+              onClick={onSearchbtnClicked}>
               <Icon name="search" className=""></Icon>
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import type {FC, ChangeEvent} from 'react'
-import {useCallback, useState} from 'react'
+import {useCallback, useState, useRef} from 'react'
 import {Div, Subtitle, LoginInput, Loginbtn, Itemtitle} from '../../components'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
@@ -11,6 +11,8 @@ type JoinProps = {
 export const Join: FC<JoinProps> = () => {
   const url = 'http://10.125.121.183:8080/register'
 
+  const passwordcheck = useRef<HTMLInputElement | null>(null)
+  const [passwordTrue, setPasswordTrue] = useState<boolean>()
   const [formData, setFormData] = useState({
     name: '',
     userId: '',
@@ -43,6 +45,9 @@ export const Join: FC<JoinProps> = () => {
       ...prevFormData,
       [id]: value
     }))
+    if (formData.password !== passwordcheck.current?.value) {
+      setPasswordTrue(false)
+    } else setPasswordTrue(true)
   }
 
   return (
@@ -80,7 +85,12 @@ export const Join: FC<JoinProps> = () => {
               placeholder="비밀번호"
               onChange={handleInputChange}
             />
-            <LoginInput id="passwordcheck" type="password" placeholder="비밀번호 확인" />
+            <LoginInput
+              id="passwordcheck"
+              type="password"
+              Inputref={passwordcheck}
+              placeholder="비밀번호 확인"
+            />
             <p className="text-xs italic text-red">Please choose a password.</p>
           </div>
           <div className="mb-4">

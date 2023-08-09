@@ -26,18 +26,18 @@ export const HoneyBoardItem: FC<HoneyBoardProps> = ({
       </Div>
 
       <Div className="w-1/2 md:mt-4 md:h-1/2 md:w-full md:flex md:justify-evenly">
-        <Subtitle className="mb-6">제목</Subtitle>
+        <Subtitle className="mb-6">{title}</Subtitle>
         <Subtitle>
-          <Icon name="person" /> 작성자
+          <Icon name="person" /> {writer}
         </Subtitle>
       </Div>
       <Div className="w-1/2 md:h-1/2 md:items-center md:w-full md:flex md:justify-evenly">
         <p className="mb-4 text-center align-middle">
-          <Icon name="favorite" />
-          좋아요
+          <Icon name="favorite" className="mr-3" />
+          {heart !== undefined ? heart : 0}
         </p>
-        <Itemsummary className="mb-4 md:mb-0 ">조회수</Itemsummary>
-        <Itemsummary className="">작성 날짜</Itemsummary>
+        <Itemsummary className="mb-4 md:mb-0 ">조회 수 {views}</Itemsummary>
+        <Itemsummary className="">{date}</Itemsummary>
       </Div>
     </Div>
   )

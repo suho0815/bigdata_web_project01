@@ -14,3 +14,8 @@ export const isFree = atom<boolean>({
   key: 'isfree',
   default: false
 })
+
+export const searchData = atom<Array<any>>({
+  key: 'searchData',
+  default: []
+})

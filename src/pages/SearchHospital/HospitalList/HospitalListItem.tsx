@@ -1,6 +1,7 @@
 import type {FC} from 'react'
 import type {DivProps} from '../../../components'
 import {Itemtitle, Itemsummary, Icon} from '../../../components'
+import noImg from '../../../images/No-image-found.jpg'
 
 export type ListItem = DivProps & {
   imgsrc?: string
@@ -17,7 +18,7 @@ const HospitalListItem: FC<ListItem> = ({
   telephone,
   location
 }) => {
-  const src = imgsrc ? imgsrc : ''
+  const src = imgsrc ? imgsrc : noImg
   const className = ['flex', 'border', 'h-40', 'hover:bg-gray-100', _className].join(' ')
   // 클릭 시 네이버지도 링크 넘기기
   return (
