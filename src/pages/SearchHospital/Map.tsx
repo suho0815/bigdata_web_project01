@@ -1,6 +1,6 @@
 import type {FC} from 'react'
 import type {DivProps} from '../../components'
-import {useEffect} from 'react'
+import {useState, useEffect} from 'react'
 import {Div} from '../../components'
 
 declare global {
@@ -12,7 +12,43 @@ declare global {
 export type MapProps = DivProps & {sharedHospital: any} & {}
 
 export const Map: FC<MapProps> = ({className, sharedHospital}) => {
+  const [limit, setLimit] = useState<number>(10)
+  const [page, setPage] = useState<number>(1)
+  const offset = (page - 1) * limit
+  let total = 0
+
+  // const [positions, setPositions] = useState<any[]>()
+
+  console.log(sharedHospital)
+
   useEffect(() => {
+    let positions: any[] | undefined = undefined
+    if (sharedHospital && sharedHospital['pethospital'] !== undefined) {
+      const pethospital = sharedHospital['pethospital']
+      const latitudeLongitude = pethospital.map((data: any, index: number) => ({
+        title: data['hospitalName'],
+        latlng: new window.kakao.maps.LatLng(
+          data['latitude'] / 10000,
+          data['longitude'] / 1000
+        )
+      }))
+      positions = latitudeLongitude
+      // setPositions(latitudeLongitude)
+      console.log(positions)
+    } else if (sharedHospital && sharedHospital['hospital_name'] !== undefined) {
+      const pethospital = sharedHospital['hospital_name']
+      const latitudeLongitude = pethospital.map((data: any, index: number) => ({
+        title: data['hospitalName'],
+        latlng: new window.kakao.maps.LatLng(
+          data['latitude'] / 10000,
+          data['longitude'] / 1000
+        )
+      }))
+      positions = latitudeLongitude
+      // setPositions(latitudeLongitude)
+      console.log(positions)
+    }
+
     let container = document.getElementById('map') //지도를 담을 영역의 DOM 레퍼런스
     let options = {
       //지도를 생성할 때 필요한 기본 옵션 중심좌표(위도, 경도)
@@ -24,62 +60,59 @@ export const Map: FC<MapProps> = ({className, sharedHospital}) => {
     let zoomControl = new window.kakao.maps.ZoomControl()
     map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT)
 
-    // // 마커가 표시될 위치입니다
-    // let markerPosition = new window.kakao.maps.LatLng(36.477078, 128.026691)
+    // 마커 이미지의 이미지 주소입니다
+    let imageSrc =
+      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'
 
-    // // 마커를 생성합니다
-    // let marker = new window.kakao.maps.Marker({
-    //   position: markerPosition
-    // })
-
-    // // 마커가 지도 위에 표시되도록 설정합니다
-    // marker.setMap(map)
-
-    // let iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-    //   iwRemoveable = true // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-    // // 인포윈도우를 생성합니다
-    // let infowindow = new window.kakao.maps.InfoWindow({
-    //   content: iwContent,
-    //   removable: iwRemoveable
-    // })
-
-    // // 마커에 클릭이벤트를 등록합니다
-    // window.kakao.maps.event.addListener(marker, 'click', function () {
-    //   // 마커 위에 인포윈도우를 표시합니다
-    //   infowindow.open(map, marker)
-    // })
-
-    // for (let i = 0; i < dummy.data.length; i++) {
-    //   displayMarker(dummy.data[i], i)
-    // }
-    // function displayMarker<
-    //   T extends {
-    //     name: string
-    //     location_y: number
-    //     location_x: number
-    //     active: boolean
-    //     point: number
+    // var position = [
+    //   {
+    //     title: '카카오',
+    //     latlng: new window.kakao.maps.LatLng(33.450705, 126.570677)
+    //   },
+    //   {
+    //     title: '생태연못',
+    //     latlng: new window.kakao.maps.LatLng(33.450936, 126.569477)
+    //   },
+    //   {
+    //     title: '텃밭',
+    //     latlng: new window.kakao.maps.LatLng(33.450879, 126.56994)
+    //   },
+    //   {
+    //     title: '근린공원',
+    //     latlng: new window.kakao.maps.LatLng(33.451393, 126.570738)
     //   }
-    // >(data: T, i: number) {
-    //   // 인포윈도우 표시될 위치(좌표)
-    //   let iwPosition = new window.kakao.maps.LatLng(data.location_y, data.location_x)
-    //   // 인포윈도우에 표출될 내용. HTML 문자열이나 document element 등이 가능하다.
-    //   var inactiveInfoWindow = `<div class="inactive infowindow""><span>${data.name}</span></div>`
-    //   //인포윈도우
-    //   let infowindow
-    //   infowindow = new window.kakao.maps.InfoWindow({
-    //     zIndex: 1,
-    //     position: iwPosition,
-    //     content: inactiveInfoWindow,
-    //     disableAutoPan: false,
-    //     map: map //map에 해당 인포윈도우를 적용한다.
-    //   })
-    //   //중심좌표 재설정
-    //   var position = new window.kakao.maps.LatLng(37.586272, 127.029005)
-    //   map.setCenter(position)
-    // }
-  }, [])
+    // ]
+
+    console.log(positions)
+    if (positions !== undefined) {
+      for (let i = offset; i < Math.min(offset + limit, positions.length); i++) {
+        console.log(positions[i])
+        // 마커 이미지의 이미지 크기 입니다
+        let imageSize = new window.kakao.maps.Size(24, 35)
+
+        // 마커 이미지를 생성합니다
+        let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize)
+
+        // 마커를 생성합니다
+        let marker = new window.kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: positions[i].latlng, // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage // 마커 이미지
+        })
+        // console.log(marker)
+        // marker.setMap(map)
+      }
+      let position =
+        positions !== undefined
+          ? positions[0].latlng
+          : new window.kakao.maps.LatLng(36.477078, 128.026691)
+      map.setCenter(position)
+    }
+
+    //중심좌표 재설정
+    // console.log(positions !== undefined ? positions[0].LatLng : '')
+  }, [sharedHospital])
   const classname = [
     'w-4/5',
     'mt-8',

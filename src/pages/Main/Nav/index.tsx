@@ -30,6 +30,8 @@ const Nav: FC = () => {
 
   const provinceChange = () => {}
 
+  // .withExpiresAt(new Date(System.currentTimeMillis()+1000*600*10)) // 토큰 유지시간
+
   useEffect(() => {
     const tokenCookie = getCookie('accessJwtToken:') // 쿠키에서 토큰 가져오기
     if (tokenCookie !== undefined) {

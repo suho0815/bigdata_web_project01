@@ -11,6 +11,8 @@ const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
   const offset = (page - 1) * limit
   let total = 0
 
+  const url = 'https://map.naver.com/v5/search/'
+
   const state = useLocation().state
 
   let listitems: ReactElement[] = []
@@ -21,13 +23,14 @@ const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
     total = pethospital.length
     pethospital.map((list: [], index: number) => {
       listitems.push(
-        <HospitalListItem
-          key={index}
-          title={pethospital[index]['hospitalName']}
-          telephone={pethospital[index]['phone_number']}
-          location={pethospital[index]['street_address']}
-          imgsrc=""
-        />
+        <a href={url + pethospital[index]['hospitalName']} key={index}>
+          <HospitalListItem
+            title={pethospital[index]['hospitalName']}
+            telephone={pethospital[index]['phone_number']}
+            location={pethospital[index]['street_address']}
+            imgsrc=""
+          />
+        </a>
       )
     })
   } else if (sharedHospital && sharedHospital['pethospital']) {
@@ -35,13 +38,14 @@ const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
     total = sharedHospital['pethospital'].length
     pethospital.map((list: [], index: number) => {
       listitems.push(
-        <HospitalListItem
-          key={index}
-          title={pethospital[index]['hospitalName']}
-          telephone={pethospital[index]['phone_number']}
-          location={pethospital[index]['street_address']}
-          imgsrc=""
-        />
+        <a href={url + pethospital[index]['hospitalName']} key={index}>
+          <HospitalListItem
+            title={pethospital[index]['hospitalName']}
+            telephone={pethospital[index]['phone_number']}
+            location={pethospital[index]['street_address']}
+            imgsrc=""
+          />
+        </a>
       )
     })
   } else if (sharedHospital && sharedHospital['hospital_name']) {
@@ -49,13 +53,14 @@ const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
     total = sharedHospital['hospital_name'].length
     pethospital.map((list: [], index: number) => {
       listitems.push(
-        <HospitalListItem
-          key={index}
-          title={pethospital[index]['hospitalName']}
-          telephone={pethospital[index]['phone_number']}
-          location={pethospital[index]['street_address']}
-          imgsrc=""
-        />
+        <a href={url + pethospital[index]['hospitalName']} key={index}>
+          <HospitalListItem
+            title={pethospital[index]['hospitalName']}
+            telephone={pethospital[index]['phone_number']}
+            location={pethospital[index]['street_address']}
+            imgsrc=""
+          />
+        </a>
       )
     })
   } else {

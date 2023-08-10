@@ -19,3 +19,8 @@ export const searchData = atom<Array<any>>({
   key: 'searchData',
   default: []
 })
+
+export const page = atom<number>({
+  key: 'page',
+  default: 0
+})

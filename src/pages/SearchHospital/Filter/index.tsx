@@ -34,8 +34,6 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
         return response.json()
       })
       .then(data => {
-        console.log('Data:', data)
-
         setSido(
           data['province'].map((sidodata: string, index: number) => (
             <option value={sidodata} key={index}>
@@ -63,8 +61,6 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
           return response.json()
         })
         .then(data => {
-          console.log('Data:', data)
-
           if (gungu !== null) {
             setGungu(null)
           }
@@ -102,7 +98,6 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
           return response.json()
         })
         .then(data => {
-          console.log('Data: ', data)
           if (dong !== null) {
             setDong(null)
           }
