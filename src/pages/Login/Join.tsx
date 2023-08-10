@@ -9,8 +9,6 @@ type JoinProps = {
 }
 
 export const Join: FC<JoinProps> = () => {
-  const url = 'http://10.125.121.183:8080/register'
-
   const passwordcheck = useRef<HTMLInputElement | null>(null)
   const [passwordTrue, setPasswordTrue] = useState<boolean>()
   const [formData, setFormData] = useState({
@@ -26,7 +24,7 @@ export const Join: FC<JoinProps> = () => {
   const onSubmitClick = () => {
     console.log(formData)
     axios
-      .post(url, {
+      .post(`${process.env.REACT_APP_SERVER_URL}/register`, {
         name: formData.name,
         userId: formData.userId,
         password: formData.password,

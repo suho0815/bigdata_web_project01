@@ -1,7 +1,7 @@
 import type {FC} from 'react'
-import {Div, DivProps, Itemsummary, Itemtitle, Icon} from '../../../components'
+import {MouseEventHandler} from 'react'
+import {Div, DivProps, Icon, Itemsummary, Itemtitle} from '../../../components'
 import choco3 from '../../../images/choco3.jpg'
-import noImg from '../../../images/No-image-found.jpg'
 
 export type FreeBoardProps = DivProps & {
   title?: string
@@ -10,6 +10,7 @@ export type FreeBoardProps = DivProps & {
   heart?: number
   replycnt?: number
   img?: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 export const FreeBoardItem: FC<FreeBoardProps> = ({
@@ -18,10 +19,13 @@ export const FreeBoardItem: FC<FreeBoardProps> = ({
   date,
   heart,
   replycnt,
-  img
+  img,
+  onClick
 }) => {
   return (
-    <Div className="m-8 border shadow-lg md:mt-4 md:mb-4 md:m-0 rounded-xl h-96 w-80 md:w-full ">
+    <Div
+      className="m-8 border shadow-lg md:mt-4 md:mb-4 md:m-0 rounded-xl h-96 w-80 md:w-full "
+      onClick={onClick}>
       <Div className="relative w-full h-64 m-auto border rounded-t-xl ">
         <img
           src={img ? img : choco3}

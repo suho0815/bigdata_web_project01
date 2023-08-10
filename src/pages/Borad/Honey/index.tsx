@@ -4,20 +4,38 @@ import {Div} from '../../../components'
 import {HoneyBoardItem} from './HoneyBoardItems'
 import HoneyFilter from './HoneyFilter'
 import Pagination from '../../SearchHospital/HospitalList/Pagination'
+import HoneyDetailPage from './HoneyDetailPage'
+
+export type HoneyData = {
+  title?: string
+  nickname?: string
+  regdate?: string
+  views?: number
+  heart?: number
+}
 
 const Honey = () => {
-  const serverUrl: string = 'http://localhost:8080'
-  // const serverUrl: string = 'http://10.125.121.183:8080'
-
   const [limit, setLimit] = useState<number>(10)
   const [page, setPage] = useState<number>(1)
   const offset = (page - 1) * limit
   const [total, setTotal] = useState<number | undefined>(0)
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
 
+  const [viewDetailPage, setViewDetailPage] = useState<boolean>(false)
+  const [detailData, setDetailData] = useState<any>()
+
+  const DetailPageClick = (data: HoneyData) => {
+    // 클릭한 데이터 출력
+    console.log(data)
+    setDetailData(data)
+
+    if (viewDetailPage === false) setViewDetailPage(true)
+    else setViewDetailPage(false)
+  }
+
   useEffect(() => {
     try {
-      fetch(`${serverUrl}/honey`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/honey`, {
         method: 'GET'
       })
         .then(response => {
@@ -37,6 +55,7 @@ const Honey = () => {
               date={datalist['regdate']}
               views={datalist['views']}
               // heart={}
+              onClick={() => DetailPageClick(datalist)}
             />
           ))
           setTotal(mapItems.length)
@@ -49,9 +68,14 @@ const Honey = () => {
   }, [])
 
   return (
-    <section className="flex flex-col items-center w-full h-full p-10 mt-8 ">
-      <HoneyFilter total={total} />
-      <div className="w-full border-y-2 border-mint">{renderedItems}</div>
+    <section className="flex w-full h-full p-10 mt-8 ">
+      {!viewDetailPage && (
+        <div className="flex flex-col items-center w-full h-full p-10 mt-8 ">
+          <HoneyFilter total={total} />
+          <div className="w-full border-y-2 border-mint">{renderedItems}</div>
+        </div>
+      )}
+      {viewDetailPage && <HoneyDetailPage />}
       <Div>{/* <Pagination /> */}</Div>
     </section>
   )

@@ -20,9 +20,6 @@ export type WriteBoardProps = DivProps & {
 const WriteBoard: FC<WriteBoardProps> = () => {
   const Params = useParams()['itmes']
 
-  const serverUrl: string = 'http://localhost:8080'
-  // const serverUrl: string = 'http://10.125.121.183:8080'
-
   const [imgFile, setImgFile] = useState<string>('')
   const titleRef = useRef<HTMLInputElement | null>(null)
   const contentRef = useRef<HTMLDivElement | null>(null)
@@ -74,7 +71,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       headers.append('Authorization', token)
       headers.append('Content-Type', 'multipart/form-data')
       console.log(Params)
-      fetch(`${serverUrl}/${Params}`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
         method: 'POST',
         headers: headers,
         body: formData

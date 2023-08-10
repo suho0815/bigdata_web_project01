@@ -1,4 +1,4 @@
-import type {FC} from 'react'
+import type {FC, MouseEventHandler} from 'react'
 import {Div, DivProps, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
 import choco1 from '../../../images/choco1.jpg'
 
@@ -9,6 +9,7 @@ export type HoneyBoardProps = DivProps & {
   heart?: number
   views?: number
   replycnt?: number
+  onClick?: MouseEventHandler<HTMLDivElement>
 }
 
 export const HoneyBoardItem: FC<HoneyBoardProps> = ({
@@ -17,10 +18,13 @@ export const HoneyBoardItem: FC<HoneyBoardProps> = ({
   date,
   heart,
   views,
-  replycnt
+  replycnt,
+  onClick
 }) => {
   return (
-    <Div className="flex w-full h-64 py-4 bg-gray-100 border-y md:flex-col md:h-96">
+    <Div
+      className="flex w-full h-64 py-4 bg-gray-100 border-y md:flex-col md:h-96 hover:cursor-pointer hover:bg-gray-200"
+      onClick={onClick}>
       <Div className="h-56 w-96 md:w-full">
         <img src={choco1} alt="" className="object-cover w-full h-full" />
       </Div>

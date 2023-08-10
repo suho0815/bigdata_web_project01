@@ -4,10 +4,15 @@ import {useState, useEffect} from 'react'
 import type {ListItem} from './HospitalListItem'
 import {useLocation, useNavigate} from 'react-router-dom'
 import Pagination from './Pagination'
+import {useSetRecoilState, useRecoilValue} from 'recoil'
+import {hospitalListPage} from '../../../store/RecoilAtom'
 
 const HospitalList: React.FC<{sharedHospital: any}> = ({sharedHospital}) => {
+  //recoil
+  const setPage = useSetRecoilState(hospitalListPage)
+  const page = useRecoilValue(hospitalListPage)
+
   const [limit, setLimit] = useState<number>(10)
-  const [page, setPage] = useState<number>(1)
   const offset = (page - 1) * limit
   let total = 0
 

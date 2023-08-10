@@ -5,14 +5,11 @@ import {useNavigate} from 'react-router-dom'
 import pupp from '../../../images/pupp.mp4'
 
 const SearchSection: React.FC = () => {
-  // const serverUrl = 'http://10.125.121.183:8080'
-  const serverUrl = 'http://localhost:8080'
-
   const [searchKeyword, setSearchKeyword] = useState<string>('')
   const Navigate = useNavigate()
 
   const onSearchbtnClicked = () => {
-    fetch(`${serverUrl}/searchhospital/${searchKeyword}`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/searchhospital/${searchKeyword}`)
       .then(response => response.json())
       .then(data => {
         console.log(data)

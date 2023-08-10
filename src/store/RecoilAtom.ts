@@ -20,7 +20,7 @@ export const searchData = atom<Array<any>>({
   default: []
 })
 
-export const page = atom<number>({
-  key: 'page',
-  default: 0
+export const hospitalListPage = atom<number>({
+  key: 'hospitalListPage',
+  default: 1
 })

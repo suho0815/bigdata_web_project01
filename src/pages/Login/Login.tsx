@@ -17,8 +17,6 @@ type LoginProps = {
 export const Login: FC<LoginProps> = () => {
   // 기타 상수
   const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
-  // const serverUrl = `http://10.125.121.183:8080`
-  const serverUrl = `http://localhost:8080`
 
   // 사용자 입력 상태
   const userIdRef = useRef<HTMLInputElement>(null)
@@ -34,7 +32,7 @@ export const Login: FC<LoginProps> = () => {
     const password = passwordRef.current?.value ?? ''
     try {
       const response = await axios.post(
-        `${serverUrl}/login`,
+        `${process.env.REACT_APP_SERVER_URL}/login`,
         {
           userId: userId, // 아이디 정보 전송
           password: password // 비밀번호 정보 전송
@@ -49,7 +47,7 @@ export const Login: FC<LoginProps> = () => {
       if (jwtToken !== undefined && islogin === false) {
         setCookie('accessJwtToken: ', jwtToken) // 쿠키에 토큰 저장
         alert('로그인 성공')
-        const userInfo = getUserInfoFromToken()
+        // const userInfo = getUserInfoFromToken()
         setIslogin(true)
         navigate('/')
       } else {

@@ -7,9 +7,6 @@ import HospitalListItem from '../HospitalList/HospitalListItem'
 import {useLocation, useNavigate} from 'react-router-dom'
 
 const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
-  const serverUrl: string = 'http://localhost:8080'
-  // const serverUrl: string = 'http://10.125.121.183:8080'
-
   const [open, setOpen] = useState<boolean>(false)
   const [sido, setSido] = useState<ReactElement[] | null>()
   const [gungu, setGungu] = useState<ReactElement[] | null>()
@@ -26,7 +23,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const detailSearchOnClick = useCallback(() => {
     setOpen(true)
 
-    fetch(`${serverUrl}/province`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/province`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')
@@ -53,7 +50,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
     (event: any) => {
       const selectedValue = event.target.value
 
-      fetch(`${serverUrl}/province/${selectedValue}`)
+      fetch(`${process.env.REACT_APP_SERVER_URL}/province/${selectedValue}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -90,7 +87,9 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
       if (selectedValue !== null) {
         console.log('gungudata: ', selectedValue)
       }
-      fetch(`${serverUrl}/province/${gunguselected}/${selectedValue}`)
+      fetch(
+        `${process.env.REACT_APP_SERVER_URL}/province/${gunguselected}/${selectedValue}`
+      )
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -123,7 +122,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
     if (dongref.current !== null) selectedDong = dongref.current.value
     // /${selectedGungu}/${selectedDong}
     fetch(
-      `${serverUrl}/hospital/${selectedSido}${
+      `${process.env.REACT_APP_SERVER_URL}/hospital/${selectedSido}${
         selectedGungu !== '' ? '/' + selectedGungu : ''
       }${selectedDong !== '' ? '/' + selectedDong : ''}`
     )
@@ -145,7 +144,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
     let keyword = ''
     if (keywordref.current !== null) keyword = keywordref.current.value
 
-    fetch(`${serverUrl}/searchhospital/${keyword}`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/searchhospital/${keyword}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok')

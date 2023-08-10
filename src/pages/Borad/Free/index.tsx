@@ -9,8 +9,6 @@ import {getCookie} from '../../../util'
 import {useNavigate} from 'react-router'
 
 const Free = () => {
-  const serverUrl: string = 'http://localhost:8080'
-  // const serverUrl: string = 'http://10.125.121.183:8080'
   const Navigate = useNavigate()
 
   const [limit, setLimit] = useState<number>(20)
@@ -18,6 +16,13 @@ const Free = () => {
   const offset: number = (page - 1) * limit
   const [total, setTotal] = useState<number | undefined>(0)
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
+
+  const [viewDetailPage, setViewDetailPage] = useState<boolean>(false)
+
+  const DetailPageClick = () => {
+    if (viewDetailPage === false) setViewDetailPage(true)
+    else setViewDetailPage(false)
+  }
 
   useEffect(() => {
     const tokenCookie = getCookie('accessJwtToken:')
@@ -28,7 +33,7 @@ const Free = () => {
       headers.append('Authorization', token)
       headers.append('Content-Type', 'application/json')
 
-      fetch(`${serverUrl}/free`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/free`, {
         method: 'GET',
         headers: headers
       })
@@ -41,11 +46,12 @@ const Free = () => {
         })
         .then(data => {
           const mapItems = data.map((datalist: any, index: number) => (
-            <div key={index} className="flex w-1/2 justify-evenly md:w-full">
+            <div key={index} className="flex w-1/3 justify-evenly w-responsive-custom">
               <FreeBoardItem
                 title={datalist['title']}
                 writer={datalist['nickname']}
                 date={datalist['regdate']}
+                onClick={DetailPageClick}
               />
             </div>
           ))
@@ -60,11 +66,25 @@ const Free = () => {
   }, [])
 
   return (
-    <section className="flex flex-col items-center w-full h-full p-10 mt-8 ">
-      <FreeFilter total={total} />
-      <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
-        {renderedItems}
-      </div>
+    <section className="p-10 mt-8 ">
+      {!viewDetailPage && (
+        <div className="flex flex-col items-center w-full h-full p-10">
+          <FreeFilter total={total} />
+          <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
+            {renderedItems}
+            <div className="flex w-1/3 justify-evenly w-responsive-custom">
+              <FreeBoardItem />
+            </div>
+            <div className="flex w-1/3 justify-evenly w-responsive-custom">
+              <FreeBoardItem />
+            </div>
+            <div className="flex w-1/3 justify-evenly lg:w-1/2 md:w-full">
+              <FreeBoardItem />
+            </div>
+          </div>
+        </div>
+      )}
+
       <Div>{/* <Pagination/> */}</Div>
     </section>
   )
