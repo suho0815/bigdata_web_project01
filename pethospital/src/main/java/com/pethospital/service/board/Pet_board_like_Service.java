@@ -30,7 +30,7 @@ public class Pet_board_like_Service {
 	Pet_honey_board_Repository petHoneyBoardRepository; // 꿀팁게시판
 
 	@Transactional
-	public ResponseEntity<String> boardLikeOnOff(String userId, String boardName, int boardId){
+	public ResponseEntity<String> boardLikeOnOff(String userId, String boardName, int boardId) {
 		
 		Pet_member petMember = petMemberRepository.findByUserId(userId);
 		
@@ -84,5 +84,10 @@ public class Pet_board_like_Service {
 			}
 		}
 		return null;
+	}
+
+	// 좋아요 상위 5개 게시글
+	public Object fiveLike() {
+		return petBoardLikeRepository.findJoinTable();
 	}
 }

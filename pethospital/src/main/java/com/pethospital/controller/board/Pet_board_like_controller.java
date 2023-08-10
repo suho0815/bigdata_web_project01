@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +34,11 @@ public class Pet_board_like_controller {
 		String userId = authentication.getName(); // 권한에서 userId 추출
 		
 		return petBoardLikeService.boardLikeOnOff(userId, boardName, boardId);
+	}
+
+	// 좋아요 상위 5개 게시글 
+	@GetMapping("/top5like")
+	public Object topLike() {
+		return petBoardLikeService.fiveLike();
 	}
 }

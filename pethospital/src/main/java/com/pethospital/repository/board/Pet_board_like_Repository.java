@@ -1,6 +1,7 @@
 package com.pethospital.repository.board;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.pethospital.domain.Pet_member;
 import com.pethospital.domain.board.Pet_board_like;
@@ -19,4 +20,8 @@ public interface Pet_board_like_Repository extends JpaRepository<Pet_board_like,
 
     // 좋아요가 없을 때
     // ~~~.save()
+
+    // 좋아요 상위 5개 불러오기
+    @Query("SELECT * FROM Pet_free_board JOIN Pet_honey_board ON Pet_free_board.likes = Pet_honey_board.likes ORDER BY Pet_free_board.likes DESC LIMIT 5")
+    Object findJoinTable();
 }
