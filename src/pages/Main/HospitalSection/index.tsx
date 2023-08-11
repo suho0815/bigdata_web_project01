@@ -1,5 +1,5 @@
 import type {MouseEvent} from 'react'
-import {FC, useState, useRef, forwardRef, useImperativeHandle} from 'react'
+import {FC, useState, useRef, forwardRef, useImperativeHandle, useEffect} from 'react'
 import {Icon, Div, Card, Title} from '../../../components'
 import HospitalList from './HospitalList'
 import dog from '../../../images/cute-dog.png'
@@ -66,6 +66,17 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
         }
       }
     }
+
+    useEffect(() => {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/toplike`, {
+        method: 'GET'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+        })
+        .catch(err => err.message)
+    }, [])
 
     return (
       <div className="flex flex-col items-center justify-center w-full h-full p-4">

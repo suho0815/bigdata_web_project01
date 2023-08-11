@@ -109,10 +109,11 @@ export const Map: FC<MapProps> = ({className, sharedHospital}) => {
           // console.log(marker)
           // marker.setMap(map)
         }
-        let position = new window.kakao.maps.LatLng(36.477078, 128.026691)
-        // positions !== undefined
-        //   ? positions[0].latlng
-        //   : new window.kakao.maps.LatLng(36.477078, 128.026691)
+        let position =
+          // new window.kakao.maps.LatLng(36.477078, 128.026691)
+          positions !== undefined
+            ? positions[0].latlng
+            : new window.kakao.maps.LatLng(36.477078, 128.026691)
         map.setCenter(position)
       }
     })

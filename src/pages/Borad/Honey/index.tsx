@@ -22,6 +22,8 @@ const Honey = () => {
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
 
   const [viewDetailPage, setViewDetailPage] = useState<boolean>(false)
+  const [heartBtnCheck, setHeartBtnCheck] = useState<boolean>(false)
+  // const [detailPageChange, setDetailPageChange] = useState<boolean>(false)
   const [detailData, setDetailData] = useState<any>()
 
   const DetailPageClick = (data: HoneyData) => {
@@ -54,7 +56,7 @@ const Honey = () => {
               writer={datalist['nickname']}
               date={datalist['regdate']}
               views={datalist['views']}
-              // heart={}
+              heart={datalist['likes']}
               onClick={() => DetailPageClick(datalist)}
             />
           ))
@@ -75,7 +77,19 @@ const Honey = () => {
           <div className="w-full border-y-2 border-mint">{renderedItems}</div>
         </div>
       )}
-      {viewDetailPage && <HoneyDetailPage />}
+      {viewDetailPage && (
+        <HoneyDetailPage
+          title={detailData['title']}
+          content={detailData['content']}
+          views={detailData['views']}
+          regdate={detailData['regdate']}
+          nickname={detailData['nickname']}
+          heart={detailData['likes']}
+          honeyBoardId={detailData['honeyBoardId']}
+          setBoardListTrue={() => setViewDetailPage(false)}
+          setHeartBtnCheck={setHeartBtnCheck}
+        />
+      )}
       <Div>{/* <Pagination /> */}</Div>
     </section>
   )

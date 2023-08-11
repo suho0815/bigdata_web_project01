@@ -46,7 +46,8 @@ const WriteBoard: FC<WriteBoardProps> = () => {
     // }
   }
 
-  const registerBtnClick = () => {
+  // 등록하기 버튼 클릭 시
+  const registerBtnClick = async () => {
     const formData = new FormData()
     const titleValue = titleRef.current ? titleRef.current.value : ' '
     const contentValue = contentRef.current ? contentRef.current.textContent : ' '
@@ -54,10 +55,10 @@ const WriteBoard: FC<WriteBoardProps> = () => {
     if (contentValue !== null) {
       formData.append('content', contentValue)
     }
-    // const imageFile = imgRef.current?.files?.[0]
-    // if (imageFile) {
-    //   formData.append('imageFile', imageFile)
-    // }
+    const imageFile = imgRef.current?.files?.[0]
+    if (imageFile) {
+      formData.append('imageFile', imageFile)
+    }
 
     for (const keyValue of formData) console.log(keyValue)
     console.log(formData.get('imageFile'))
@@ -70,23 +71,39 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       const headers = new Headers()
       headers.append('Authorization', token)
       headers.append('Content-Type', 'multipart/form-data')
-      console.log(Params)
-      fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
-        method: 'POST',
-        headers: headers,
-        body: formData
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          } else {
-            throw new Error('Network response was not ok')
-          }
+      try {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
+          method: 'POST',
+          headers: headers,
+          body: formData
         })
-        .then(data => console.log(data))
-        .catch(err => err.message)
-    } else {
-      alert('로그인이 필요한 서비스입니다.')
+        if (response.ok) {
+          const data = await response.json()
+          console.log(data)
+        } else {
+          throw new Error('Network response was not ok')
+        }
+      } catch (err) {
+        console.error((err as Error).message)
+      }
+      //   fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
+      //     method: 'POST',
+      //     body: formData,
+      //     headers: headers
+      //   })
+      //     .then(response => {
+      //       if (response.ok) {
+      //         console.log(response.json())
+      //         return response.json()
+      //       } else {
+      //         throw new Error('Network response was not ok')
+      //       }
+      //     })
+      //     .then(data => console.log(data))
+      //     .catch(err => err.message)
+      // } else {
+      //   alert('로그인이 필요한 서비스입니다.')
+      // }
     }
   }
 
