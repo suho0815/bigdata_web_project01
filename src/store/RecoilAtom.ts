@@ -24,3 +24,5 @@ export const hospitalListPage = atom<number>({
   key: 'hospitalListPage',
   default: 1
 })
+
+

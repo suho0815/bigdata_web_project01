@@ -1,12 +1,7 @@
 import {Cookies} from 'react-cookie'
 import jwtDecode from 'jwt-decode'
-// import {useSetRecoilState, useRecoilValue} from 'recoil'
-// import {isloginToken} from '../store/RecoilAtom'
 
 const cookies = new Cookies()
-//recoil 사용 선언부
-// const setIslogin = useSetRecoilState(isloginToken)
-// const islogin = useRecoilValue(isloginToken)
 
 export const setCookie = (name: string, value: string, options?: any) => {
   return cookies.set(name, value, {...options})
@@ -33,7 +28,8 @@ export const getUserInfoFromToken = () => {
 
     try {
       const decodedToken: any = jwtDecode(token) // 해독된 토큰의 형태
-      const userInfo = decodedToken.payload // 사용자 정보는 payload에 있습니다
+      // console.log(decodedToken)
+      const userInfo = decodedToken.userId // 사용자 정보는 payload에 있습니다
       return userInfo
     } catch (error) {
       console.error('토큰 해독 에러:', error)

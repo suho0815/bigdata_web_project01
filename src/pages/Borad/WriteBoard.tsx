@@ -5,7 +5,7 @@ import {useRef, useState, useEffect} from 'react'
 import dog from '../../images/nav-dog.png'
 
 import BoardMenu from './BoardMenu'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useParams, useNavigate} from 'react-router-dom'
 import {useSetRecoilState, useRecoilValue} from 'recoil'
 import {isFree} from '../../store/RecoilAtom'
 import {getCookie} from '../../util'
@@ -15,6 +15,7 @@ export type WriteBoardProps = DivProps & {
   title?: string
   content?: string
   imgsrc?: string
+  boardId?: number
 }
 
 const WriteBoard: FC<WriteBoardProps> = () => {
@@ -25,6 +26,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
   const contentRef = useRef<HTMLDivElement | null>(null)
   const imgRef = useRef<HTMLInputElement | null>(null)
 
+  const Navigate = useNavigate()
   const setIsfree = useSetRecoilState(isFree)
   const isfree = useRecoilValue(isFree)
 
@@ -67,10 +69,10 @@ const WriteBoard: FC<WriteBoardProps> = () => {
     if (tokenCookie) {
       const token = tokenCookie.trim()
 
-      console.log(`token : ${token}`)
       const headers = new Headers()
       headers.append('Authorization', token)
-      headers.append('Content-Type', 'multipart/form-data')
+      // headers.append('Content-Type', 'multipart/form-data')
+      // headers.append('Content-Type', 'application/json')
       try {
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
           method: 'POST',
@@ -86,10 +88,11 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       } catch (err) {
         console.error((err as Error).message)
       }
-      //   fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
-      //     method: 'POST',
-      //     body: formData,
-      //     headers: headers
+      Navigate(`/board/${Params}`)
+      //   fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}/${boardId}`, {
+      //     method: 'PUT',
+      //     headers: headers,
+      //     body: formData
       //   })
       //     .then(response => {
       //       if (response.ok) {
@@ -131,6 +134,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       <Div className="flex flex-col items-center">
         <input
           type="file"
+          multiple
           accept="image/*"
           id="Img"
           ref={imgRef}
@@ -145,7 +149,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
         <button className="mr-4 text-white btn btn-info" onClick={registerBtnClick}>
           등록하기
         </button>
-        <Link to="/board/free">
+        <Link to={`/board/${Params}`}>
           <button className="btn ">취소</button>
         </Link>
       </Div>

@@ -6,11 +6,12 @@ import {Itemtitle, Itemsummary} from './Title'
 
 export type CardProps = DivProps & {
   imgsrc?: string
-  hospitalName?: string
-  locate?: string
+  boardName?: string
+  heart?: number
+  views?: number
 }
 
-export const Card: FC<CardProps> = ({imgsrc, hospitalName, locate}) => {
+export const Card: FC<CardProps> = ({imgsrc, boardName, heart, views}) => {
   return (
     <Div className="m-2 border shadow-lg rounded-xl" width="20rem">
       <Div className="relative m-auto border h-52 rounded-t-xl" width="20rem">
@@ -20,8 +21,17 @@ export const Card: FC<CardProps> = ({imgsrc, hospitalName, locate}) => {
         <Div height="4rem">
           <Div className="">
             <Div className="flex flex-row items-center justify-around ml-2">
-              <Itemtitle className="text-xs font-bold">{hospitalName}</Itemtitle>
-              <Itemsummary className="text-xs text-gray-500">{locate}</Itemsummary>
+              <Itemtitle className="text-xs font-bold">{boardName}</Itemtitle>
+              <Div className="flex text-xs text-gray-500">
+                <Itemsummary className="flex items-center mr-3">
+                  <Icon name="favorite" className="mr-1" />
+                  {heart}
+                </Itemsummary>
+                <Itemsummary className="flex items-center">
+                  <Icon name="visibility" className="mr-1" />
+                  {views}
+                </Itemsummary>
+              </Div>
             </Div>
           </Div>
         </Div>

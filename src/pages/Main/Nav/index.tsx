@@ -8,7 +8,7 @@ import navdog from '../../../images/nav-dog.png'
 import {useNavigate} from 'react-router-dom'
 import {useSetRecoilState, useRecoilValue} from 'recoil'
 import {isloginToken} from '../../../store/RecoilAtom'
-import {getCookie, removeCookie} from '../../../util'
+import {getCookie, removeCookie, getUserInfoFromToken} from '../../../util'
 
 const Nav: FC = () => {
   const [open, setOpen] = useState<boolean>(false)
@@ -23,14 +23,11 @@ const Nav: FC = () => {
   //   console.log(newVal)
   // })
 
+  const userInfo = getUserInfoFromToken()
   const Navigate = useNavigate()
   //recoil 사용 선언부
   const setIslogin = useSetRecoilState(isloginToken)
   const islogin = useRecoilValue(isloginToken)
-
-  const provinceChange = () => {}
-
-  // .withExpiresAt(new Date(System.currentTimeMillis()+1000*600*10)) // 토큰 유지시간
 
   useEffect(() => {
     const tokenCookie = getCookie('accessJwtToken:') // 쿠키에서 토큰 가져오기
@@ -42,13 +39,13 @@ const Nav: FC = () => {
     }
   }, [])
 
-  const logoutClick = useCallback((e: React.MouseEvent) => {
+  const logoutClick = (e: React.MouseEvent) => {
+    removeCookie('accessJwtToken:')
     setOpen(false)
     setIslogin(false)
     alert('로그아웃 되었습니다.')
-    removeCookie('accessJwtToken:')
     Navigate('/')
-  }, [])
+  }
 
   const menuClick = useCallback((e: React.MouseEvent) => {
     setOpen(true)
@@ -75,7 +72,8 @@ const Nav: FC = () => {
               style={{fontSize: '60px'}}></Icon>
           </button>
 
-          <Div className="absolute right-0 top-2 lg:hidden">
+          <Div className="absolute right-0 flex top-2 lg:hidden">
+            {userInfo && <Div className="mr-10 ">{userInfo}님 환영합니다.</Div>}
             <ul className="flex">
               <li className="mr-4">
                 <Link
@@ -111,11 +109,9 @@ const Nav: FC = () => {
       <div
         className={`fixed z-20 w-full h-screen ${
           open ? 'visible' : 'invisible'
-        } bg-white lg:visible `}
+        } bg-white lg:block hidden`}
         style={{
           transform: open ? 'translateY(0)' : 'translateY(-100%)', // 모달을 열 때는 위로 이동, 닫을 때는 화면 위쪽으로 이동하여 숨김
-          // visibility: open ? 'visible' : 'hidden',
-          // opacity: open ? 1 : 0, // 애니메이션 시작과 끝 값을 설정
           transition: '.3s ease-out' // 애니메이션 시간과 이징 함수 설정
         }}>
         <div className="z-30 w-full h-16 bg-white">
@@ -133,9 +129,10 @@ const Nav: FC = () => {
         </div>
 
         <div className="z-40 flex flex-col pt-16">
-          <div>
-            <ul className="flex justify-center">
-              <li className="mr-4">
+          <div className="mb-4 text-center">
+            {userInfo && <Div className="mb-5">{userInfo}님 환영합니다.</Div>}
+            <ul className="flex justify-center ">
+              <li className="mr-4 ">
                 <Link
                   to={islogin ? '/' : '/login'}
                   onClick={islogin ? logoutClick : closeModal}>

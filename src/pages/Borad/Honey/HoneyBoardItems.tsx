@@ -29,19 +29,19 @@ export const HoneyBoardItem: FC<HoneyBoardProps> = ({
         <img src={choco1} alt="" className="object-cover w-full h-full" />
       </Div>
 
-      <Div className="w-1/2 md:mt-4 md:h-1/2 md:w-full md:flex md:justify-evenly">
+      <Div className="flex flex-col w-1/2 justify-evenly md:mt-4 md:h-1/2 md:w-full md:flex-row">
         <Subtitle className="mb-6">{title}</Subtitle>
         <Subtitle>
           <Icon name="person" /> {writer}
         </Subtitle>
       </Div>
-      <Div className="w-1/2 md:h-1/2 md:items-center md:w-full md:flex md:justify-evenly">
+      <Div className="flex flex-col w-1/2 justify-evenly md:h-1/2 md:items-center md:w-full md:flex-row">
         <p className="mb-4 text-center align-middle">
           <Icon name="favorite" className="mr-3" />
           {heart !== undefined ? heart : 0}
         </p>
-        <Itemsummary className="mb-4 md:mb-0 ">조회 수 {views}</Itemsummary>
-        <Itemsummary className="">{date}</Itemsummary>
+        <Itemsummary className="mb-4 md:mb-0 ">조회 수: {views}</Itemsummary>
+        <Itemsummary className="">작성 일: {date?.slice(0, 10)}</Itemsummary>
       </Div>
     </Div>
   )

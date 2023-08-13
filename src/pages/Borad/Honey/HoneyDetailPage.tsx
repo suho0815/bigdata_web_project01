@@ -29,7 +29,7 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   const [heartState, setHeartState] = useState<number>()
 
   const tokenCookie = getCookie('accessJwtToken:')
-  const token = tokenCookie.trim()
+  const token = tokenCookie?.trim()
   const headers = new Headers()
   headers.append('Authorization', token)
   headers.append('Content-Type', 'application/json')
@@ -105,7 +105,7 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
         <Div className="w-full">
           <Div className="flex justify-end w-full mt-6 mb-6 text-gray-400">
             <span className="mr-4">조회 수 {views}</span>
-            <span className="mr-8">작성날짜 {regdate}</span>
+            <span className="mr-8">작성날짜 {regdate?.slice(0, 10)}</span>
           </Div>
         </Div>
         <Div className="w-full mb-6">{content}</Div>

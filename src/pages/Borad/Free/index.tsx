@@ -1,12 +1,12 @@
 import type {FC, ReactElement} from 'react'
 import {useState, useEffect, useRef} from 'react'
 import {Div} from '../../../components'
-import {BoardMenu} from '../BoardMenu'
 import Pagination from '../../SearchHospital/HospitalList/Pagination'
 import {FreeBoardItem} from './FreeBoardItem'
 import FreeFilter from './FreeFilter'
 import {getCookie} from '../../../util'
 import {useNavigate} from 'react-router'
+import FreeDetailModal from './FreeDetailModal'
 
 const Free = () => {
   const Navigate = useNavigate()
@@ -17,11 +17,19 @@ const Free = () => {
   const [total, setTotal] = useState<number | undefined>(0)
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
 
-  const [viewDetailPage, setViewDetailPage] = useState<boolean>(false)
+  const [viewDetailModal, setViewDetailModal] = useState<boolean>(false)
+  const [titleData, setTitleData] = useState<string>('')
+  const [freeBoardId, setFreeBoardId] = useState<number>()
+  const [heart, setHeart] = useState<number>()
+  const [replyCnt, setReplyCnt] = useState<number>()
 
-  const DetailPageClick = () => {
-    if (viewDetailPage === false) setViewDetailPage(true)
-    else setViewDetailPage(false)
+  const DetailModalClick = (title: string, freeBoardid: number, Heart: number) => {
+    setTitleData(title)
+    setFreeBoardId(freeBoardid)
+    setHeart(Heart)
+    // setReplyCnt(ReplyCnt)
+    if (viewDetailModal === false) setViewDetailModal(true)
+    else setViewDetailModal(false)
   }
 
   useEffect(() => {
@@ -45,13 +53,22 @@ const Free = () => {
           }
         })
         .then(data => {
+          console.log(data)
           const mapItems = data.map((datalist: any, index: number) => (
             <div key={index} className="flex w-1/3 justify-evenly w-responsive-custom">
               <FreeBoardItem
                 title={datalist['title']}
                 writer={datalist['nickname']}
                 date={datalist['regdate']}
-                onClick={DetailPageClick}
+                heart={datalist['likes']}
+                // replycnt={data.length}
+                onClick={() =>
+                  DetailModalClick(
+                    datalist['title'],
+                    datalist['freeBoardId'],
+                    datalist['likes']
+                  )
+                }
               />
             </div>
           ))
@@ -63,28 +80,24 @@ const Free = () => {
       Navigate('/')
       alert('로그인이 필요한 서비스입니다.')
     }
-  }, [])
+  }, [viewDetailModal])
 
   return (
-    <section className="p-10 mt-8 ">
-      {!viewDetailPage && (
-        <div className="flex flex-col items-center w-full h-full p-10">
-          <FreeFilter total={total} />
-          <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
-            {renderedItems}
-            <div className="flex w-1/3 justify-evenly w-responsive-custom">
-              <FreeBoardItem />
-            </div>
-            <div className="flex w-1/3 justify-evenly w-responsive-custom">
-              <FreeBoardItem />
-            </div>
-            <div className="flex w-1/3 justify-evenly lg:w-1/2 md:w-full">
-              <FreeBoardItem />
-            </div>
-          </div>
+    <section className="w-full p-10 mt-8 ">
+      <div className="flex flex-col items-center w-full h-full p-10">
+        <FreeFilter total={total} />
+        <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
+          {renderedItems}
         </div>
+      </div>
+      {viewDetailModal && (
+        <FreeDetailModal
+          onCloseIconClick={() => setViewDetailModal(false)}
+          title={titleData}
+          freeBoardId={freeBoardId}
+          heart={heart}
+        />
       )}
-
       <Div>{/* <Pagination/> */}</Div>
     </section>
   )

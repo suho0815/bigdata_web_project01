@@ -1,4 +1,4 @@
-import type {MouseEvent} from 'react'
+import type {MouseEvent, ReactElement} from 'react'
 import {FC, useState, useRef, forwardRef, useImperativeHandle, useEffect} from 'react'
 import {Icon, Div, Card, Title} from '../../../components'
 import HospitalList from './HospitalList'
@@ -13,6 +13,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
     // useImperativeHandle(ref, () => scrollRef.current)
     const [isDrag, setIsDrag] = useState(false)
     const [startX, setStartX] = useState<number | undefined>(0)
+    const [topLikeData, setTopLikeData] = useState<ReactElement[]>()
 
     const onScrollBtnClick = (nextType: 'prev' | 'next') => {
       if (!scrollRef.current) return
@@ -74,6 +75,15 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
         .then(response => response.json())
         .then(data => {
           console.log(data)
+          const cardData = data.map((datalist: any, index: number) => (
+            <Card
+              imgsrc={datalist['imagefile'] ? datalist['imagefile'] : choco1}
+              boardName={datalist['title']}
+              heart={datalist['likes']}
+              views={datalist['views']}
+            />
+          ))
+          setTopLikeData(cardData)
         })
         .catch(err => err.message)
     }, [])
@@ -102,12 +112,13 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
               onMouseMove={onThrottleDragMove(onDragMove)}
               onMouseUp={onDragEnd}
               onMouseLeave={onDragEnd}>
-              <Card imgsrc={dog} hospitalName="병원" locate="주소" />
+              {topLikeData}
+              {/* <Card imgsrc={dog} hospitalName="병원" locate="주소" />
               <Card imgsrc={choco1} hospitalName="큐티초코병원" locate="주소" />
               <Card imgsrc={choco2} hospitalName="이초코병원" locate="주소" />
               <Card imgsrc={choco3} hospitalName="병원" locate="주소" />
               <Card imgsrc={dog} hospitalName="병원" locate="주소" />
-              <Card imgsrc={dog} hospitalName="병원" locate="주소" />
+              <Card imgsrc={dog} hospitalName="병원" locate="주소" /> */}
             </Div>
             <div
               className="h-full btn lg:hidden"
@@ -119,6 +130,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
             </div>
           </div>
         </Div>
+        {/*  */}
         <Div className="flex mt-8 md:flex-col">
           <div className="mr-8 md:mr-0 md:mb-8">
             <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-green-200 to-blue-500">

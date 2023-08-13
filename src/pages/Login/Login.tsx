@@ -3,12 +3,10 @@ import {useState, useRef} from 'react'
 import {Title, Subtitle, Loginbtn, Icon, LoginInput} from '../../components'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import {Cookies} from 'react-cookie'
-import {setCookie, getCookie} from '../../util/Cookie'
+import {setCookie, getCookie, removeCookie} from '../../util/Cookie'
 import {useNavigate} from 'react-router-dom'
 import {useSetRecoilState, useRecoilValue} from 'recoil'
 import {isloginToken} from '../../store/RecoilAtom'
-import {getUserInfoFromToken} from '../../util/Cookie'
 
 type LoginProps = {
   title?: string
@@ -16,7 +14,8 @@ type LoginProps = {
 
 export const Login: FC<LoginProps> = () => {
   // 기타 상수
-  const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
+  const JWT_EXPIRY_TIME = 10 * 600 * 1000 // 만료 시간 (밀리 초로 표현)
+  // .withExpiresAt(new Date(System.currentTimeMillis()+1000*600*10)) // 토큰 유지시간
 
   // 사용자 입력 상태
   const userIdRef = useRef<HTMLInputElement>(null)
@@ -42,12 +41,14 @@ export const Login: FC<LoginProps> = () => {
         }
       )
       // response에서 Authorization 헤더 가져오기
-
       const jwtToken = response.headers.authorization
       if (jwtToken !== undefined && islogin === false) {
         setCookie('accessJwtToken: ', jwtToken) // 쿠키에 토큰 저장
+        setTimeout(() => {
+          removeCookie('accessJwtToken:')
+          alert('토큰이 만료되어 로그아웃 되었습니다.')
+        }, JWT_EXPIRY_TIME - 60000)
         alert('로그인 성공')
-        // const userInfo = getUserInfoFromToken()
         setIslogin(true)
         navigate('/')
       } else {
