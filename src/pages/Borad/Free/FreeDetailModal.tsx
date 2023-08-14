@@ -10,6 +10,7 @@ import {
   ModalAction
 } from '../../../components'
 import {Div} from '../../../components'
+import {useNavigate} from 'react-router-dom'
 import FreeDetailReply from './FreeDetailReply'
 import ReplyInput from './ReplyInput'
 import {getCookie, getUserInfoFromToken} from '../../../util'
@@ -29,6 +30,7 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   freeBoardId,
   heart
 }) => {
+  const Navigate = useNavigate()
   const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
   const [modalData, setModalData] = useState<any>()
   const [modalReplyData, setModalReplyData] = useState<any[]>()
@@ -40,25 +42,29 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   const headers = new Headers()
   headers.append('Authorization', token)
   headers.append('Content-Type', 'application/json')
-
-  // 게시글 내용 가져오기
+  let renderOne = true
+  // 특정 게시글 내용 가져오기
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/free/${title}`, {
-      method: 'GET',
-      headers: headers
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (userInfo !== undefined && setUserInfoTrue) {
-          if (userInfo === data['userId']) {
-            setUserInfoTrue(true)
-          } else if (userInfo !== data['userId']) {
-            setUserInfoTrue(false)
-          }
-        }
-        setModalData(data)
+    if (renderOne) {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/free/${title}`, {
+        method: 'GET',
+        headers: headers
       })
-      .catch(error => error.message)
+        .then(response => response.json())
+        .then(data => {
+          if (userInfo !== undefined && setUserInfoTrue) {
+            if (userInfo === data['userId']) {
+              setUserInfoTrue(true)
+            } else if (userInfo !== data['userId']) {
+              setUserInfoTrue(false)
+            }
+          }
+          setModalData(data)
+        })
+        .catch(error => error.message)
+    }
+    if (renderOne) renderOne = false
+    else renderOne = true
   }, [title])
 
   // 모달창이 열리면 게시글의 댓글 내용 가져오기
@@ -111,6 +117,15 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
       .catch(error => error.message)
   }
 
+  // 게시글 수정버튼 클릭 시
+  const updateBtnClicked = () => {
+    Navigate('/board/free/write', {
+      state: {
+        title: modalData['title']
+      }
+    })
+  }
+
   // 게시글 삭제
   const deleteFreeBoard = () => {
     if (userInfoTrue) {
@@ -149,9 +164,14 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
                   <Icon name="chat_bubble" className="mr-1" />
                   {modalReplyData?.length}
                 </div>
+                <Itemsummary className="mr-2">
+                  조회 수 {modalData ? modalData['views'] : ''}
+                </Itemsummary>
                 {userInfoTrue && modalData && (
                   <Div className="flex">
-                    <button className="mr-3 btn btn-md">수정</button>
+                    <button className="mr-3 btn btn-md" onClick={updateBtnClicked}>
+                      수정
+                    </button>
                     <button
                       className="text-white btn btn-md btn-error"
                       onClick={deleteFreeBoard}>
@@ -167,12 +187,14 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
                   <Itemtitle className="w-2/3 text-start">
                     {modalData ? modalData['title'] : ''}
                   </Itemtitle>
-                  <Itemsummary className="w-1/3">
-                    작성일{' '}
-                    {modalData && modalData['regdate'] !== null
-                      ? modalData['regdate'].slice(0, 10)
-                      : ''}
-                  </Itemsummary>
+                  <div className="flex w-1/3">
+                    <Itemsummary className="mr-2">
+                      작성일{' '}
+                      {/* {modalData && modalData['regdate'] !== null
+                        ? modalData['regdate'].slice(0, 10)
+                        : ''} */}
+                    </Itemsummary>
+                  </div>
                 </div>
                 <div>{modalData ? modalData['content'] : ''}</div>
               </div>

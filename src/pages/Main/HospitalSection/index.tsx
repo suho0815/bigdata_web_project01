@@ -14,6 +14,8 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
     const [isDrag, setIsDrag] = useState(false)
     const [startX, setStartX] = useState<number | undefined>(0)
     const [topLikeData, setTopLikeData] = useState<ReactElement[]>()
+    const [newPost, setNewPost] = useState<any>()
+    const [newReply, setNewReply] = useState<any>()
 
     const onScrollBtnClick = (nextType: 'prev' | 'next') => {
       if (!scrollRef.current) return
@@ -69,6 +71,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
     }
 
     useEffect(() => {
+      // 인기 게시글
       fetch(`${process.env.REACT_APP_SERVER_URL}/toplike`, {
         method: 'GET'
       })
@@ -86,6 +89,26 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
           setTopLikeData(cardData)
         })
         .catch(err => err.message)
+
+      // 새로운 글
+      fetch(`${process.env.REACT_APP_SERVER_URL}/recentpost`, {
+        method: 'GET'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          setNewPost(data)
+        })
+
+      // 새로운 댓글
+      fetch(`${process.env.REACT_APP_SERVER_URL}/recentreply`, {
+        method: 'GET'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          setNewReply(data)
+        })
     }, [])
 
     return (
@@ -113,12 +136,6 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
               onMouseUp={onDragEnd}
               onMouseLeave={onDragEnd}>
               {topLikeData}
-              {/* <Card imgsrc={dog} hospitalName="병원" locate="주소" />
-              <Card imgsrc={choco1} hospitalName="큐티초코병원" locate="주소" />
-              <Card imgsrc={choco2} hospitalName="이초코병원" locate="주소" />
-              <Card imgsrc={choco3} hospitalName="병원" locate="주소" />
-              <Card imgsrc={dog} hospitalName="병원" locate="주소" />
-              <Card imgsrc={dog} hospitalName="병원" locate="주소" /> */}
             </Div>
             <div
               className="h-full btn lg:hidden"
@@ -136,20 +153,16 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
             <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-green-200 to-blue-500">
               새로운 글
             </Div>
-            <HospitalList
-            // listtitle={} address={}
-            />
+            <HospitalList newPost={newPost} />
             <button className="w-full border border-blue-500 btn hover:border-blue-500">
               더보기 +
             </button>
           </div>
           <div>
             <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-pink-500 to-yellow-500">
-              새로운 후기
+              새로운 댓글
             </Div>
-            <HospitalList
-            // listtitle={} address={}
-            />
+            <HospitalList newReply={newReply} />
             <button className="w-full border border-blue-500 btn hover:border-blue-500">
               더보기 +
             </button>

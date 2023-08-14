@@ -28,6 +28,7 @@ const Free = () => {
     setFreeBoardId(freeBoardid)
     setHeart(Heart)
     // setReplyCnt(ReplyCnt)
+    // console.log(title)
     if (viewDetailModal === false) setViewDetailModal(true)
     else setViewDetailModal(false)
   }

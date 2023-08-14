@@ -26,7 +26,10 @@ const ReplyInput: FC<ReplyInputProps> = ({freeBoardId, fetchReplyData}) => {
       .then(response => response.text())
       .then(data => {
         console.log(data)
-        fetchReplyData && fetchReplyData();
+        fetchReplyData && fetchReplyData()
+        if (replyContentsRef.current) {
+          replyContentsRef.current.value = ''
+        }
       })
       .catch(error => error.message)
   }
@@ -37,12 +40,10 @@ const ReplyInput: FC<ReplyInputProps> = ({freeBoardId, fetchReplyData}) => {
         id=""
         className="w-5/6 mr-4 border-2 resize-none border-stone-400 focus:border-red-200 outline-0"
         placeholder="댓글 내용 작성하셈"
-        ref={replyContentsRef}
-      ></textarea>
+        ref={replyContentsRef}></textarea>
       <button
         className="w-1/6 p-4 px-6 text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl "
-        onClick={replyonClick}
-      >
+        onClick={replyonClick}>
         등록
       </button>
     </Div>

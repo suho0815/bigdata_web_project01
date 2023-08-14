@@ -5,7 +5,7 @@ import {useRef, useState, useEffect} from 'react'
 import dog from '../../images/nav-dog.png'
 
 import BoardMenu from './BoardMenu'
-import {Link, useParams, useNavigate} from 'react-router-dom'
+import {Link, useParams, useNavigate, useLocation} from 'react-router-dom'
 import {useSetRecoilState, useRecoilValue} from 'recoil'
 import {isFree} from '../../store/RecoilAtom'
 import {getCookie} from '../../util'
@@ -20,15 +20,14 @@ export type WriteBoardProps = DivProps & {
 
 const WriteBoard: FC<WriteBoardProps> = () => {
   const Params = useParams()['itmes']
+  const location = useLocation()
+  const Navigate = useNavigate()
+  console.log(location.state?.modalData)
 
   const [imgFile, setImgFile] = useState<string>('')
   const titleRef = useRef<HTMLInputElement | null>(null)
   const contentRef = useRef<HTMLDivElement | null>(null)
   const imgRef = useRef<HTMLInputElement | null>(null)
-
-  const Navigate = useNavigate()
-  const setIsfree = useSetRecoilState(isFree)
-  const isfree = useRecoilValue(isFree)
 
   const saveImgFile = () => {
     // if (imgRef.current?.files !== null) {
@@ -120,6 +119,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
             type="text"
             className="w-2/5 mt-4 mb-4 input input-info"
             ref={titleRef}
+            // defaultValue={location}
           />
         </Div>
         <Div className="flex flex-col items-center w-full mt-4">

@@ -105,13 +105,18 @@ const FreeDetailReply: FC<FreeDetailReplyProps> = ({
               type="text"
               ref={updateInputRef}
               defaultValue={contents}
-              className="w-full mx-2 input input-info input-sm"
+              className="w-2/3 mx-2 input input-info input-sm"
             />
-            <button
-              className="mr-2 text-white btn btn-sm btn-info"
-              onClick={updateReplyFetchClicked}>
-              등록
-            </button>
+            <Div className="flex w-1/3">
+              <button
+                className="mr-2 text-white btn btn-sm btn-info"
+                onClick={updateReplyFetchClicked}>
+                등록
+              </button>
+              <button className="btn btn-sm" onClick={() => setUpdateReplybtn(false)}>
+                취소
+              </button>
+            </Div>
           </Div>
         ) : (
           contents

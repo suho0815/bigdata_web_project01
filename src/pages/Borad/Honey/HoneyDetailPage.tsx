@@ -1,15 +1,17 @@
-import type {MouseEventHandler} from 'react'
+import type {FC} from 'react'
 import type {HoneyData} from './index'
-import React, {FC, useEffect, useState, useRef} from 'react'
-import {DivProps, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
-import {Div} from '../../../components'
-import {getCookie} from '../../../util'
-import {error} from 'console'
+import {useEffect, useState, useRef} from 'react'
+import {Div, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
+import {useNavigate} from 'react-router-dom'
+import {getCookie, getUserInfoFromToken} from '../../../util'
+import HoneyDetailReply from './HoneyDetailReply'
 
 export type HoneyDetailPage = HoneyData & {
   honeyBoardId?: number
   content?: string
-  setBoardListTrue?: MouseEventHandler<HTMLButtonElement>
+  userId?: string
+  imagefile?: string
+  setBoardListTrue?: (value: React.SetStateAction<boolean>) => void //MouseEventHandler<HTMLButtonElement>
   setHeartBtnCheck?: any //React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -21,13 +23,20 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   heart,
   content,
   honeyBoardId,
+  userId,
+  imagefile,
   setBoardListTrue,
   setHeartBtnCheck
 }) => {
+  const Navigate = useNavigate()
   const replyContentsRef = useRef<HTMLTextAreaElement | null>(null)
-  const [replyData, setReplyData] = useState()
+  const [replyData, setReplyData] = useState<any>()
   const [heartState, setHeartState] = useState<number>()
+  const [total, setTotal] = useState<number>()
+  const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
+  const [focusUpdate, setForceUpdate] = useState<any>()
 
+  const userInfo = getUserInfoFromToken()
   const tokenCookie = getCookie('accessJwtToken:')
   const token = tokenCookie?.trim()
   const headers = new Headers()
@@ -37,11 +46,11 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
 
   //좋아요 버튼 클릭 시
   const likeOnClick = () => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/like/honey/${honeyBoardId}`, {
-      method: 'POST',
+    fetch(`${process.env.REACT_APP_SERVER_URL}/like/${title}/${honeyBoardId}`, {
+      method: 'GET',
       headers: headers
     })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
         console.log(data)
         console.log(heart)
@@ -52,19 +61,37 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   }
 
   // 게시글 수정버튼 클릭 시
-  const updateonClick = () => {
+  const updateOnClick = () => {
+    Navigate('/board/honey/write', {
+      state: {
+        title: title,
+        content: content,
+        imagefile: imagefile
+      }
+    })
+    // fetch(`${process.env.REACT_APP_SERVER_URL}/honey/${honeyBoardId}`, {
+    //   method: 'PUT',
+    //   headers: headers
+    // })
+    //   .then(response => response.json())
+    //   .then(data => console.log(data))
+    //   .catch(error => error.message)
+  }
+
+  // 게시글 삭제버튼 클릭 시
+  const deleteOnClick = () => {
     fetch(`${process.env.REACT_APP_SERVER_URL}/honey/${honeyBoardId}`, {
-      method: 'PUT',
+      method: 'DELETE',
       headers: headers
     })
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(error => error.message)
+    if (setBoardListTrue !== undefined) setBoardListTrue(false)
   }
 
   // 댓글 등록버튼 클릭 시
   const replyonClick = () => {
-    console.log(replyContentsRef.current?.value)
     fetch(`${process.env.REACT_APP_SERVER_URL}/honeyReply/${honeyBoardId}`, {
       method: 'POST',
       headers: headers,
@@ -72,20 +99,55 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
         contents: replyContentsRef.current?.value
       })
     })
-      .then(response => response.json())
-      .then(data => console.log(data))
+      .then(response => response.text())
+      .then(data => {
+        console.log(data)
+        GetReplyList()
+
+        if (replyContentsRef.current) {
+          replyContentsRef.current.value = ''
+        }
+      })
       .catch(error => error.message)
+    // if (setForceUpdate) setForceUpdate(replyContentsRef.current?.value)
+    // GetReplyList()
   }
 
   // 댓글 리스트 띄우기
-  useEffect(() => {
+  const GetReplyList = () => {
     fetch(`${process.env.REACT_APP_SERVER_URL}/honeyReply`, {
       method: 'GET'
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        // console.log(data)
+        const filterdata = data.filter(
+          (datalist: any) => honeyBoardId === datalist['honeyBoardId']['honeyBoardId']
+        )
+        const replydata = filterdata.map((datalist: any, index: number) => (
+          <HoneyDetailReply
+            key={index}
+            contents={datalist['contents']}
+            writer={datalist['nickname']}
+            regdate={datalist['registrationDate']}
+            commentId={datalist['commentId']}
+            userId={datalist['userId']}
+            GetReplyList={GetReplyList}
+          />
+        ))
+        setReplyData(replydata)
+        setTotal(replydata.length)
+      })
       .catch(error => error.message)
-  }, [honeyBoardId])
+  }
+  useEffect(() => {
+    if (userInfo === userId) setUserInfoTrue(true)
+    else setUserInfoTrue(false)
+  }, [])
+
+  useEffect(() => {
+    GetReplyList()
+  }, [honeyBoardId, focusUpdate])
 
   // 좋아요
   useEffect(() => {
@@ -97,10 +159,22 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
       <Div className="flex flex-col items-center w-full h-full border-y-2 border-mint">
         <Div className="w-full border-b-2 border-gray-200">
           <Subtitle className="mt-6 mb-6">{title}</Subtitle>
-          <Itemtitle className="mb-6">
-            <Icon name="person" className="mr-2" />
-            {nickname}
-          </Itemtitle>
+          <Div className="flex items-center justify-center w-full mb-6">
+            <Itemtitle className="flex items-center ">
+              <Icon name="person" className="mr-2" />
+              {nickname}
+            </Itemtitle>
+            {userInfoTrue && (
+              <Div className="absolute flex items-center justify-end text-white right-24">
+                <button className="mr-2 btn" onClick={updateOnClick}>
+                  수정
+                </button>
+                <button className="mr-2 btn btn-xm btn-error " onClick={deleteOnClick}>
+                  삭제
+                </button>
+              </Div>
+            )}
+          </Div>
         </Div>
         <Div className="w-full">
           <Div className="flex justify-end w-full mt-6 mb-6 text-gray-400">
@@ -135,19 +209,19 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
           </Div>
           <Div className="flex flex-col w-full p-4">
             <Itemtitle className="w-full p-4 bg-gray-100 text-mint text-start">
-              댓글 수
+              댓글 수 {total}
             </Itemtitle>
-            <Div className="w-full">댓글 리스트</Div>
+            <Div className="w-full">{replyData}</Div>
           </Div>
           <Div className="w-full text-right">
             <button
               className="p-4 px-8 mr-4 font-bold text-gray-400 border-2"
-              onClick={setBoardListTrue}>
+              onClick={() => setBoardListTrue?.(false)}>
               수정
             </button>
             <button
               className="p-4 px-8 font-bold text-gray-400 border-2"
-              onClick={setBoardListTrue}>
+              onClick={() => setBoardListTrue?.(false)}>
               목록
             </button>
           </Div>

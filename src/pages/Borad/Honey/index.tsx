@@ -28,7 +28,6 @@ const Honey = () => {
 
   const DetailPageClick = (data: HoneyData) => {
     // 클릭한 데이터 출력
-    console.log(data)
     setDetailData(data)
 
     if (viewDetailPage === false) setViewDetailPage(true)
@@ -85,6 +84,7 @@ const Honey = () => {
           regdate={detailData['regdate']}
           nickname={detailData['nickname']}
           heart={detailData['likes']}
+          userId={detailData['userId']}
           honeyBoardId={detailData['honeyBoardId']}
           setBoardListTrue={() => setViewDetailPage(false)}
           setHeartBtnCheck={setHeartBtnCheck}
