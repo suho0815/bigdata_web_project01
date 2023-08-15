@@ -12,6 +12,7 @@ const ReplyInput: FC<ReplyInputProps> = ({freeBoardId, fetchReplyData}) => {
   const replyContentsRef = useRef<HTMLTextAreaElement>(null)
 
   const replyonClick = () => {
+    console.log(replyContentsRef.current ? replyContentsRef.current.value : '')
     const token = getCookie('accessJwtToken:')
     const headers = new Headers()
     headers.append('Authorization', token)

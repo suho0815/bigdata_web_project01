@@ -8,10 +8,10 @@ import HoneyDetailPage from './HoneyDetailPage'
 
 export type HoneyData = {
   title?: string
-  nickname?: string
-  regdate?: string
-  views?: number
-  heart?: number
+  // nickname?: string
+  // regdate?: string
+  // views?: number
+  // heart?: number
 }
 
 const Honey = () => {
@@ -66,7 +66,7 @@ const Honey = () => {
     } catch (error) {
       console.error(error)
     }
-  }, [])
+  }, [viewDetailPage])
 
   return (
     <section className="flex w-full h-full p-10 mt-8 ">
@@ -79,11 +79,7 @@ const Honey = () => {
       {viewDetailPage && (
         <HoneyDetailPage
           title={detailData['title']}
-          content={detailData['content']}
-          views={detailData['views']}
-          regdate={detailData['regdate']}
-          nickname={detailData['nickname']}
-          heart={detailData['likes']}
+          detailData={detailData}
           userId={detailData['userId']}
           honeyBoardId={detailData['honeyBoardId']}
           setBoardListTrue={() => setViewDetailPage(false)}

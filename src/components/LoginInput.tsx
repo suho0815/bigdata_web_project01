@@ -26,6 +26,7 @@ export const Loginbtn: FC<LoginbtnProps> = ({
   children,
   onClick
 }) => {
+  // e bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
   const className = [
     'w-full',
     'px-4',
@@ -34,8 +35,8 @@ export const Loginbtn: FC<LoginbtnProps> = ({
     'font-bold',
     'text-white',
     'bg-blue-500',
+    'hover:bg-blue-600',
     'rounded',
-    'hover:bg-slate-500',
     _className
   ].join(' ')
   return (

@@ -40,11 +40,17 @@ const Nav: FC = () => {
   }, [])
 
   const logoutClick = (e: React.MouseEvent) => {
-    removeCookie('accessJwtToken:')
-    setOpen(false)
-    setIslogin(false)
-    alert('로그아웃 되었습니다.')
-    Navigate('/')
+    e.preventDefault()
+    try {
+      removeCookie('accessJwtToken:')
+      setOpen(false)
+      setIslogin(false)
+
+      Navigate('/')
+      alert('로그아웃되었습니다.')
+    } catch (error) {
+      console.error('Error while logging out:', error)
+    }
   }
 
   const menuClick = useCallback((e: React.MouseEvent) => {

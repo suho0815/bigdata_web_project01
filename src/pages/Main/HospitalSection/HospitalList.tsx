@@ -24,26 +24,40 @@ const HospitalList: FC<HospitalList> = ({
     if (newPost !== undefined) {
       // 새로운 글
       children.push(
-        <ul className="flex mb-4 text-xl" key={i}>
+        <ul className="relative flex mb-4 text-xl" key={i}>
           <li className="mr-2 text-mint">{i}</li>
           {newPost && newPost[i - 1] !== undefined && (
-            <li className="mr-2">{newPost[i - 1]['title']}</li>
+            <li className="mr-2">
+              {newPost[i - 1]['title'].length < 10
+                ? newPost[i - 1]['title']
+                : newPost[i - 1]['title'].slice(0, 10) + '...'}
+            </li>
           )}
           {newPost && newPost[i - 1] !== undefined && (
-            <li>{newPost[i - 1]['nickname']}</li>
+            <li className="absolute right-0">
+              <Icon name="person" />
+              {newPost[i - 1]['nickname']}
+            </li>
           )}
         </ul>
       )
     } else {
       // 새로운 댓글
       children.push(
-        <ul className="flex mb-4 text-xl" key={i}>
+        <ul className="relative flex mb-4 text-xl" key={i}>
           <li className="mr-2 text-mint">{i}</li>
           {newReply && newReply[i - 1] !== undefined && (
-            <li className="mr-2">{newReply[i - 1]['contents']}</li>
+            <li className="mr-2">
+              {newReply[i - 1]['contents'].length < 10
+                ? newReply[i - 1]['contents']
+                : newReply[i - 1]['contents'].slice(0, 10) + '...'}
+            </li>
           )}
           {newReply && newReply[i - 1] !== undefined && (
-            <li>{newReply[i - 1]['nickname']}</li>
+            <li className="absolute right-0">
+              <Icon name="person" />
+              {newReply[i - 1]['nickname']}
+            </li>
           )}
         </ul>
       )

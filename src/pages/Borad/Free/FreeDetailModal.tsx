@@ -20,20 +20,19 @@ export type FreeDetailModalProps = DivProps & {
   onCloseIconClick?: () => void
   title?: string
   freeBoardId?: number
-  heart?: number
 }
 
 //게시글번호(string), "free"
 const FreeDetailModal: FC<FreeDetailModalProps> = ({
   onCloseIconClick,
   title,
-  freeBoardId,
-  heart
+  freeBoardId
 }) => {
   const Navigate = useNavigate()
   const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
   const [modalData, setModalData] = useState<any>()
   const [modalReplyData, setModalReplyData] = useState<any[]>()
+  const [heartClicked, setHeartClicked] = useState<number>()
   const [forceUpdate, setforceUpdate] = useState<any>() // 빈 상태로 사용 강제 재렌더링용,,ㅠ
 
   // 헤더 및 유저정보
@@ -46,12 +45,13 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   // 특정 게시글 내용 가져오기
   useEffect(() => {
     if (renderOne) {
-      fetch(`${process.env.REACT_APP_SERVER_URL}/free/${title}`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/free/${freeBoardId}`, {
         method: 'GET',
         headers: headers
       })
         .then(response => response.json())
         .then(data => {
+          console.log(data)
           if (userInfo !== undefined && setUserInfoTrue) {
             if (userInfo === data['userId']) {
               setUserInfoTrue(true)
@@ -105,14 +105,14 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
 
   // 좋아요 버튼 클릭 시
   const likeOnClick = () => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/like/${title}/${freeBoardId}`, {
-      method: 'POST',
+    fetch(`${process.env.REACT_APP_SERVER_URL}/like/free/${freeBoardId}`, {
+      method: 'GET',
       headers: headers
     })
       .then(response => response.text())
       .then(data => {
+        setHeartClicked(Number(data))
         console.log(data)
-        console.log(heart)
       })
       .catch(error => error.message)
   }
@@ -121,7 +121,8 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   const updateBtnClicked = () => {
     Navigate('/board/free/write', {
       state: {
-        title: modalData['title']
+        title: modalData['title'],
+        content: modalData['content']
       }
     })
   }
@@ -148,17 +149,22 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
         </div>
         <div className="w-1/2 md:w-full md:h-full">
           <ModalAction className="flex flex-col h-full p-4 mt-2">
-            <div className="flex items-center justify-between p-2 px-4 h-1/6">
+            <div className="flex items-center justify-between py-2 pl-4 h-1/6">
               <Itemtitle className="flex justify-center">
                 <Icon name="person" />
                 {modalData ? modalData['nickname'] : ''}
               </Itemtitle>
               <div className="flex items-center justify-center">
                 <div
-                  className="flex items-center mr-4 cursor-pointer "
+                  className="flex items-center mr-4 cursor-pointer"
                   onClick={likeOnClick}>
-                  <Icon name="favorite" className="mr-1 hover:animate-ping" />
-                  {heart}
+                  <Icon
+                    name="favorite"
+                    className={`mr-1 hover:animate-ping ${
+                      heartClicked === 1 ? 'text-red-400' : 'text-black'
+                    }`}
+                  />
+                  {modalData ? modalData['likes'] : ''}
                 </div>
                 <div className="flex items-center mr-4">
                   <Icon name="chat_bubble" className="mr-1" />
@@ -169,11 +175,11 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
                 </Itemsummary>
                 {userInfoTrue && modalData && (
                   <Div className="flex">
-                    <button className="mr-3 btn btn-md" onClick={updateBtnClicked}>
+                    <button className="mr-2 btn btn-sm" onClick={updateBtnClicked}>
                       수정
                     </button>
                     <button
-                      className="text-white btn btn-md btn-error"
+                      className="text-white btn btn-sm btn-error"
                       onClick={deleteFreeBoard}>
                       삭제
                     </button>
@@ -190,9 +196,9 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
                   <div className="flex w-1/3">
                     <Itemsummary className="mr-2">
                       작성일{' '}
-                      {/* {modalData && modalData['regdate'] !== null
+                      {modalData && modalData['regdate'] !== null
                         ? modalData['regdate'].slice(0, 10)
-                        : ''} */}
+                        : ''}
                     </Itemsummary>
                   </div>
                 </div>

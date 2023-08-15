@@ -80,6 +80,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
           console.log(data)
           const cardData = data.map((datalist: any, index: number) => (
             <Card
+              key={index}
               imgsrc={datalist['imagefile'] ? datalist['imagefile'] : choco1}
               boardName={datalist['title']}
               heart={datalist['likes']}
@@ -99,6 +100,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
           console.log(data)
           setNewPost(data)
         })
+        .catch(error => error.message)
 
       // 새로운 댓글
       fetch(`${process.env.REACT_APP_SERVER_URL}/recentreply`, {
@@ -109,6 +111,7 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
           console.log(data)
           setNewReply(data)
         })
+        .catch(error => error.message)
     }, [])
 
     return (
@@ -154,18 +157,18 @@ const HospitalSection: React.FC = //forwardRef((props, ref)
               새로운 글
             </Div>
             <HospitalList newPost={newPost} />
-            <button className="w-full border border-blue-500 btn hover:border-blue-500">
+            {/* <button className="w-full border border-blue-500 btn hover:border-blue-500">
               더보기 +
-            </button>
+            </button> */}
           </div>
           <div>
             <Div className="flex items-center justify-center h-10 font-bold text-white rounded bg-gradient-to-r from-pink-500 to-yellow-500">
               새로운 댓글
             </Div>
             <HospitalList newReply={newReply} />
-            <button className="w-full border border-blue-500 btn hover:border-blue-500">
+            {/* <button className="w-full border border-blue-500 btn hover:border-blue-500">
               더보기 +
-            </button>
+            </button> */}
           </div>
         </Div>
       </div>

@@ -49,6 +49,10 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const provinceChange = useCallback(
     (event: any) => {
       const selectedValue = event.target.value
+      if (selectedValue === '') {
+        setGungu(null)
+        setDong(null)
+      }
 
       fetch(`${process.env.REACT_APP_SERVER_URL}/province/${selectedValue}`)
         .then(response => {
@@ -161,7 +165,7 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
     <Div className="flex flex-col items-center justify-center w-full p-4 border bg-lightmint">
       <Modal open={open}>
         <ModalContent className="max-w-3xl" onCloseIconClicked={detailSearchClosed}>
-          <Subtitle className="mt-4">상세 검색</Subtitle>
+          <Subtitle className="pt-4 pb-3 ">상세 검색</Subtitle>
           <div className="p-12 mt-8 text-center ">
             <div className="flex justify-center">
               <Select

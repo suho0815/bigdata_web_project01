@@ -20,13 +20,13 @@ const Free = () => {
   const [viewDetailModal, setViewDetailModal] = useState<boolean>(false)
   const [titleData, setTitleData] = useState<string>('')
   const [freeBoardId, setFreeBoardId] = useState<number>()
-  const [heart, setHeart] = useState<number>()
+  const [heartCnt, setHeartCnt] = useState<number>()
   const [replyCnt, setReplyCnt] = useState<number>()
 
   const DetailModalClick = (title: string, freeBoardid: number, Heart: number) => {
     setTitleData(title)
     setFreeBoardId(freeBoardid)
-    setHeart(Heart)
+    setHeartCnt(Heart)
     // setReplyCnt(ReplyCnt)
     // console.log(title)
     if (viewDetailModal === false) setViewDetailModal(true)
@@ -96,7 +96,6 @@ const Free = () => {
           onCloseIconClick={() => setViewDetailModal(false)}
           title={titleData}
           freeBoardId={freeBoardId}
-          heart={heart}
         />
       )}
       <Div>{/* <Pagination/> */}</Div>
