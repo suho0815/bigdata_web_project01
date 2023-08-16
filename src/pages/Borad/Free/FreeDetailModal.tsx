@@ -20,19 +20,22 @@ export type FreeDetailModalProps = DivProps & {
   onCloseIconClick?: () => void
   title?: string
   freeBoardId?: number
+  userLikeOnBoard?: any
 }
 
 //게시글번호(string), "free"
 const FreeDetailModal: FC<FreeDetailModalProps> = ({
   onCloseIconClick,
   title,
-  freeBoardId
+  freeBoardId,
+  userLikeOnBoard
 }) => {
   const Navigate = useNavigate()
   const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
   const [modalData, setModalData] = useState<any>()
   const [modalReplyData, setModalReplyData] = useState<any[]>()
   const [heartClicked, setHeartClicked] = useState<number>()
+  const [likeOn, setLikeOn] = useState<boolean>(false) // 좋아요
   const [forceUpdate, setforceUpdate] = useState<any>() // 빈 상태로 사용 강제 재렌더링용,,ㅠ
 
   // 헤더 및 유저정보
@@ -42,6 +45,44 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   headers.append('Authorization', token)
   headers.append('Content-Type', 'application/json')
   let renderOne = true
+
+  // 좋아요 버튼 클릭 시
+  const likeOnClick = () => {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/like/free/${freeBoardId}`, {
+      method: 'GET',
+      headers: headers
+    })
+      .then(response => response.json())
+      .then(data => {
+        setHeartClicked(Number(data))
+        if (token) {
+          const headers = new Headers()
+          headers.append('Authorization', token)
+          headers.append('Content-Type', 'application/json')
+          fetch(`${process.env.REACT_APP_SERVER_URL}/like/free`, {
+            method: 'GET',
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const likeonFreeBoardId = data.map(
+                (datalist: any) => datalist['petFreeBoard']['freeBoardId']
+              )
+              if (likeonFreeBoardId.includes(freeBoardId)) setLikeOn(true)
+              else setLikeOn(false)
+            })
+        }
+      })
+      .catch(error => error.message)
+  }
+
+  useEffect(() => {
+    if (userLikeOnBoard) {
+      if (userLikeOnBoard.includes(freeBoardId)) setLikeOn(true)
+      else setLikeOn(false)
+    }
+  }, [userLikeOnBoard, freeBoardId])
+
   // 특정 게시글 내용 가져오기
   useEffect(() => {
     if (renderOne) {
@@ -60,6 +101,7 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
             }
           }
           setModalData(data)
+          setHeartClicked(data['likes'])
         })
         .catch(error => error.message)
     }
@@ -103,26 +145,13 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
       .catch(error => error.message)
   }
 
-  // 좋아요 버튼 클릭 시
-  const likeOnClick = () => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/like/free/${freeBoardId}`, {
-      method: 'GET',
-      headers: headers
-    })
-      .then(response => response.text())
-      .then(data => {
-        setHeartClicked(Number(data))
-        console.log(data)
-      })
-      .catch(error => error.message)
-  }
-
   // 게시글 수정버튼 클릭 시
   const updateBtnClicked = () => {
     Navigate('/board/free/write', {
       state: {
-        title: modalData['title'],
-        content: modalData['content']
+        modalData
+        // title: modalData['title'],
+        // content: modalData['content']
       }
     })
   }
@@ -160,11 +189,11 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
                   onClick={likeOnClick}>
                   <Icon
                     name="favorite"
-                    className={`mr-1 hover:animate-ping ${
-                      heartClicked === 1 ? 'text-red-400' : 'text-black'
-                    }`}
+                    className={`mr-1 hover:animate-ping 
+                    ${likeOn ? 'text-red-500' : 'text-gray-500'}
+                    `}
                   />
-                  {modalData ? modalData['likes'] : ''}
+                  {heartClicked}
                 </div>
                 <div className="flex items-center mr-4">
                   <Icon name="chat_bubble" className="mr-1" />

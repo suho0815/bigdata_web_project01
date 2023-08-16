@@ -29,6 +29,14 @@ const WriteBoard: FC<WriteBoardProps> = () => {
   const contentRef = useRef<HTMLDivElement | null>(null)
   const imgRef = useRef<HTMLInputElement | null>(null)
 
+  useEffect(() => {
+    if (location.state) {
+      const updateData = location.state?.modalData
+      if (titleRef.current) titleRef.current.value = updateData['title']
+    }
+  }, [])
+
+  // 이미지 미리보기
   const saveImgFile = () => {
     // if (imgRef.current?.files !== null) {
     const file = imgRef.current?.files?.[0]
@@ -73,6 +81,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       // headers.append('Content-Type', 'multipart/form-data')
       // headers.append('Content-Type', 'application/json')
       try {
+        console.log(`${process.env.REACT_APP_SERVER_URL}/${Params}`)
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
           method: 'POST',
           headers: headers,

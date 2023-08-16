@@ -8,27 +8,23 @@ import HoneyDetailReply from './HoneyDetailReply'
 
 export type HoneyDetailPage = HoneyData & {
   honeyBoardId?: number
-  // content?: string
   userId?: string
   detailData?: any
   // imagefile?: string
   setBoardListTrue?: (value: React.SetStateAction<boolean>) => void //MouseEventHandler<HTMLButtonElement>
   setHeartBtnCheck?: any //React.Dispatch<React.SetStateAction<boolean>>
+  GetBoardList?: () => void
 }
 
 const HoneyDetailPage: FC<HoneyDetailPage> = ({
   title,
-  // nickname,
-  // regdate,
-  // views,
-  // heart,
-  // content,
   honeyBoardId,
   userId,
   detailData,
   // imagefile,
   setBoardListTrue,
-  setHeartBtnCheck
+  setHeartBtnCheck,
+  GetBoardList
 }) => {
   const Navigate = useNavigate()
   const replyContentsRef = useRef<HTMLTextAreaElement | null>(null)
@@ -45,11 +41,11 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   const headers = new Headers()
   headers.append('Authorization', token)
   headers.append('Content-Type', 'application/json')
-  //게시글번호(string), "honey"
   let renderOne = true
   //좋아요 버튼 클릭 시
   const likeOnClick = () => {
     if (token) {
+      console.log(`${process.env.REACT_APP_SERVER_URL}/like/honey/${honeyBoardId}`)
       fetch(`${process.env.REACT_APP_SERVER_URL}/like/honey/${honeyBoardId}`, {
         method: 'GET',
         headers: headers
@@ -57,10 +53,8 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
         .then(response => response.json())
         .then(data => {
           console.log(data)
-          // console.log(heart)
-          setHeartState(data)
-          setHeartBtnCheck(true)
-          // setHeartState(heart)
+          // setHeartState(data)
+          // setHeartBtnCheck(true)
         })
         .catch(error => alert('로그인 후 이용해 주세요'))
     } else {
@@ -73,18 +67,20 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   const updateOnClick = () => {
     Navigate('/board/honey/write', {
       state: {
-        title: title,
-        content: detailData['content'],
-        imagefile: detailData['imagefile']
+        modalData: {
+          title: title,
+          content: detailData['content'],
+          imagefile: detailData['imagefile']
+        }
       }
     })
   }
 
   // 게시글 삭제버튼 클릭 시
-  const deleteOnClick = () => {
+  const deleteOnClick = async () => {
     console.log(`${process.env.REACT_APP_SERVER_URL}/honey/${honeyBoardId}`)
     console.log(headers)
-    fetch(`${process.env.REACT_APP_SERVER_URL}/honey/${honeyBoardId}`, {
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/honey/${honeyBoardId}`, {
       method: 'DELETE',
       headers: headers
     })
@@ -98,6 +94,7 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
         // alert('삭제 오류')
       )
     if (setBoardListTrue !== undefined) setBoardListTrue(false)
+    if (GetBoardList !== undefined) GetBoardList()
   }
 
   // 댓글 등록버튼 클릭 시

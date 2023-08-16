@@ -5,6 +5,7 @@ import {HoneyBoardItem} from './HoneyBoardItems'
 import HoneyFilter from './HoneyFilter'
 import Pagination from '../../SearchHospital/HospitalList/Pagination'
 import HoneyDetailPage from './HoneyDetailPage'
+import {getCookie, getUserInfoFromToken} from '../../../util'
 
 export type HoneyData = {
   title?: string
@@ -34,8 +35,25 @@ const Honey = () => {
     else setViewDetailPage(false)
   }
 
-  useEffect(() => {
+  const GetBoardList = () => {
     try {
+      // 좋아요 상태 조회
+      const tokenCookie = getCookie('accessJwtToken:')
+      if (tokenCookie) {
+        const token = tokenCookie.trim()
+        const headers = new Headers()
+        headers.append('Authorization', token)
+        headers.append('Content-Type', 'application/json')
+        fetch(`${process.env.REACT_APP_SERVER_URL}/like/honey`, {
+          method: 'GET',
+          headers: headers
+        })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => error.message)
+      }
+
+      // 게시글 목록 조회
       fetch(`${process.env.REACT_APP_SERVER_URL}/honey`, {
         method: 'GET'
       })
@@ -47,7 +65,7 @@ const Honey = () => {
           }
         })
         .then(data => {
-          console.log(data)
+          // console.log(data)
           const mapItems = data.map((datalist: any, index: number) => (
             <HoneyBoardItem
               key={index}
@@ -66,6 +84,10 @@ const Honey = () => {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  useEffect(() => {
+    GetBoardList()
   }, [viewDetailPage])
 
   return (
@@ -84,6 +106,7 @@ const Honey = () => {
           honeyBoardId={detailData['honeyBoardId']}
           setBoardListTrue={() => setViewDetailPage(false)}
           setHeartBtnCheck={setHeartBtnCheck}
+          GetBoardList={GetBoardList}
         />
       )}
       <Div>{/* <Pagination /> */}</Div>

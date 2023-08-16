@@ -1,5 +1,5 @@
 import type {FC} from 'react'
-import {MouseEventHandler} from 'react'
+import {MouseEventHandler, useEffect, useState} from 'react'
 import {Div, DivProps, Icon, Itemsummary, Itemtitle} from '../../../components'
 import choco3 from '../../../images/choco3.jpg'
 
@@ -9,7 +9,9 @@ export type FreeBoardProps = DivProps & {
   date?: string
   heart?: number
   replycnt?: number
+  freeBoardId?: number
   img?: string
+  userLikeOnBoard?: any
   onClick?: () => void
 }
 
@@ -19,9 +21,20 @@ export const FreeBoardItem: FC<FreeBoardProps> = ({
   date,
   heart,
   replycnt,
+  freeBoardId,
   img,
+  userLikeOnBoard,
   onClick
 }) => {
+  const [likeOn, setLikeOn] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (userLikeOnBoard) {
+      if (userLikeOnBoard.includes(freeBoardId)) setLikeOn(true)
+      else setLikeOn(false)
+    }
+  }, [userLikeOnBoard, freeBoardId])
+
   return (
     <Div
       className="m-8 border shadow-lg cursor-pointer md:mt-4 md:mb-4 md:m-0 rounded-xl h-96 w-80 md:w-full"
@@ -39,7 +52,10 @@ export const FreeBoardItem: FC<FreeBoardProps> = ({
             <Itemtitle className="font-bold text-xm">{title}</Itemtitle>
             <Div className="flex">
               <Itemsummary className="flex items-center justify-center mr-2 text-gray-500 text-xm">
-                <Icon name="favorite" className="mr-1" />
+                <Icon
+                  name="favorite"
+                  className={`mr-1 ${likeOn ? 'text-red-500' : 'text-gray-500'}`}
+                />
                 {heart}
               </Itemsummary>
               <Itemsummary className="flex items-center justify-center mr-2 text-gray-500 text-xm">

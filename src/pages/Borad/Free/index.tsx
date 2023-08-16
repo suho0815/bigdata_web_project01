@@ -16,12 +16,12 @@ const Free = () => {
   const offset: number = (page - 1) * limit
   const [total, setTotal] = useState<number | undefined>(0)
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
-
+  const [userLikeOnBoard, setUserLikeOnBoard] = useState<any>()
   const [viewDetailModal, setViewDetailModal] = useState<boolean>(false)
   const [titleData, setTitleData] = useState<string>('')
   const [freeBoardId, setFreeBoardId] = useState<number>()
   const [heartCnt, setHeartCnt] = useState<number>()
-  const [replyCnt, setReplyCnt] = useState<number>()
+  // const [replyCnt, setReplyCnt] = useState<number>()
 
   const DetailModalClick = (title: string, freeBoardid: number, Heart: number) => {
     setTitleData(title)
@@ -33,7 +33,7 @@ const Free = () => {
     else setViewDetailModal(false)
   }
 
-  useEffect(() => {
+  const GetBoardList = async () => {
     const tokenCookie = getCookie('accessJwtToken:')
     if (tokenCookie) {
       const token = tokenCookie.trim()
@@ -41,46 +41,57 @@ const Free = () => {
       const headers = new Headers()
       headers.append('Authorization', token)
       headers.append('Content-Type', 'application/json')
-
-      fetch(`${process.env.REACT_APP_SERVER_URL}/free`, {
+      // 해당 유저가 좋아요 한 목록
+      const likeResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/like/free`, {
         method: 'GET',
         headers: headers
       })
-        .then(response => {
-          if (response.ok) {
-            return response.json()
-          } else {
-            throw new Error('Network response was not ok')
-          }
-        })
-        .then(data => {
-          console.log(data)
-          const mapItems = data.map((datalist: any, index: number) => (
-            <div key={index} className="flex w-1/3 justify-evenly w-responsive-custom">
-              <FreeBoardItem
-                title={datalist['title']}
-                writer={datalist['nickname']}
-                date={datalist['regdate']}
-                heart={datalist['likes']}
-                // replycnt={data.length}
-                onClick={() =>
-                  DetailModalClick(
-                    datalist['title'],
-                    datalist['freeBoardId'],
-                    datalist['likes']
-                  )
-                }
-              />
-            </div>
-          ))
-          setTotal(mapItems.length)
-          setRenderedItems(mapItems)
-        })
-        .catch(err => err.message)
+      const likeData = await likeResponse.json()
+
+      const likeonFreeBoardId = likeData.map(
+        (datalist: any) => datalist['petFreeBoard']['freeBoardId']
+      )
+      setUserLikeOnBoard(likeonFreeBoardId)
+      console.log(likeonFreeBoardId)
+
+      // 게시글 목록
+      const postsResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/free`, {
+        method: 'GET',
+        headers: headers
+      })
+      const postsData = await postsResponse.json()
+
+      const mapItems = postsData.map((datalist: any, index: number) => (
+        <div key={index} className="flex w-1/3 justify-evenly w-responsive-custom">
+          <FreeBoardItem
+            title={datalist['title']}
+            writer={datalist['nickname']}
+            date={datalist['regdate']}
+            heart={datalist['likes']}
+            freeBoardId={datalist['freeBoardId']}
+            img={datalist['imagefile']}
+            userLikeOnBoard={likeonFreeBoardId}
+            onClick={() =>
+              DetailModalClick(
+                datalist['title'],
+                datalist['freeBoardId'],
+                datalist['likes']
+              )
+            }
+          />
+        </div>
+      ))
+      // console.log(typeof postsData[1]['imagefile'])
+      setTotal(mapItems.length)
+      setRenderedItems(mapItems)
     } else {
       Navigate('/')
       alert('로그인이 필요한 서비스입니다.')
     }
+  }
+
+  useEffect(() => {
+    GetBoardList()
   }, [viewDetailModal])
 
   return (
@@ -88,7 +99,7 @@ const Free = () => {
       <div className="flex flex-col items-center w-full h-full p-10">
         <FreeFilter total={total} />
         <div className="flex flex-wrap justify-center w-full border-y-2 border-mint">
-          {renderedItems}
+          {userLikeOnBoard && renderedItems}
         </div>
       </div>
       {viewDetailModal && (
@@ -96,6 +107,7 @@ const Free = () => {
           onCloseIconClick={() => setViewDetailModal(false)}
           title={titleData}
           freeBoardId={freeBoardId}
+          userLikeOnBoard={userLikeOnBoard}
         />
       )}
       <Div>{/* <Pagination/> */}</Div>
