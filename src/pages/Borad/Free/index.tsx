@@ -21,14 +21,18 @@ const Free = () => {
   const [titleData, setTitleData] = useState<string>('')
   const [freeBoardId, setFreeBoardId] = useState<number>()
   const [heartCnt, setHeartCnt] = useState<number>()
-  // const [replyCnt, setReplyCnt] = useState<number>()
+  const [imageFile, setImageFile] = useState<string>()
 
-  const DetailModalClick = (title: string, freeBoardid: number, Heart: number) => {
+  const DetailModalClick = (
+    title: string,
+    freeBoardid: number,
+    Heart: number,
+    imageFile: string
+  ) => {
     setTitleData(title)
     setFreeBoardId(freeBoardid)
     setHeartCnt(Heart)
-    // setReplyCnt(ReplyCnt)
-    // console.log(title)
+    setImageFile(imageFile)
     if (viewDetailModal === false) setViewDetailModal(true)
     else setViewDetailModal(false)
   }
@@ -52,7 +56,6 @@ const Free = () => {
         (datalist: any) => datalist['petFreeBoard']['freeBoardId']
       )
       setUserLikeOnBoard(likeonFreeBoardId)
-      console.log(likeonFreeBoardId)
 
       // 게시글 목록
       const postsResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/free`, {
@@ -60,7 +63,7 @@ const Free = () => {
         headers: headers
       })
       const postsData = await postsResponse.json()
-
+      console.log(postsData)
       const mapItems = postsData.map((datalist: any, index: number) => (
         <div key={index} className="flex w-1/3 justify-evenly w-responsive-custom">
           <FreeBoardItem
@@ -69,13 +72,14 @@ const Free = () => {
             date={datalist['regdate']}
             heart={datalist['likes']}
             freeBoardId={datalist['freeBoardId']}
-            img={datalist['imagefile']}
+            img={datalist['imageFile']}
             userLikeOnBoard={likeonFreeBoardId}
             onClick={() =>
               DetailModalClick(
                 datalist['title'],
                 datalist['freeBoardId'],
-                datalist['likes']
+                datalist['likes'],
+                datalist['imageFile']
               )
             }
           />
@@ -108,6 +112,7 @@ const Free = () => {
           title={titleData}
           freeBoardId={freeBoardId}
           userLikeOnBoard={userLikeOnBoard}
+          img={imageFile}
         />
       )}
       <Div>{/* <Pagination/> */}</Div>

@@ -2,6 +2,8 @@ import type {FC} from 'react'
 import {MouseEventHandler, useEffect, useState} from 'react'
 import {Div, DivProps, Icon, Itemsummary, Itemtitle} from '../../../components'
 import choco3 from '../../../images/choco3.jpg'
+import {getCookie} from '../../../util'
+import {GetFreeImageFile} from '../../../util'
 
 export type FreeBoardProps = DivProps & {
   title?: string
@@ -27,12 +29,15 @@ export const FreeBoardItem: FC<FreeBoardProps> = ({
   onClick
 }) => {
   const [likeOn, setLikeOn] = useState<boolean>(false)
+  const [imageFile, setImageFile] = useState<string>()
 
   useEffect(() => {
     if (userLikeOnBoard) {
       if (userLikeOnBoard.includes(freeBoardId)) setLikeOn(true)
       else setLikeOn(false)
     }
+    console.log(img)
+    if (img) GetFreeImageFile(img, setImageFile)
   }, [userLikeOnBoard, freeBoardId])
 
   return (
@@ -41,7 +46,7 @@ export const FreeBoardItem: FC<FreeBoardProps> = ({
       onClick={onClick}>
       <Div className="relative w-full h-64 m-auto border rounded-t-xl ">
         <img
-          src={img ? img : choco3}
+          src={imageFile ? imageFile : choco3}
           alt=""
           className="object-cover w-full h-full rounded-t-xl "
         />

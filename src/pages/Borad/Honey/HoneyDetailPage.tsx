@@ -3,14 +3,16 @@ import type {HoneyData} from './index'
 import {useEffect, useState, useRef} from 'react'
 import {Div, Subtitle, Icon, Itemsummary, Itemtitle} from '../../../components'
 import {useNavigate} from 'react-router-dom'
-import {getCookie, getUserInfoFromToken} from '../../../util'
+import {getCookie, getUserInfoFromToken, GetHoneyImageFile} from '../../../util'
+import choco1 from '../../../images/choco1.jpg'
 import HoneyDetailReply from './HoneyDetailReply'
 
 export type HoneyDetailPage = HoneyData & {
   honeyBoardId?: number
   userId?: string
   detailData?: any
-  // imagefile?: string
+  img?: string
+  userLikeOnBoard?: number[]
   setBoardListTrue?: (value: React.SetStateAction<boolean>) => void //MouseEventHandler<HTMLButtonElement>
   setHeartBtnCheck?: any //React.Dispatch<React.SetStateAction<boolean>>
   GetBoardList?: () => void
@@ -21,7 +23,8 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   honeyBoardId,
   userId,
   detailData,
-  // imagefile,
+  img,
+  userLikeOnBoard,
   setBoardListTrue,
   setHeartBtnCheck,
   GetBoardList
@@ -31,9 +34,11 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   const [replyData, setReplyData] = useState<any>()
   const [detailPageData, setDetailPageData] = useState<any>()
   const [heartState, setHeartState] = useState<number>()
+  const [likeOn, setLikeOn] = useState<boolean>(false)
+  const [imageFile, setImageFile] = useState<string>()
+
   const [total, setTotal] = useState<number>()
   const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
-  const [focusUpdate, setForceUpdate] = useState<any>()
 
   const userInfo = getUserInfoFromToken()
   const tokenCookie = getCookie('accessJwtToken:')
@@ -53,8 +58,25 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
         .then(response => response.json())
         .then(data => {
           console.log(data)
-          // setHeartState(data)
+          setHeartState(data)
           // setHeartBtnCheck(true)
+          if (token) {
+            const headers = new Headers()
+            headers.append('Authorization', token)
+            headers.append('Content-Type', 'application/json')
+            fetch(`${process.env.REACT_APP_SERVER_URL}/like/honey`, {
+              method: 'GET',
+              headers: headers
+            })
+              .then(response => response.json())
+              .then(data => {
+                const likeonFreeBoardId = data.map(
+                  (datalist: any) => datalist['petHoneyBoard']['honeyBoardId']
+                )
+                if (likeonFreeBoardId.includes(honeyBoardId)) setLikeOn(true)
+                else setLikeOn(false)
+              })
+          }
         })
         .catch(error => alert('로그인 후 이용해 주세요'))
     } else {
@@ -182,9 +204,13 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
   }, [honeyBoardId])
 
   // 좋아요
-  // useEffect(() => {
-  // setHeartState(heart)
-  // }, [heart])
+  useEffect(() => {
+    if (userLikeOnBoard) {
+      if (userLikeOnBoard.includes(honeyBoardId as number)) setLikeOn(true)
+      else setLikeOn(false)
+    }
+    if (img) GetHoneyImageFile(img, setImageFile)
+  }, [userLikeOnBoard, honeyBoardId])
 
   return (
     <Div className="flex w-full h-full p-10 mt-8 ">
@@ -219,13 +245,25 @@ const HoneyDetailPage: FC<HoneyDetailPage> = ({
           </Div>
         </Div>
         <Div className="w-full mb-6">
+          <Div className="w-full ">
+            <img
+              src={imageFile ? imageFile : choco1}
+              alt=""
+              className="object-cover w-full h-full"
+            />
+          </Div>
           {detailPageData ? detailPageData['content'] : ''}
         </Div>
         <Div className="mb-6">
           <button
-            className="flex flex-col items-center px-6 py-2 border text-mint"
+            className="flex flex-col items-center px-6 py-2 border text-mint "
             onClick={likeOnClick}>
-            <Icon name="favorite" className="mb-2" />
+            <Icon
+              name="favorite"
+              className={`mb-2 ${
+                likeOn ? 'text-red-500 animate-waving-hand' : 'text-mint'
+              } `}
+            />
             <span className="font-bold ">좋아요 {heartState}</span>
           </button>
         </Div>

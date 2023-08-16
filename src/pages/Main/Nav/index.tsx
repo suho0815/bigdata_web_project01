@@ -39,10 +39,10 @@ const Nav: FC = () => {
     }
   }, [])
 
-  const logoutClick = (e: React.MouseEvent) => {
+  const logoutClick = async (e: React.MouseEvent) => {
     e.preventDefault()
     try {
-      removeCookie('accessJwtToken:')
+      await removeCookie('accessJwtToken:')
       setOpen(false)
       setIslogin(false)
 

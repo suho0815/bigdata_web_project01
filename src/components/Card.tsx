@@ -3,6 +3,8 @@ import type {DivProps} from './Div'
 import {Div} from './Div'
 import {Icon} from './Icon'
 import {Itemtitle, Itemsummary} from './Title'
+import {GetHoneyImageFile} from '../util'
+import {useEffect, useState} from 'react'
 
 export type CardProps = DivProps & {
   imgsrc?: string
@@ -12,6 +14,14 @@ export type CardProps = DivProps & {
 }
 
 export const Card: FC<CardProps> = ({imgsrc, boardName, heart, views}) => {
+  // console.log(imgsrc)
+  const [imageFile, setImageFile] = useState<string>()
+  //GetFreeImageFile
+  //GetHoneyImageFile
+  useEffect(() => {
+    if (imgsrc) GetHoneyImageFile(imgsrc, setImageFile)
+  }, [])
+
   return (
     <Div className="m-2 border shadow-lg rounded-xl" width="20rem">
       <Div className="relative m-auto border h-52 rounded-t-xl" width="20rem">

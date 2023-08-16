@@ -23,7 +23,6 @@ export const Map: FC<MapProps> = ({className, sharedHospital}) => {
   let total = 0
 
   // const [positions, setPositions] = useState<any[]>()
-
   console.log(sharedHospital)
 
   useEffect(() => {

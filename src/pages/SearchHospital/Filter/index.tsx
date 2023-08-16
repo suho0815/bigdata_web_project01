@@ -88,8 +88,8 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
       let gunguselected = ''
       if (sidoref.current !== null) gunguselected = sidoref.current.value
 
-      if (selectedValue !== null) {
-        console.log('gungudata: ', selectedValue)
+      if (selectedValue === '') {
+        setDong(null)
       }
       fetch(
         `${process.env.REACT_APP_SERVER_URL}/province/${gunguselected}/${selectedValue}`
@@ -124,7 +124,14 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
     if (gunguref.current !== null) selectedGungu = gunguref.current.value
     let selectedDong = ''
     if (dongref.current !== null) selectedDong = dongref.current.value
-    // /${selectedGungu}/${selectedDong}
+
+    if (sidoref.current?.value === '') {
+      onDataChange()
+      Navigate('/api/searchhospital', {state: null})
+      setOpen(false)
+      return
+    }
+
     fetch(
       `${process.env.REACT_APP_SERVER_URL}/hospital/${selectedSido}${
         selectedGungu !== '' ? '/' + selectedGungu : ''
@@ -147,6 +154,13 @@ const Filter: React.FC<{onDataChange: any}> = ({onDataChange}) => {
   const keywordSearchClick = useCallback(() => {
     let keyword = ''
     if (keywordref.current !== null) keyword = keywordref.current.value
+
+    if (keywordref.current?.value === '') {
+      onDataChange()
+      Navigate('/api/searchhospital', {state: null})
+      setOpen(false)
+      return
+    }
 
     fetch(`${process.env.REACT_APP_SERVER_URL}/searchhospital/${keyword}`)
       .then(response => {

@@ -13,7 +13,7 @@ import {Div} from '../../../components'
 import {useNavigate} from 'react-router-dom'
 import FreeDetailReply from './FreeDetailReply'
 import ReplyInput from './ReplyInput'
-import {getCookie, getUserInfoFromToken} from '../../../util'
+import {getCookie, getUserInfoFromToken, GetFreeImageFile} from '../../../util'
 import choco3 from '../../../images/choco3.jpg'
 
 export type FreeDetailModalProps = DivProps & {
@@ -21,6 +21,7 @@ export type FreeDetailModalProps = DivProps & {
   title?: string
   freeBoardId?: number
   userLikeOnBoard?: any
+  img?: string
 }
 
 //게시글번호(string), "free"
@@ -28,7 +29,8 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   onCloseIconClick,
   title,
   freeBoardId,
-  userLikeOnBoard
+  userLikeOnBoard,
+  img
 }) => {
   const Navigate = useNavigate()
   const [userInfoTrue, setUserInfoTrue] = useState<boolean>(false)
@@ -36,6 +38,7 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
   const [modalReplyData, setModalReplyData] = useState<any[]>()
   const [heartClicked, setHeartClicked] = useState<number>()
   const [likeOn, setLikeOn] = useState<boolean>(false) // 좋아요
+  const [imageFile, setImageFile] = useState<string>()
   const [forceUpdate, setforceUpdate] = useState<any>() // 빈 상태로 사용 강제 재렌더링용,,ㅠ
 
   // 헤더 및 유저정보
@@ -56,9 +59,6 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
       .then(data => {
         setHeartClicked(Number(data))
         if (token) {
-          const headers = new Headers()
-          headers.append('Authorization', token)
-          headers.append('Content-Type', 'application/json')
           fetch(`${process.env.REACT_APP_SERVER_URL}/like/free`, {
             method: 'GET',
             headers: headers
@@ -81,6 +81,7 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
       if (userLikeOnBoard.includes(freeBoardId)) setLikeOn(true)
       else setLikeOn(false)
     }
+    if (img) GetFreeImageFile(img, setImageFile)
   }, [userLikeOnBoard, freeBoardId])
 
   // 특정 게시글 내용 가져오기
@@ -162,9 +163,10 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
       fetch(`${process.env.REACT_APP_SERVER_URL}/free/${freeBoardId}`, {
         method: 'DELETE',
         headers: headers
-      }).catch(error => error.message)
+      })
+        .then(() => alert('게시글이 삭제되었습니다.'))
+        .catch(error => error.message)
       if (onCloseIconClick && typeof onCloseIconClick === 'function') onCloseIconClick()
-      alert('게시글이 삭제되었습니다.')
     }
   }
 
@@ -174,7 +176,11 @@ const FreeDetailModal: FC<FreeDetailModalProps> = ({
         className="flex max-w-5xl h-1/2 md:flex-col md:h-4/5"
         onCloseIconClicked={onCloseIconClick}>
         <div className="w-1/2 mt-6 text-center md:w-full md:h-1/2">
-          <img src={choco3} alt="" className="object-cover w-full h-full" />
+          <img
+            src={imageFile ? imageFile : choco3}
+            alt=""
+            className="object-cover w-full h-full"
+          />
         </div>
         <div className="w-1/2 md:w-full md:h-full">
           <ModalAction className="flex flex-col h-full p-4 mt-2">

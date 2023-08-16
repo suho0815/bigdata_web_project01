@@ -23,9 +23,11 @@ const Honey = () => {
   const [renderedItems, setRenderedItems] = useState<ReactElement[]>([])
 
   const [viewDetailPage, setViewDetailPage] = useState<boolean>(false)
+  const [userLikeOnBoard, setUserLikeOnBoard] = useState<any>()
   const [heartBtnCheck, setHeartBtnCheck] = useState<boolean>(false)
   // const [detailPageChange, setDetailPageChange] = useState<boolean>(false)
   const [detailData, setDetailData] = useState<any>()
+  const [imageFile, setImageFile] = useState<string>()
 
   const DetailPageClick = (data: HoneyData) => {
     // 클릭한 데이터 출력
@@ -35,7 +37,8 @@ const Honey = () => {
     else setViewDetailPage(false)
   }
 
-  const GetBoardList = () => {
+  const GetBoardList = async () => {
+    let likeOnBoard: any = null
     try {
       // 좋아요 상태 조회
       const tokenCookie = getCookie('accessJwtToken:')
@@ -44,13 +47,22 @@ const Honey = () => {
         const headers = new Headers()
         headers.append('Authorization', token)
         headers.append('Content-Type', 'application/json')
-        fetch(`${process.env.REACT_APP_SERVER_URL}/like/honey`, {
-          method: 'GET',
-          headers: headers
-        })
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch(error => error.message)
+
+        const likeResponse = await fetch(
+          `${process.env.REACT_APP_SERVER_URL}/like/honey`,
+          {
+            method: 'GET',
+            headers: headers
+          }
+        )
+
+        const likeData = await likeResponse.json()
+
+        likeOnBoard = likeData.map(
+          (datalist: any) => datalist['petHoneyBoard']['honeyBoardId']
+        )
+        console.log()
+        setUserLikeOnBoard(likeOnBoard)
       }
 
       // 게시글 목록 조회
@@ -65,7 +77,7 @@ const Honey = () => {
           }
         })
         .then(data => {
-          // console.log(data)
+          console.log(data)
           const mapItems = data.map((datalist: any, index: number) => (
             <HoneyBoardItem
               key={index}
@@ -74,6 +86,9 @@ const Honey = () => {
               date={datalist['regdate']}
               views={datalist['views']}
               heart={datalist['likes']}
+              img={datalist['imagefile']}
+              honeyBoardId={datalist['honeyBoardId']}
+              userLikeOnBoard={likeOnBoard}
               onClick={() => DetailPageClick(datalist)}
             />
           ))
@@ -104,6 +119,8 @@ const Honey = () => {
           detailData={detailData}
           userId={detailData['userId']}
           honeyBoardId={detailData['honeyBoardId']}
+          userLikeOnBoard={userLikeOnBoard}
+          img={detailData['imagefile']}
           setBoardListTrue={() => setViewDetailPage(false)}
           setHeartBtnCheck={setHeartBtnCheck}
           GetBoardList={GetBoardList}
