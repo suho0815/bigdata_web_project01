@@ -33,6 +33,10 @@ const WriteBoard: FC<WriteBoardProps> = () => {
     if (location.state) {
       const updateData = location.state?.modalData
       if (titleRef.current) titleRef.current.value = updateData['title']
+      if (contentRef.current) contentRef.current.textContent = updateData['content']
+      // if (imgRef?.current && updateData['imagefile'] ){
+      //     imgRef.current.value = updateData['imagefile']
+      //   }
     }
   }, [])
 
@@ -79,7 +83,6 @@ const WriteBoard: FC<WriteBoardProps> = () => {
       const headers = new Headers()
       headers.append('Authorization', token)
       // headers.append('Content-Type', 'multipart/form-data')
-      // headers.append('Content-Type', 'application/json')
       try {
         console.log(`${process.env.REACT_APP_SERVER_URL}/${Params}`)
         const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}`, {
@@ -97,6 +100,7 @@ const WriteBoard: FC<WriteBoardProps> = () => {
         console.error((err as Error).message)
       }
       Navigate(`/board/${Params}`)
+
       //   fetch(`${process.env.REACT_APP_SERVER_URL}/${Params}/${boardId}`, {
       //     method: 'PUT',
       //     headers: headers,

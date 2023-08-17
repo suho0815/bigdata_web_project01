@@ -11,7 +11,7 @@ export const GetFreeImageFile = (
 
     const headers = new Headers()
     headers.append('Authorization', token)
-    // console.log(img)
+    console.log(img)
     if (img !== undefined || img !== null) {
       fetch(img, {
         method: 'GET',
@@ -20,7 +20,7 @@ export const GetFreeImageFile = (
         .then(response => response.blob())
         .then(blob => {
           const imageUrl = URL.createObjectURL(blob)
-          // console.log(imageUrl)
+          console.log(imageUrl)
           setImageFile(imageUrl)
         })
         .catch(error => console.error(error.message))
